@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { evaluateFieldGuess } from './fieldMatching';
-import type { TrackAnswers } from '../../types/track';
+import { evaluateFieldGuess } from './FieldMatching';
+import type { TrackAnswers } from '../types/track';
 
 describe('evaluateFieldGuess', () => {
   it('matches a text field with aliases via fuzzy matching', () => {

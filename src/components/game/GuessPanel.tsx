@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FieldInput } from './FieldInput';
-import { evaluateFieldGuess, type FieldMatchResult } from './fieldMatching';
+import { evaluateFieldGuess, type FieldMatchResult } from '../../engine/FieldMatching';
 import { FIELD_DEFINITIONS } from '../../engine/ScoringEngine';
 import type { FieldId, Track } from '../../types/track';
 import type { FieldGuess, FieldGuessValue } from '../../types/session';

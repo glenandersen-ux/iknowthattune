@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Fuse from 'fuse.js';
 import clsx from 'clsx';
-import { DEFAULT_CHOICE_OPTIONS } from './fieldMatching';
+import { DEFAULT_CHOICE_OPTIONS } from '../../engine/FieldMatching';
 import type { FieldId, FieldInputType } from '../../types/track';
 import type { FieldGuessValue } from '../../types/session';
 

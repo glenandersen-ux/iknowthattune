@@ -1,4 +1,4 @@
-import { fuzzyMatch, fuzzyMatchYear, fuzzyMatchPartial } from '../../engine/FuzzyMatcher';
+import { fuzzyMatch, fuzzyMatchYear, fuzzyMatchPartial } from './FuzzyMatcher';
 import type {
   FieldId,
   FieldInputType,
@@ -9,8 +9,8 @@ import type {
   MultiValueAnswer,
   FuzzyTextAnswer,
   SimpleAnswer,
-} from '../../types/track';
-import type { FieldGuessValue } from '../../types/session';
+} from '../types/track';
+import type { FieldGuessValue } from '../types/session';
 
 /** Outcome of matching a submitted value against a track's canonical answer (DeepDive §A.7). */
 export interface FieldMatchResult {
