@@ -1,12 +1,15 @@
-import { useRef, type JSX } from 'react';
+import { useRef, useState, type JSX } from 'react';
 import { createRoute } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { resultSearchSchema, type ResultSearch } from './searchSchemas';
 import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
+import { usePlayerStore } from '../store/playerStore';
 import { buildEmojiGrid } from '../engine/ShareText';
 import { BadgeUnlock } from '../components/result/BadgeUnlock';
+import { PublishScreen } from '../components/creator/PublishScreen';
 import type { ClipDuration } from '../types/track';
+import type { Challenge } from '../types/challenge';
 import type { PlayerSession } from '../types/session';
 
 /** Challenge IDs used for client-only modes that have no server-side leaderboard. */
@@ -73,7 +76,10 @@ export function ResultScreen(): JSX.Element {
   const session = useGameStore((state) => state.session);
   const challenge = useGameStore((state) => state.challenge);
   const getTrack = useCatalogStore((state) => state.getTrack);
+  const playerId = usePlayerStore((state) => state.player_id);
+  const playerName = usePlayerStore((state) => state.display_name);
   const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const [showShareChallenge, setShowShareChallenge] = useState(false);
 
   const challengeName = challenge?.name ?? 'I Know That Tune';
 
@@ -195,7 +201,34 @@ export function ResultScreen(): JSX.Element {
             🏆 View Leaderboard
           </a>
         )}
+        {session.mode === 'solo' && challenge && !showShareChallenge && (
+          <button
+            type="button"
+            onClick={() => setShowShareChallenge(true)}
+            className="rounded-lg bg-slate-700 px-4 py-3 font-semibold text-white hover:bg-slate-600"
+          >
+            🔗 Share This as a Challenge
+          </button>
+        )}
       </div>
+
+      {session.mode === 'solo' && challenge && showShareChallenge && (
+        <div className="rounded-lg bg-slate-800 p-4">
+          <PublishScreen
+            challenge={
+              {
+                ...challenge,
+                creator_name: playerName,
+                creator_player_id: playerId,
+                creator_score: session.totals.total_score,
+                name: 'Solo Sprint Challenge',
+              } satisfies Challenge
+            }
+            hasPlayed
+            onPlayNow={() => {}}
+          />
+        </div>
+      )}
 
       <ShareCardTemplate session={session} challengeName={challengeName} />
       <BadgeUnlock badges={session.unlocked_badges ?? []} />

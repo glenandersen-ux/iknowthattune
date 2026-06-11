@@ -150,6 +150,22 @@ describe('ResultScreen', () => {
     expect(link).toHaveAttribute('href', '/leaderboard?c=XqZ9mK');
   });
 
+  it('reveals a publish screen for sharing a solo session as a challenge', async () => {
+    useGameStore.getState().loadChallenge(mockChallenge, 'solo', 'Glen');
+    useGameStore.setState((state) => ({
+      session: {
+        ...state.session,
+        tracks: [buildTrackSession()],
+        totals: { ...state.session.totals, total_score: 5180 },
+      },
+    }));
+
+    render(<ResultScreen />);
+    await userEvent.click(screen.getByRole('button', { name: /Share This as a Challenge/ }));
+
+    expect(screen.getByText('Preview & Publish')).toBeInTheDocument();
+  });
+
   it('downloads the share card as a PNG via html2canvas', async () => {
     useGameStore.getState().loadChallenge(mockChallenge, 'solo', 'Glen');
     useGameStore.setState((state) => ({

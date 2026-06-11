@@ -1,10 +1,20 @@
-import { useEffect, type JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { difficultyLabel, getDailyTrackId, todayIso } from '../engine/DailyDrop';
+import {
+  buildSoloSprintSeed,
+  DEFAULT_SOLO_TRACKS,
+  filterTracksForSoloSprint,
+  listDecades,
+  listGenres,
+  MAX_SOLO_TRACKS,
+  MIN_SOLO_TRACKS,
+  pickRandomTracks,
+} from '../engine/SoloSprint';
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -31,6 +41,11 @@ export function HomeScreen(): JSX.Element {
   const loadCatalog = useCatalogStore((state) => state.loadCatalog);
   const dailyStreak = usePlayerStore((state) => state.daily_drop_streak);
 
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
+  const [artist, setArtist] = useState('');
+  const [trackCount, setTrackCount] = useState(DEFAULT_SOLO_TRACKS);
+
   useEffect(() => {
     void loadCatalog();
   }, [loadCatalog]);
@@ -42,6 +57,25 @@ export function HomeScreen(): JSX.Element {
   const handlePlay = (): void => {
     if (!trackId) return;
     void navigate({ to: '/game', search: { mode: 'daily', seed: trackId, date } });
+  };
+
+  const genres = listGenres(tracks);
+  const decades = listDecades(tracks);
+
+  const toggleGenre = (genre: string): void => {
+    setSelectedGenres((prev) => (prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]));
+  };
+
+  const toggleDecade = (decade: number): void => {
+    setSelectedDecades((prev) => (prev.includes(decade) ? prev.filter((d) => d !== decade) : [...prev, decade]));
+  };
+
+  const handleStartSoloSprint = (): void => {
+    const filtered = filterTracksForSoloSprint(tracks, { genres: selectedGenres, decades: selectedDecades, artist });
+    const pool = filtered.length > 0 ? filtered : tracks;
+    const selected = pickRandomTracks(pool, trackCount);
+    if (selected.length === 0) return;
+    void navigate({ to: '/game', search: { mode: 'solo', seed: buildSoloSprintSeed(selected) } });
   };
 
   return (
@@ -75,6 +109,89 @@ export function HomeScreen(): JSX.Element {
         ) : (
           <p className="text-sm text-slate-400">Loading…</p>
         )}
+      </div>
+
+      <div className="flex w-full flex-col gap-4 rounded-lg bg-slate-800 p-6 text-left">
+        <h2 className="text-center text-lg font-semibold">Solo Sprint</h2>
+
+        {genres.length > 0 && (
+          <div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Genre</p>
+            <div className="flex flex-wrap gap-2">
+              {genres.map((genre) => (
+                <button
+                  key={genre}
+                  type="button"
+                  onClick={() => toggleGenre(genre)}
+                  aria-pressed={selectedGenres.includes(genre)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    selectedGenres.includes(genre) ? 'bg-cyan-600 text-white' : 'bg-slate-700 text-slate-300'
+                  }`}
+                >
+                  {genre}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {decades.length > 0 && (
+          <div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Decade</p>
+            <div className="flex flex-wrap gap-2">
+              {decades.map((decade) => (
+                <button
+                  key={decade}
+                  type="button"
+                  onClick={() => toggleDecade(decade)}
+                  aria-pressed={selectedDecades.includes(decade)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    selectedDecades.includes(decade) ? 'bg-cyan-600 text-white' : 'bg-slate-700 text-slate-300'
+                  }`}
+                >
+                  {decade}s
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div>
+          <label htmlFor="solo-artist" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Artist
+          </label>
+          <input
+            id="solo-artist"
+            type="text"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+            placeholder="Any artist"
+            className="w-full rounded-lg bg-slate-700 px-3 py-2 text-sm text-white placeholder:text-slate-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="solo-track-count" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+            Tracks: {trackCount}
+          </label>
+          <input
+            id="solo-track-count"
+            type="range"
+            min={MIN_SOLO_TRACKS}
+            max={MAX_SOLO_TRACKS}
+            value={trackCount}
+            onChange={(e) => setTrackCount(Number(e.target.value))}
+            className="w-full"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={handleStartSoloSprint}
+          className="rounded-lg bg-cyan-600 px-4 py-3 font-semibold text-white hover:bg-cyan-500"
+        >
+          Start Solo Sprint
+        </button>
       </div>
     </div>
   );

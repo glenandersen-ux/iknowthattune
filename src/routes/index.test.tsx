@@ -81,4 +81,14 @@ describe('HomeScreen', () => {
 
     await waitFor(() => expect(screen.getByText(/7-day streak/)).toBeInTheDocument());
   });
+
+  it('starts a Solo Sprint with a seed of track IDs matching the selected genre', async () => {
+    render(<HomeScreen />);
+
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Rock' })).toBeInTheDocument());
+    await userEvent.click(screen.getByRole('button', { name: 'Rock' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Start Solo Sprint' }));
+
+    expect(navigate).toHaveBeenCalledWith({ to: '/game', search: { mode: 'solo', seed: 'track-1' } });
+  });
 });
