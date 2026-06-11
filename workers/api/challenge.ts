@@ -2,6 +2,7 @@ import type { Env } from '../env';
 import type { Challenge, CreateChallengeRequest, PlayerResult } from '../../src/types/challenge';
 import type { Track } from '../../src/types/track';
 import { computeMaxPossibleScore, validateResultScore } from '../../src/engine/ScoringEngine';
+import { generateOgCard } from '../og-generator';
 
 const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -38,6 +39,15 @@ async function createChallenge(request: Request, env: Env): Promise<Response> {
   await env.CHALLENGES_KV.put(`challenge:${id}`, JSON.stringify(challenge), {
     expirationTtl: 60 * 60 * 24 * 90,
   });
+
+  try {
+    const ogCard = await generateOgCard(challenge);
+    await env.R2.put(`og-cards/${id}.png`, ogCard, {
+      httpMetadata: { contentType: 'image/png', cacheControl: 'public, max-age=86400' },
+    });
+  } catch {
+    // OG card generation is best-effort; the share link still works without a custom image.
+  }
 
   return Response.json({ id, url: `https://iknowthattune.com/?c=${id}` });
 }
