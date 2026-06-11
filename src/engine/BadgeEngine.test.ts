@@ -85,6 +85,7 @@ function makeProfile(overrides: Partial<PlayerProfile> = {}): PlayerProfile {
     bands_correctly_named: [],
     sample_sources_correct: 0,
     years_within_one: 0,
+    field_stats: {},
     ...overrides,
   };
 }

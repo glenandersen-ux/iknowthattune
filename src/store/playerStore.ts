@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { computeBadgeProgress, evaluateBadges } from '../engine/BadgeEngine';
+import { computeFieldAccuracy, updateFieldStats } from '../engine/PlayerStats';
 import { useCatalogStore } from './catalogStore';
 import type { BadgeId, PlayerProfile, PlayerSession } from '../types/session';
 
@@ -36,6 +37,7 @@ function createDefaultProfile(): PlayerProfile {
     bands_correctly_named: [],
     sample_sources_correct: 0,
     years_within_one: 0,
+    field_stats: {},
   };
 }
 
@@ -78,6 +80,8 @@ export const usePlayerStore = create<PlayerStore>()(
         ];
         const sampleSourcesCorrect = state.sample_sources_correct + progress.sample_sources_correct;
         const yearsWithinOne = state.years_within_one + progress.years_within_one;
+        const fieldStats = updateFieldStats(state.field_stats, session);
+        const { hardest, easiest } = computeFieldAccuracy(fieldStats);
 
         const updatedProfile: PlayerProfile = {
           ...state,
@@ -94,6 +98,9 @@ export const usePlayerStore = create<PlayerStore>()(
           bands_correctly_named: bandsCorrectlyNamed,
           sample_sources_correct: sampleSourcesCorrect,
           years_within_one: yearsWithinOne,
+          field_stats: fieldStats,
+          hardest_field_accuracy: hardest,
+          easiest_field_accuracy: easiest,
         };
 
         const newBadges = evaluateBadges(session, updatedProfile);
@@ -115,7 +122,7 @@ export const usePlayerStore = create<PlayerStore>()(
     }),
     {
       name: 'iktt-player',
-      version: 2,
+      version: 3,
       migrate: (persistedState, version): PlayerStore => {
         let state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
         if (version < 1) {
@@ -128,6 +135,9 @@ export const usePlayerStore = create<PlayerStore>()(
             sample_sources_correct: state.sample_sources_correct ?? 0,
             years_within_one: state.years_within_one ?? 0,
           };
+        }
+        if (version < 3) {
+          state = { ...state, field_stats: state.field_stats ?? {} };
         }
         return state as PlayerStore;
       },

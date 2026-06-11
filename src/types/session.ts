@@ -163,4 +163,6 @@ export interface PlayerProfile {
   sample_sources_correct: number;
   /** Lifetime count of `release_year` guesses correct and within ±1 of the canonical year (Year Wizard badge). */
   years_within_one: number;
+  /** Lifetime per-field attempt/correct counts, used to derive `hardest_field_accuracy` / `easiest_field_accuracy`. */
+  field_stats: Partial<Record<FieldId, { attempted: number; correct: number }>>;
 }
