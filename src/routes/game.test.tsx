@@ -6,6 +6,8 @@ import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { encodeResult } from '../engine/UrlCodec';
+import { DEFAULT_CHALLENGE_SCORING } from '../engine/ChallengeBuilder';
+import type { Challenge } from '../types/challenge';
 import type { Track } from '../types/track';
 
 const navigate = vi.fn();
@@ -172,5 +174,41 @@ describe('GameScreen', () => {
     expect(comparison?.challenger_name).toBe('Glen');
     expect(comparison?.challenger_score).toBe(1);
     expect(comparison?.result).toBe('win');
+  });
+
+  it('computes a "Beat My Score" comparison against the challenge creator for an accepted multi-track challenge', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response('{}', { status: 200 }))));
+
+    const challenge: Challenge = {
+      id: 'XqZ9mK',
+      version: 1,
+      created_at: Date.now(),
+      creator_name: 'Glen',
+      creator_player_id: 'creator-1',
+      creator_score: 4000,
+      name: 'Glen’s Challenge',
+      tracks: ['track-1'],
+      active_params: { 'track-1': ['song_title', 'primary_artist', 'release_year', 'album_name'] },
+      clip_starts: { 'track-1': 'hook' },
+      settings: { time_pressure: 'standard', hints: 'none', expiry_ms: null, leaderboard_public: true },
+      scoring: DEFAULT_CHALLENGE_SCORING,
+    };
+    useGameStore.getState().loadChallenge(challenge, 'challenge', 'Friend');
+
+    render(<GameScreen search={{}} />);
+
+    await waitFor(() => expect(screen.getByText('Track 1 of 1')).toBeInTheDocument());
+    await userEvent.click(screen.getByRole('button', { name: 'start clip' }));
+    await userEvent.click(screen.getByRole('button', { name: 'end clip' }));
+    await submitCorrectGuesses('Track One');
+    await userEvent.click(screen.getByTestId('continue-button'));
+
+    await waitFor(() => expect(useGameStore.getState().phase).toBe('complete'));
+    const comparison = useGameStore.getState().session.comparison;
+    expect(comparison?.challenger_name).toBe('Glen');
+    expect(comparison?.challenger_score).toBe(4000);
+    expect(comparison?.result).toBe('win');
+
+    vi.unstubAllGlobals();
   });
 });

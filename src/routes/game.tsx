@@ -298,6 +298,18 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         };
         useGameStore.setState((state) => ({ session: { ...state.session, comparison } }));
       }
+    } else if (challenge && challenge.id !== 'micro' && challenge.creator_score !== null) {
+      // "Beat My Score" (async H2H, Phase 4 §4.1): the creator played first and
+      // set a benchmark score for friends accepting the same challenge to beat.
+      const creatorScore = challenge.creator_score;
+      const margin = session.totals.total_score - creatorScore;
+      const comparison: SessionComparison = {
+        challenger_name: challenge.creator_name,
+        challenger_score: creatorScore,
+        result: margin > 0 ? 'win' : margin < 0 ? 'loss' : 'tie',
+        margin,
+      };
+      useGameStore.setState((state) => ({ session: { ...state.session, comparison } }));
     }
 
     if (challenge && !CLIENT_ONLY_CHALLENGE_IDS.has(challenge.id)) {
