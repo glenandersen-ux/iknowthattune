@@ -1,5 +1,7 @@
 import type { Env } from '../env';
 import type { Challenge, CreateChallengeRequest, PlayerResult } from '../../src/types/challenge';
+import type { Track } from '../../src/types/track';
+import { computeMaxPossibleScore, validateResultScore } from '../../src/engine/ScoringEngine';
 
 const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -49,8 +51,18 @@ async function getChallenge(id: string, env: Env): Promise<Response> {
 async function submitResult(id: string, request: Request, env: Env): Promise<Response> {
   const challengeData = await env.CHALLENGES_KV.get(`challenge:${id}`);
   if (challengeData === null) return new Response('Challenge not found', { status: 404 });
+  const challenge = JSON.parse(challengeData) as Challenge;
 
   const result = (await request.json()) as PlayerResult;
+
+  const catalogObject = await env.R2.get('catalog/data/seed-tracks.json');
+  const tracks = catalogObject ? ((await catalogObject.json()) as Track[]) : [];
+  const maxScore = computeMaxPossibleScore(challenge, tracks);
+
+  if (!validateResultScore(result, challenge, maxScore)) {
+    return new Response('Invalid score', { status: 400 });
+  }
+
   const stub = env.LEADERBOARD.get(env.LEADERBOARD.idFromName(id));
   const response = await stub.fetch('https://leaderboard/submit', {
     method: 'POST',

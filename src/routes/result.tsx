@@ -8,6 +8,9 @@ import { buildEmojiGrid } from '../engine/ShareText';
 import type { ClipDuration } from '../types/track';
 import type { PlayerSession } from '../types/session';
 
+/** Challenge IDs used for client-only modes that have no server-side leaderboard. */
+const CLIENT_ONLY_CHALLENGE_IDS = new Set(['daily-drop', 'solo-sprint', 'preview']);
+
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
   path: '/result',
@@ -183,6 +186,14 @@ export function ResultScreen(): JSX.Element {
         <a ref={downloadLinkRef} className="hidden" aria-hidden="true">
           download
         </a>
+        {challenge && !CLIENT_ONLY_CHALLENGE_IDS.has(challenge.id) && (
+          <a
+            href={`/leaderboard?c=${challenge.id}`}
+            className="rounded-lg bg-slate-700 px-4 py-3 text-center font-semibold text-white hover:bg-slate-600"
+          >
+            🏆 View Leaderboard
+          </a>
+        )}
       </div>
 
       <ShareCardTemplate session={session} challengeName={challengeName} />

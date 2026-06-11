@@ -11,7 +11,11 @@ import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
 import { buildSoloChallenge } from '../engine/ChallengeBuilder';
 import { FIELD_DEFINITIONS } from '../engine/ScoringEngine';
+import type { PlayerResult } from '../types/challenge';
 import type { FieldId, Track } from '../types/track';
+
+/** Challenge IDs used for client-only modes that have no server-side leaderboard. */
+const CLIENT_ONLY_CHALLENGE_IDS = new Set(['daily-drop', 'solo-sprint', 'preview']);
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -186,8 +190,28 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     if (phase !== 'complete' || updatedAfterGameRef.current) return;
     updatedAfterGameRef.current = true;
     updateAfterGame(session);
+
+    if (challenge && !CLIENT_ONLY_CHALLENGE_IDS.has(challenge.id)) {
+      const clipExtensions = session.tracks.reduce(
+        (sum, track) => sum + Math.max(0, track.clip_sequence_used.length - 1),
+        0,
+      );
+      const result: PlayerResult = {
+        playerId,
+        playerName: session.player_name,
+        score: session.totals.total_score,
+        durationSeconds: session.duration_seconds,
+        clipExtensions,
+      };
+      void fetch(`/api/challenge/${challenge.id}/result`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result),
+      }).catch(() => {});
+    }
+
     void navigate({ to: '/result' });
-  }, [phase, session, updateAfterGame, navigate]);
+  }, [phase, session, updateAfterGame, navigate, challenge, playerId]);
 
   if (!challenge) {
     return <LoadingScreen />;

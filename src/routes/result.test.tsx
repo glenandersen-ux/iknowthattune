@@ -128,6 +128,28 @@ describe('ResultScreen', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expect.stringContaining('✅✅✅✅'));
   });
 
+  it('shows a View Leaderboard link for server-backed challenges but not client-only ones', () => {
+    useGameStore.getState().loadChallenge(mockChallenge, 'solo', 'Glen');
+    useGameStore.setState((state) => ({
+      session: {
+        ...state.session,
+        tracks: [buildTrackSession()],
+        totals: { ...state.session.totals, total_score: 5180 },
+      },
+    }));
+
+    const { rerender } = render(<ResultScreen />);
+    expect(screen.queryByRole('link', { name: /View Leaderboard/ })).not.toBeInTheDocument();
+
+    useGameStore.setState((state) => ({
+      challenge: state.challenge ? { ...state.challenge, id: 'XqZ9mK' } : state.challenge,
+    }));
+    rerender(<ResultScreen />);
+
+    const link = screen.getByRole('link', { name: /View Leaderboard/ });
+    expect(link).toHaveAttribute('href', '/leaderboard?c=XqZ9mK');
+  });
+
   it('downloads the share card as a PNG via html2canvas', async () => {
     useGameStore.getState().loadChallenge(mockChallenge, 'solo', 'Glen');
     useGameStore.setState((state) => ({
