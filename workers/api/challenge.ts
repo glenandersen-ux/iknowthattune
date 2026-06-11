@@ -6,6 +6,12 @@ import { generateOgCard } from '../og-generator';
 
 const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
+/** Max length for creator-supplied challenge/display names (TechStack §D.13 threat model). */
+const MAX_NAME_LENGTH = 50;
+
+/** Blocks the most common slurs/profanity from public-facing challenge content (TechStack §D.13). */
+const BLOCKED_NAME_PATTERN = /\b(fuck|shit|bitch|cunt|nigger|faggot|porn)\b/i;
+
 /** Generates a collision-resistant 6-char base62 challenge ID (TechStack §D.10). */
 function generateChallengeId(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(4));
@@ -20,11 +26,22 @@ function generateChallengeId(): string {
   return id;
 }
 
+/** Rejects overly long or profane challenge/creator names (TechStack §D.13). */
+function isNameAllowed(name: string | null): boolean {
+  if (name === null) return true;
+  if (name.length === 0 || name.length > MAX_NAME_LENGTH) return false;
+  return !BLOCKED_NAME_PATTERN.test(name);
+}
+
 async function createChallenge(request: Request, env: Env): Promise<Response> {
   const body = (await request.json()) as CreateChallengeRequest;
 
   if (body.tracks.length < 1 || body.tracks.length > 10) {
     return new Response('Challenge must contain 1-10 tracks', { status: 400 });
+  }
+
+  if (!isNameAllowed(body.name) || !isNameAllowed(body.creator_name)) {
+    return new Response('Invalid challenge or creator name', { status: 400 });
   }
 
   let id = generateChallengeId();

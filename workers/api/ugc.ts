@@ -1,7 +1,7 @@
 import type { Env } from '../env';
 import type { Challenge } from '../../src/types/challenge';
 
-/** R2 presigned PUT URLs are valid for one hour (TechStack §D.13). */
+/** R2 presigned URLs (upload and playback) are valid for one hour (TechStack §D.13). */
 const PRESIGN_TTL_SECONDS = 60 * 60;
 
 const CHALLENGE_TTL_SECONDS = 60 * 60 * 24 * 90;
@@ -12,7 +12,7 @@ const CHALLENGE_TTL_SECONDS = 60 * 60 * 24 * 90;
  * (TechStack §D.13).
  */
 interface PresignableR2Bucket {
-  createPresignedUrl(key: string, options: { method: 'PUT'; expiresIn: number }): Promise<string>;
+  createPresignedUrl(key: string, options: { method: 'PUT' | 'GET'; expiresIn: number }): Promise<string>;
 }
 
 /** R2 object key for a BYOC clip (TechStack §D.7). */
@@ -35,6 +35,30 @@ async function presignUpload(url: URL, env: Env): Promise<Response> {
   });
 
   return Response.json({ uploadUrl, key });
+}
+
+/**
+ * Returns a short-lived signed GET URL for a previously-confirmed BYOC clip,
+ * so the audio is never publicly hot-linkable (TechStack §D.13).
+ */
+async function presignClip(url: URL, env: Env): Promise<Response> {
+  const challengeId = url.searchParams.get('challengeId');
+  const slot = url.searchParams.get('slot');
+  if (!challengeId || !slot) {
+    return new Response('Missing challengeId or slot', { status: 400 });
+  }
+
+  const key = clipKey(challengeId, slot);
+  const object = await env.R2.head(key);
+  if (object === null) return new Response('Clip not found', { status: 404 });
+
+  const bucket = env.R2 as unknown as PresignableR2Bucket;
+  const clipUrl = await bucket.createPresignedUrl(key, {
+    method: 'GET',
+    expiresIn: PRESIGN_TTL_SECONDS,
+  });
+
+  return Response.json({ url: clipUrl });
 }
 
 interface ConfirmUgcRequest {
@@ -81,6 +105,11 @@ export default {
     // POST /api/ugc/confirm
     if (request.method === 'POST' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'confirm') {
       return confirmUpload(request, env);
+    }
+
+    // GET /api/ugc/clip-url?challengeId=&slot=
+    if (request.method === 'GET' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'clip-url') {
+      return presignClip(url, env);
     }
 
     return new Response('Not found', { status: 404 });

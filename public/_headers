@@ -1,2 +1,8 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self' https://*.iknowthattune.com https://p.scdn.co; img-src 'self' data: https://*.scdn.co https://*.iknowthattune.com; connect-src 'self' https://plausible.io https://*.partykit.dev
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
 /catalog/data/*.json
   Cache-Control: public, max-age=3600

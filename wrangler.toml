@@ -27,3 +27,12 @@ class_name = "DailyDropDO"
 [[migrations]]
 tag = "v1"
 new_classes = ["LeaderboardDO", "DailyDropDO"]
+
+# Rate limiting (TechStack §D.13) is configured in the Cloudflare Dashboard
+# under Security -> Rate Limiting, not via wrangler.toml. Apply these rules
+# once the project is deployed:
+#   POST /api/challenge                 -> 5 requests / IP / hour
+#   POST /api/challenge/:id/result      -> 3 requests / IP+challenge / day
+#   GET  /api/challenge/:id/leaderboard -> 60 requests / IP / minute
+#   Catalog search (client-side, no Worker route to rate-limit directly)
+#                                        -> 120 requests / IP / minute
