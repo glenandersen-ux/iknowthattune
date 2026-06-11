@@ -109,6 +109,8 @@ export interface PlayerSession {
   totals: SessionTotals;
   comparison: SessionComparison | null;
   share: SessionShare | null;
+  /** Badges newly unlocked by this session, set client-side after `playerStore.updateAfterGame`. */
+  unlocked_badges?: BadgeId[];
   /**
    * True if this is a repeat playthrough of a challenge already submitted to
    * the leaderboard (Blueprint §12) — excluded from leaderboard ranking.
@@ -155,4 +157,10 @@ export interface PlayerProfile {
   daily_drop_streak: number;
   /** ISO 8601 date (YYYY-MM-DD) the Daily Drop streak was last incremented, or null if never played. */
   daily_drop_streak_date: string | null;
+  /** Track IDs where every `band_members` entry has ever been guessed correctly (Band Nerd badge). */
+  bands_correctly_named: string[];
+  /** Lifetime count of correctly-guessed `sample_source` fields (Sample Detective badge). */
+  sample_sources_correct: number;
+  /** Lifetime count of `release_year` guesses correct and within ±1 of the canonical year (Year Wizard badge). */
+  years_within_one: number;
 }

@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { computeBadgeProgress, evaluateBadges } from '../engine/BadgeEngine';
+import { useCatalogStore } from './catalogStore';
 import type { BadgeId, PlayerProfile, PlayerSession } from '../types/session';
 
 const todayIso = (): string => new Date().toISOString().slice(0, 10);
@@ -31,13 +33,16 @@ function createDefaultProfile(): PlayerProfile {
     challenges_beaten: [],
     daily_drop_streak: 0,
     daily_drop_streak_date: null,
+    bands_correctly_named: [],
+    sample_sources_correct: 0,
+    years_within_one: 0,
   };
 }
 
 /** Persistent player identity and lifetime stats (TechStack §D.4, Blueprint §11). */
 export interface PlayerStore extends PlayerProfile {
-  /** Updates lifetime stats and the daily streak after a completed session. */
-  updateAfterGame: (session: PlayerSession) => void;
+  /** Updates lifetime stats, the daily streak, and badge progress after a completed session. Returns newly-unlocked badges. */
+  updateAfterGame: (session: PlayerSession) => BadgeId[];
   setDisplayName: (name: string) => void;
   unlockBadge: (badge: BadgeId) => void;
 }
@@ -66,7 +71,16 @@ export const usePlayerStore = create<PlayerStore>()(
           }
         }
 
-        set({
+        const tracks = useCatalogStore.getState().tracks;
+        const progress = computeBadgeProgress(session, tracks);
+        const bandsCorrectlyNamed = [
+          ...new Set([...state.bands_correctly_named, ...progress.bands_correctly_named]),
+        ];
+        const sampleSourcesCorrect = state.sample_sources_correct + progress.sample_sources_correct;
+        const yearsWithinOne = state.years_within_one + progress.years_within_one;
+
+        const updatedProfile: PlayerProfile = {
+          ...state,
           games_played: gamesPlayed,
           total_score_all_time: totalScore,
           avg_score_per_game: totalScore / gamesPlayed,
@@ -77,7 +91,18 @@ export const usePlayerStore = create<PlayerStore>()(
             gamesPlayed,
           daily_drop_streak: dailyDropStreak,
           daily_drop_streak_date: session.mode === 'daily' ? todayIso() : state.daily_drop_streak_date,
-        });
+          bands_correctly_named: bandsCorrectlyNamed,
+          sample_sources_correct: sampleSourcesCorrect,
+          years_within_one: yearsWithinOne,
+        };
+
+        const newBadges = evaluateBadges(session, updatedProfile);
+        if (newBadges.length > 0) {
+          updatedProfile.badges = [...updatedProfile.badges, ...newBadges];
+        }
+
+        set(updatedProfile);
+        return newBadges;
       },
 
       setDisplayName: (name) => set({ display_name: name }),
@@ -90,11 +115,19 @@ export const usePlayerStore = create<PlayerStore>()(
     }),
     {
       name: 'iktt-player',
-      version: 1,
+      version: 2,
       migrate: (persistedState, version): PlayerStore => {
-        const state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
+        let state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
         if (version < 1) {
-          return { ...createDefaultProfile(), ...state } as PlayerStore;
+          state = { ...createDefaultProfile(), ...state };
+        }
+        if (version < 2) {
+          state = {
+            ...state,
+            bands_correctly_named: state.bands_correctly_named ?? [],
+            sample_sources_correct: state.sample_sources_correct ?? 0,
+            years_within_one: state.years_within_one ?? 0,
+          };
         }
         return state as PlayerStore;
       },

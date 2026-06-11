@@ -281,7 +281,10 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   useEffect(() => {
     if (phase !== 'complete' || updatedAfterGameRef.current) return;
     updatedAfterGameRef.current = true;
-    updateAfterGame(session);
+    const unlockedBadges = updateAfterGame(session);
+    if (unlockedBadges.length > 0) {
+      useGameStore.setState((state) => ({ session: { ...state.session, unlocked_badges: unlockedBadges } }));
+    }
 
     if (challenge?.id === 'micro' && search.r) {
       const challenger = decodeResult(search.r);

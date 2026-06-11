@@ -5,6 +5,7 @@ import { resultSearchSchema, type ResultSearch } from './searchSchemas';
 import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { buildEmojiGrid } from '../engine/ShareText';
+import { BadgeUnlock } from '../components/result/BadgeUnlock';
 import type { ClipDuration } from '../types/track';
 import type { PlayerSession } from '../types/session';
 
@@ -197,6 +198,7 @@ export function ResultScreen(): JSX.Element {
       </div>
 
       <ShareCardTemplate session={session} challengeName={challengeName} />
+      <BadgeUnlock badges={session.unlocked_badges ?? []} />
     </div>
   );
 }
