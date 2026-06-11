@@ -25,8 +25,12 @@ export const DEFAULT_CHOICE_OPTIONS: Partial<Record<FieldId, string[]>> = {
   certified_copies: ['Gold', 'Platinum', '2x Platinum', '3x Platinum', 'Diamond', 'None'],
   instrument_solo: ['Guitar', 'Drums', 'Bass', 'Piano', 'Saxophone', 'Vocals'],
   key_signature: [
-    'C major', 'C minor', 'D major', 'D minor', 'E major', 'E minor',
-    'F major', 'F minor', 'G major', 'G minor', 'A major', 'A minor',
+    'C major', 'C minor', 'D♭ major', 'D♭ minor',
+    'D major', 'D minor', 'E♭ major', 'E♭ minor',
+    'E major', 'E minor', 'F major', 'F minor',
+    'F♯ major', 'F♯ minor', 'G major', 'G minor',
+    'A♭ major', 'A♭ minor', 'A major', 'A minor',
+    'B♭ major', 'B♭ minor', 'B major', 'B minor',
   ],
 };
 

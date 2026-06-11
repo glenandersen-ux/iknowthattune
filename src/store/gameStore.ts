@@ -7,6 +7,7 @@ import {
   computeFieldScore,
   computeFirstGuessBonus,
   computeSpeedMultiplier,
+  computeStreakBonus,
 } from '../engine/ScoringEngine';
 import type { Challenge } from '../types/challenge';
 import type { ClipDuration, FieldId } from '../types/track';
@@ -62,7 +63,7 @@ function trackQualifiesForStreak(track: TrackSession): boolean {
 }
 
 /** Length of the consecutive qualifying-track streak ending at the last entry of `tracks`. */
-function currentStreakLength(tracks: TrackSession[]): number {
+export function currentStreakLength(tracks: TrackSession[]): number {
   let streak = 0;
   for (let i = tracks.length - 1; i >= 0; i -= 1) {
     if (!trackQualifiesForStreak(tracks[i])) break;
@@ -256,7 +257,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       challenge.scoring.first_guess_bonus,
     );
     const clipPenalty = computeClipExtensionPenalty(clipExtensions, 1, challenge.scoring.clip_penalties);
-    const rawScore = fieldScores.reduce((sum, score) => sum + score, 0) + firstGuessBonus;
+    const streakBonus = computeStreakBonus(currentStreakLength(session.tracks));
+    const rawScore = (fieldScores.reduce((sum, score) => sum + score, 0) + firstGuessBonus) * (1 + streakBonus);
 
     const guessHistoryEntry: GuessHistoryEntry = {
       submit_index: 1,

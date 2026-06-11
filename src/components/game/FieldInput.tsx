@@ -175,6 +175,7 @@ function YearFieldInput({ fieldId, label, value, onChange, tolerance }: YearFiel
         {tolerance !== undefined && tolerance > 0 && (
           <span className="ml-1 text-xs text-slate-400">(±{tolerance})</span>
         )}
+        {fieldId === 'chart_peak' && <span className="ml-1 text-xs text-slate-400">(Billboard Hot 100)</span>}
       </label>
       <input
         id={`field-${fieldId}-input`}

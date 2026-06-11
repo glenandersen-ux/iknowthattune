@@ -10,7 +10,8 @@ import { ClipExtendBar } from '../components/game/ClipExtendBar';
 import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
 import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuilder';
-import { FIELD_DEFINITIONS } from '../engine/ScoringEngine';
+import { FIELD_DEFINITIONS, computeStreakBonus } from '../engine/ScoringEngine';
+import { currentStreakLength } from '../store/gameStore';
 import { decodeResult, encodeResult } from '../engine/UrlCodec';
 import type { CompactResult, PlayerResult } from '../types/challenge';
 import type { SessionComparison, TrackSession } from '../types/session';
@@ -63,6 +64,19 @@ interface RevealScreenProps {
   /** The session record for the just-completed track, used to build a micro-challenge link. */
   lastTrack: TrackSession;
   playerName: string;
+  /** Length of the qualifying streak ending at `lastTrack`, used to preview the next track's bonus. */
+  streakLength: number;
+}
+
+/** Banner previewing the streak bonus that will apply to the next track (DeepDive §A.8). */
+function StreakBanner({ streakLength, isLastTrack }: { streakLength: number; isLastTrack: boolean }): JSX.Element | null {
+  if (isLastTrack || streakLength < 2) return null;
+  const bonusPct = Math.round(computeStreakBonus(streakLength) * 100);
+  return (
+    <div className="rounded-lg bg-amber-600/20 border border-amber-500 px-3 py-2 text-center text-sm font-semibold text-amber-300">
+      🔥 {streakLength}-track streak — next track is worth +{bonusPct}%!
+    </div>
+  );
 }
 
 /** Single-track "challenge a friend" fast path, shown after any correct guess (DeepDive §B.7). */
@@ -125,6 +139,7 @@ function RevealScreen({
   nextTrack,
   lastTrack,
   playerName,
+  streakLength,
 }: RevealScreenProps): JSX.Element {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-4 p-4 text-white">
@@ -135,6 +150,7 @@ function RevealScreen({
         <p className="text-sm text-slate-400">Score earned</p>
         <p className="text-3xl font-bold text-cyan-400">{Math.round(scoreEarned)}</p>
       </div>
+      <StreakBanner streakLength={streakLength} isLastTrack={isLastTrack} />
       <MicroChallengeToast
         track={track}
         activeFields={activeFields}
@@ -342,6 +358,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         nextTrack={nextTrack}
         lastTrack={lastTrack}
         playerName={session.player_name}
+        streakLength={currentStreakLength(session.tracks)}
       />
     );
   }

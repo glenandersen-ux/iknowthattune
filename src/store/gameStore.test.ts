@@ -231,6 +231,50 @@ describe('gameStore', () => {
       expect(state.session.tracks[1].streak_position).toBe(1);
       expect(state.session.totals.max_streak).toBe(2);
     });
+
+    it('applies the streak bonus from the prior qualifying streak to the current track score', () => {
+      const threeTrackChallenge: Challenge = {
+        ...mockChallenge,
+        tracks: ['track-1', 'track-2', 'track-3'],
+        active_params: {
+          'track-1': ['song_title', 'primary_artist', 'release_year', 'album_name'],
+          'track-2': ['song_title', 'primary_artist', 'release_year', 'album_name'],
+          'track-3': ['song_title', 'primary_artist', 'release_year', 'album_name'],
+        },
+        clip_starts: { 'track-1': 'hook', 'track-2': 'hook', 'track-3': 'hook' },
+      };
+      useCatalogStore.setState({
+        tracks: [buildTrack('track-1', 'Track One'), buildTrack('track-2', 'Track Two'), buildTrack('track-3', 'Track Three')],
+      });
+      useGameStore.getState().loadChallenge(threeTrackChallenge, 'solo', 'Glen');
+
+      // Track 1 and 2 both qualify, building a streak of 2 entering track 3.
+      for (const title of ['Track One', 'Track Two']) {
+        useGameStore.getState().startTrack();
+        useGameStore.getState().tick(1000);
+        useGameStore.getState().submitGuess([
+          { fieldId: 'song_title', value: title },
+          { fieldId: 'primary_artist', value: 'Test Artist' },
+          { fieldId: 'release_year', value: '2000' },
+          { fieldId: 'album_name', value: 'Test Album' },
+        ]);
+        useGameStore.getState().advanceTrack();
+      }
+
+      useGameStore.getState().startTrack();
+      useGameStore.getState().tick(1000);
+      useGameStore.getState().submitGuess([
+        { fieldId: 'song_title', value: 'Track Three' },
+        { fieldId: 'primary_artist', value: 'Test Artist' },
+        { fieldId: 'release_year', value: '2000' },
+        { fieldId: 'album_name', value: 'Test Album' },
+      ]);
+
+      const trackThree = useGameStore.getState().session.tracks[2];
+      expect(trackThree.streak_position).toBe(2);
+      // Same base score as track 1 (5180), with the +10% streak bonus for streak length 2.
+      expect(trackThree.raw_score).toBeCloseTo(5180 * 1.1, 5);
+    });
   });
 
   describe('skipTrack', () => {
