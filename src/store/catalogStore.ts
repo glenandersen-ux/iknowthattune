@@ -1,20 +1,29 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import Fuse from 'fuse.js';
+import { FUSE_OPTIONS, hydrateFuseIndex, type SerializedFuseIndex } from '../engine/CatalogSearchIndex';
 import type { FieldId, FilterSet, Track } from '../types/track';
 
 const CATALOG_URL = '/catalog/data/seed-tracks.json';
 
-const FUSE_OPTIONS: ConstructorParameters<typeof Fuse<Track>>[1] = {
-  keys: [
-    'answers.song_title.value',
-    'answers.song_title.aliases',
-    'answers.primary_artist.value',
-    'answers.primary_artist.aliases',
-    'answers.album_name.value',
-  ],
-  threshold: 0.3,
-};
+/**
+ * Builds the Fuse index off the main thread when Web Workers are available
+ * (Phase 4 §4.3). Falls back to a synchronous build (e.g. in test environments
+ * where `Worker` is undefined).
+ */
+function buildFuseIndex(tracks: Track[]): Promise<Fuse<Track>> {
+  if (typeof Worker === 'undefined') {
+    return Promise.resolve(new Fuse(tracks, FUSE_OPTIONS));
+  }
+  return new Promise((resolve) => {
+    const worker = new Worker(new URL('../workers/catalogIndexWorker.ts', import.meta.url), { type: 'module' });
+    worker.onmessage = (event: MessageEvent<{ index: SerializedFuseIndex }>): void => {
+      resolve(hydrateFuseIndex(tracks, event.data.index));
+      worker.terminate();
+    };
+    worker.postMessage({ tracks });
+  });
+}
 
 /** Search and browse state for the catalog (TechStack §D.4, §D.6). */
 export interface CatalogStore {
@@ -91,12 +100,11 @@ export const useCatalogStore = create<CatalogStore>()(
         try {
           const response = await fetch(CATALOG_URL);
           const tracks = (await response.json()) as Track[];
-          set({
-            tracks,
-            fuseIndex: new Fuse(tracks, FUSE_OPTIONS),
-            fieldTries: buildFieldTries(tracks),
-            isLoading: false,
-          });
+          // Render with the catalog immediately; the Fuse index builds off the
+          // main thread and is patched in once ready (Phase 4 §4.3).
+          set({ tracks, fieldTries: buildFieldTries(tracks), isLoading: false });
+          const fuseIndex = await buildFuseIndex(tracks);
+          set({ fuseIndex });
         } catch {
           set({ isLoading: false });
         }
@@ -118,8 +126,10 @@ export const useCatalogStore = create<CatalogStore>()(
       partialize: (state) => ({ tracks: state.tracks }),
       onRehydrateStorage: () => (state) => {
         if (state && state.tracks.length > 0) {
-          state.fuseIndex = new Fuse(state.tracks, FUSE_OPTIONS);
           state.fieldTries = buildFieldTries(state.tracks);
+          void buildFuseIndex(state.tracks).then((fuseIndex) => {
+            useCatalogStore.setState({ fuseIndex });
+          });
         }
       },
     },
