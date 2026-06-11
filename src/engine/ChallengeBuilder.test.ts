@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildSoloChallenge, DEFAULT_ACTIVE_FIELDS, DEFAULT_CHALLENGE_SCORING } from './ChallengeBuilder';
+import { buildMicroChallenge, buildSoloChallenge, DEFAULT_ACTIVE_FIELDS, DEFAULT_CHALLENGE_SCORING } from './ChallengeBuilder';
 import type { Track } from '../types/track';
 
 const track = (id: string): Track => ({
@@ -52,5 +52,24 @@ describe('buildSoloChallenge', () => {
     const solo = buildSoloChallenge([track('t1')], 'solo', 'player-1');
     expect(solo.id).toBe('solo-sprint');
     expect(solo.name).toBe('Solo Sprint');
+  });
+});
+
+describe('buildMicroChallenge', () => {
+  it('builds a single-track challenge with the given fields and challenger info', () => {
+    const challenge = buildMicroChallenge(track('t1'), ['song_title', 'primary_artist'], 'Glen', 7710);
+
+    expect(challenge.id).toBe('micro');
+    expect(challenge.tracks).toEqual(['t1']);
+    expect(challenge.active_params.t1).toEqual(['song_title', 'primary_artist']);
+    expect(challenge.clip_starts.t1).toBe('hook');
+    expect(challenge.creator_name).toBe('Glen');
+    expect(challenge.creator_score).toBe(7710);
+    expect(challenge.scoring).toEqual(DEFAULT_CHALLENGE_SCORING);
+  });
+
+  it('allows a null challenger score when no result was provided', () => {
+    const challenge = buildMicroChallenge(track('t1'), ['song_title'], 'a friend', null);
+    expect(challenge.creator_score).toBeNull();
   });
 });

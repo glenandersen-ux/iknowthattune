@@ -5,6 +5,7 @@ import { GameScreen } from './game';
 import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
+import { encodeResult } from '../engine/UrlCodec';
 import type { Track } from '../types/track';
 
 const navigate = vi.fn();
@@ -79,6 +80,7 @@ describe('GameScreen', () => {
       fieldTries: {},
       isLoading: false,
     });
+    Object.assign(navigator, { clipboard: { writeText: vi.fn(() => Promise.resolve()) } });
   });
 
   it('plays through a 2-track game and reaches the result screen', async () => {
@@ -128,5 +130,47 @@ describe('GameScreen', () => {
     const lastTrack = useGameStore.getState().session.tracks[0];
     expect(lastTrack.gave_up).toBe(true);
     expect(lastTrack.raw_score).toBe(0);
+  });
+
+  it('offers a micro-challenge link after a correct guess and copies it to the clipboard', async () => {
+    render(<GameScreen search={{ seed: 'track-1,track-2' }} />);
+
+    await waitFor(() => expect(screen.getByText('Track 1 of 2')).toBeInTheDocument());
+    await userEvent.click(screen.getByRole('button', { name: 'start clip' }));
+    await userEvent.click(screen.getByRole('button', { name: 'end clip' }));
+    await submitCorrectGuesses('Track One');
+
+    const challengeButton = screen.getByRole('button', { name: /Challenge a friend on this track/ });
+    await userEvent.click(challengeButton);
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      expect.stringContaining('/?mode=micro&t=track-1&p=song_title,primary_artist,release_year,album_name&r='),
+    );
+    expect(screen.getByRole('button', { name: 'Link copied!' })).toBeInTheDocument();
+  });
+
+  it('loads a single-track micro-challenge from the URL and computes a win/loss comparison', async () => {
+    const r = encodeResult({ u: 'Glen', s: 1, g: [1], t: 30, p: 4 });
+    render(
+      <GameScreen
+        search={{ mode: 'micro', t: 'track-1', p: 'song_title,primary_artist,release_year,album_name', r }}
+      />,
+    );
+
+    await waitFor(() => expect(screen.getByText('Track 1 of 1')).toBeInTheDocument());
+    expect(useGameStore.getState().challenge?.id).toBe('micro');
+
+    await userEvent.click(screen.getByRole('button', { name: 'start clip' }));
+    await userEvent.click(screen.getByRole('button', { name: 'end clip' }));
+    await submitCorrectGuesses('Track One');
+    expect(screen.getByTestId('continue-button')).toHaveTextContent('See Results');
+
+    await userEvent.click(screen.getByTestId('continue-button'));
+
+    await waitFor(() => expect(useGameStore.getState().phase).toBe('complete'));
+    const comparison = useGameStore.getState().session.comparison;
+    expect(comparison?.challenger_name).toBe('Glen');
+    expect(comparison?.challenger_score).toBe(1);
+    expect(comparison?.result).toBe('win');
   });
 });

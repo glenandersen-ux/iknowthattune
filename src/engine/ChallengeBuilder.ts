@@ -57,3 +57,34 @@ export function buildSoloChallenge(
     scoring: DEFAULT_CHALLENGE_SCORING,
   };
 }
+
+/**
+ * Builds a single-track "micro-challenge" (DeepDive §B.7) from a `/?mode=micro`
+ * URL — the lowest-friction viral loop, generated instantly after a correct guess.
+ */
+export function buildMicroChallenge(
+  track: Track,
+  activeFields: FieldId[],
+  challengerName: string,
+  challengerScore: number | null,
+): Challenge {
+  return {
+    id: 'micro',
+    version: 1,
+    created_at: Date.now(),
+    creator_name: challengerName,
+    creator_player_id: '',
+    creator_score: challengerScore,
+    name: 'Single-Track Challenge',
+    tracks: [track.track_id],
+    active_params: { [track.track_id]: activeFields },
+    clip_starts: { [track.track_id]: 'hook' },
+    settings: {
+      time_pressure: 'standard',
+      hints: 'none',
+      expiry_ms: null,
+      leaderboard_public: false,
+    },
+    scoring: DEFAULT_CHALLENGE_SCORING,
+  };
+}

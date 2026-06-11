@@ -1,4 +1,4 @@
-import { useEffect, useRef, type JSX } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
@@ -9,13 +9,15 @@ import { ClipPlayer } from '../components/game/ClipPlayer';
 import { ClipExtendBar } from '../components/game/ClipExtendBar';
 import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
-import { buildSoloChallenge } from '../engine/ChallengeBuilder';
+import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuilder';
 import { FIELD_DEFINITIONS } from '../engine/ScoringEngine';
-import type { PlayerResult } from '../types/challenge';
+import { decodeResult, encodeResult } from '../engine/UrlCodec';
+import type { CompactResult, PlayerResult } from '../types/challenge';
+import type { SessionComparison, TrackSession } from '../types/session';
 import type { FieldId, Track } from '../types/track';
 
 /** Challenge IDs used for client-only modes that have no server-side leaderboard. */
-const CLIENT_ONLY_CHALLENGE_IDS = new Set(['daily-drop', 'solo-sprint', 'preview']);
+const CLIENT_ONLY_CHALLENGE_IDS = new Set(['daily-drop', 'solo-sprint', 'preview', 'micro']);
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -58,6 +60,57 @@ interface RevealScreenProps {
   onContinue: () => void;
   /** The upcoming track, preloaded silently while the player reviews this reveal screen. */
   nextTrack?: Track;
+  /** The session record for the just-completed track, used to build a micro-challenge link. */
+  lastTrack: TrackSession;
+  playerName: string;
+}
+
+/** Single-track "challenge a friend" fast path, shown after any correct guess (DeepDive §B.7). */
+function MicroChallengeToast({
+  track,
+  activeFields,
+  scoreEarned,
+  lastTrack,
+  playerName,
+}: {
+  track: Track;
+  activeFields: FieldId[];
+  scoreEarned: number;
+  lastTrack: TrackSession;
+  playerName: string;
+}): JSX.Element | null {
+  const [copied, setCopied] = useState(false);
+
+  if (lastTrack.fields_correct.length === 0) return null;
+
+  const handleChallengeFriend = (): void => {
+    const result: CompactResult = {
+      u: playerName,
+      s: Math.round(scoreEarned),
+      g: [lastTrack.submit_count],
+      t: Math.round(lastTrack.total_time_on_track_ms / 1000),
+      p: lastTrack.fields_correct.length,
+    };
+    const url = `${window.location.origin}/?mode=micro&t=${track.track_id}&p=${activeFields.join(',')}&r=${encodeResult(result)}`;
+    void navigator.clipboard.writeText(url);
+    setCopied(true);
+  };
+
+  return (
+    <div className="rounded-lg bg-slate-800 p-4 text-center">
+      <p className="mb-2 text-sm text-slate-300">
+        ✅ You got &quot;{formatAnswer(track, 'song_title')}&quot;
+        {lastTrack.first_guess_bonus_earned ? ' on the first clip!' : '!'}
+      </p>
+      <button
+        type="button"
+        onClick={handleChallengeFriend}
+        className="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white hover:bg-amber-500"
+      >
+        {copied ? 'Link copied!' : '🔥 Challenge a friend on this track →'}
+      </button>
+    </div>
+  );
 }
 
 function RevealScreen({
@@ -70,6 +123,8 @@ function RevealScreen({
   isLastTrack,
   onContinue,
   nextTrack,
+  lastTrack,
+  playerName,
 }: RevealScreenProps): JSX.Element {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-4 p-4 text-white">
@@ -80,6 +135,13 @@ function RevealScreen({
         <p className="text-sm text-slate-400">Score earned</p>
         <p className="text-3xl font-bold text-cyan-400">{Math.round(scoreEarned)}</p>
       </div>
+      <MicroChallengeToast
+        track={track}
+        activeFields={activeFields}
+        scoreEarned={scoreEarned}
+        lastTrack={lastTrack}
+        playerName={playerName}
+      />
       <ul className="flex flex-col gap-2">
         {activeFields.map((fieldId) => {
           const correct = fieldsCorrect.includes(fieldId);
@@ -163,6 +225,20 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
 
   useEffect(() => {
     if (challenge || tracks.length === 0) return;
+
+    if (search.mode === 'micro' && search.t && search.p) {
+      const track = getTrack(search.t);
+      if (!track) return;
+      const activeFields = search.p.split(',') as FieldId[];
+      const challenger = search.r ? decodeResult(search.r) : null;
+      loadChallenge(
+        buildMicroChallenge(track, activeFields, challenger?.u ?? 'a friend', challenger?.s ?? null),
+        'micro',
+        playerName,
+      );
+      return;
+    }
+
     const seedIds = search.seed?.split(',').filter((id) => id.length > 0);
     const selected =
       seedIds && seedIds.length > 0
@@ -171,7 +247,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     if (selected.length === 0) return;
     const mode = search.mode === 'daily' ? 'daily' : 'solo';
     loadChallenge(buildSoloChallenge(selected, mode, playerId), mode, playerName);
-  }, [challenge, tracks, search.seed, search.mode, getTrack, loadChallenge, playerId, playerName]);
+  }, [challenge, tracks, search.seed, search.mode, search.t, search.p, search.r, getTrack, loadChallenge, playerId, playerName]);
 
   useEffect(() => {
     if (phase !== 'playing' && phase !== 'guessing') return;
@@ -190,6 +266,20 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     if (phase !== 'complete' || updatedAfterGameRef.current) return;
     updatedAfterGameRef.current = true;
     updateAfterGame(session);
+
+    if (challenge?.id === 'micro' && search.r) {
+      const challenger = decodeResult(search.r);
+      if (challenger) {
+        const margin = session.totals.total_score - challenger.s;
+        const comparison: SessionComparison = {
+          challenger_name: challenger.u,
+          challenger_score: challenger.s,
+          result: margin > 0 ? 'win' : margin < 0 ? 'loss' : 'tie',
+          margin,
+        };
+        useGameStore.setState((state) => ({ session: { ...state.session, comparison } }));
+      }
+    }
 
     if (challenge && !CLIENT_ONLY_CHALLENGE_IDS.has(challenge.id)) {
       const clipExtensions = session.tracks.reduce(
@@ -211,7 +301,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     }
 
     void navigate({ to: '/result' });
-  }, [phase, session, updateAfterGame, navigate, challenge, playerId]);
+  }, [phase, session, updateAfterGame, navigate, challenge, playerId, search.r]);
 
   if (!challenge) {
     return <LoadingScreen />;
@@ -250,6 +340,8 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         isLastTrack={currentTrackIndex + 1 >= trackCount}
         onContinue={advanceTrack}
         nextTrack={nextTrack}
+        lastTrack={lastTrack}
+        playerName={session.player_name}
       />
     );
   }
