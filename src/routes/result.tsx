@@ -6,6 +6,7 @@ import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { buildEmojiGrid } from '../engine/ShareText';
+import { trackEvent } from '../engine/Analytics';
 import { BadgeUnlock } from '../components/result/BadgeUnlock';
 import { PublishScreen } from '../components/creator/PublishScreen';
 import type { ClipDuration } from '../types/track';
@@ -103,6 +104,7 @@ export function ResultScreen(): JSX.Element {
     link.href = dataUrl;
     link.download = 'iknowthattune-result.png';
     link.click();
+    trackEvent('share_card_downloaded');
   };
 
   if (session.tracks.length === 0) {

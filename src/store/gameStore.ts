@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { useCatalogStore } from './catalogStore';
+import { trackEvent } from '../engine/Analytics';
 import { evaluateFieldGuess } from '../engine/FieldMatching';
 import {
   FIELD_DEFINITIONS,
@@ -186,6 +187,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         challenge_id: challenge.id,
       },
     });
+    trackEvent('game_started', { mode, challengeId: challenge.id });
   },
 
   startTrack: () => {
@@ -246,6 +248,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         fieldsIncorrect.push(fieldId);
         results[fieldId] = 'incorrect';
       }
+
+      trackEvent('guess_submitted', { correct: match.correct, fieldId, clipDuration: activeClipDuration });
     }
 
     const allCorrect = activeFields.length > 0 && activeFields.every((id) => fieldsCorrect.includes(id));
@@ -295,13 +299,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   extendClip: () => {
-    const { activeClipDuration } = get();
+    const { activeClipDuration, currentTrackIndex } = get();
     const nextIndex = CLIP_DURATIONS.indexOf(activeClipDuration) + 1;
     if (nextIndex >= CLIP_DURATIONS.length) return;
+    const nextDuration = CLIP_DURATIONS[nextIndex];
     set({
-      activeClipDuration: CLIP_DURATIONS[nextIndex],
+      activeClipDuration: nextDuration,
       clipExtensions: get().clipExtensions + 1,
     });
+    trackEvent('clip_extended', { from: activeClipDuration, to: nextDuration, trackIndex: currentTrackIndex });
   },
 
   skipTrack: () => {

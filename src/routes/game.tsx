@@ -10,6 +10,7 @@ import { ClipExtendBar } from '../components/game/ClipExtendBar';
 import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
 import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuilder';
+import { trackEvent } from '../engine/Analytics';
 import { FIELD_DEFINITIONS, computeStreakBonus } from '../engine/ScoringEngine';
 import { currentStreakLength } from '../store/gameStore';
 import { decodeResult, encodeResult } from '../engine/UrlCodec';
@@ -108,6 +109,7 @@ function MicroChallengeToast({
     const url = `${window.location.origin}/?mode=micro&t=${track.track_id}&p=${activeFields.join(',')}&r=${encodeResult(result)}`;
     void navigator.clipboard.writeText(url);
     setCopied(true);
+    trackEvent('share_initiated', { channel: 'micro', mode: 'micro' });
   };
 
   return (
@@ -281,6 +283,11 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   useEffect(() => {
     if (phase !== 'complete' || updatedAfterGameRef.current) return;
     updatedAfterGameRef.current = true;
+    trackEvent('game_completed', {
+      mode: session.mode,
+      score: Math.round(session.totals.total_score),
+      trackCount: session.tracks.length,
+    });
     const unlockedBadges = updateAfterGame(session);
     if (unlockedBadges.length > 0) {
       useGameStore.setState((state) => ({ session: { ...state.session, unlocked_badges: unlockedBadges } }));

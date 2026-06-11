@@ -1,6 +1,7 @@
 import { useState, type JSX } from 'react';
 import QRCode from 'qrcode';
 import { generateChallengeId, encodeMiniChallenge } from '../../engine/UrlCodec';
+import { trackEvent } from '../../engine/Analytics';
 import type { Challenge, CreateChallengeRequest } from '../../types/challenge';
 
 const MAX_MINI_CHALLENGE_TRACKS = 2;
@@ -71,6 +72,7 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
       const qr = await QRCode.toDataURL(url);
       setPublished({ id, url });
       setQrDataUrl(qr);
+      trackEvent('challenge_created', { trackCount: finalChallenge.tracks.length, mini: finalChallenge.tracks.length <= MAX_MINI_CHALLENGE_TRACKS });
     } catch {
       setError('Could not publish challenge. Please try again.');
     } finally {
@@ -87,6 +89,11 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
   const handleCopyShareText = (): void => {
     if (!published) return;
     void navigator.clipboard.writeText(buildShareText(challenge, published.url));
+    trackEvent('share_initiated', { channel: 'instagram' });
+  };
+
+  const handleShareClick = (channel: string): void => {
+    trackEvent('share_initiated', { channel });
   };
 
   if (!published) {
@@ -139,6 +146,7 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
       <div className="flex flex-wrap justify-center gap-2">
         <a
           href={`sms:&body=${encodeURIComponent(shareText)}`}
+          onClick={() => handleShareClick('imessage')}
           className="rounded-full bg-slate-700 px-3 py-2 text-sm font-semibold hover:bg-slate-600"
         >
           💬 iMessage
@@ -147,6 +155,7 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
           href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noreferrer"
+          onClick={() => handleShareClick('whatsapp')}
           className="rounded-full bg-slate-700 px-3 py-2 text-sm font-semibold hover:bg-slate-600"
         >
           📱 WhatsApp
@@ -155,6 +164,7 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noreferrer"
+          onClick={() => handleShareClick('twitter')}
           className="rounded-full bg-slate-700 px-3 py-2 text-sm font-semibold hover:bg-slate-600"
         >
           🐦 Twitter
@@ -168,6 +178,7 @@ export function PublishScreen({ challenge, hasPlayed, onPlayNow }: PublishScreen
         </button>
         <a
           href={`mailto:?subject=${encodeURIComponent('I Know That Tune')}&body=${encodeURIComponent(shareText)}`}
+          onClick={() => handleShareClick('email')}
           className="rounded-full bg-slate-700 px-3 py-2 text-sm font-semibold hover:bg-slate-600"
         >
           ✉️ Email
