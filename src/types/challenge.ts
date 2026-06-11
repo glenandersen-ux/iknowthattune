@@ -44,6 +44,8 @@ export interface Challenge {
   clip_starts: Record<string, ClipStart>;
   settings: ChallengeSettings;
   scoring: ChallengeScoring;
+  /** R2 object keys for BYOC clips, keyed by upload slot (TechStack §D.7, Phase 4 §4.2). */
+  byoc_clips?: Record<string, string>;
 }
 
 /** A single leaderboard entry submitted to the per-challenge Durable Object. */
