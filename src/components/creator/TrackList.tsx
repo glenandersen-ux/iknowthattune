@@ -22,7 +22,7 @@ function paramDots(activeCount: number): string {
 }
 
 /** Formats a total clip count into "Xm Ys" using the average 90s/track estimate. */
-function formatEstimatedTime(trackCount: number): string {
+export function formatEstimatedTime(trackCount: number): string {
   const totalSeconds = trackCount * AVG_SECONDS_PER_TRACK;
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;

@@ -51,3 +51,10 @@ export const leaderboardSearchSchema = z.object({
 });
 
 export type LeaderboardSearch = z.infer<typeof leaderboardSearchSchema>;
+
+/** Search params for `/challenge/$id` — `mini` carries a URL-embedded ≤2-track challenge. */
+export const challengeSearchSchema = z.object({
+  mini: z.string().optional(),
+});
+
+export type ChallengeSearch = z.infer<typeof challengeSearchSchema>;

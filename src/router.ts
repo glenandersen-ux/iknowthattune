@@ -6,6 +6,7 @@ import { Route as resultRoute } from './routes/result';
 import { Route as createRoute } from './routes/create';
 import { Route as profileRoute } from './routes/profile';
 import { Route as leaderboardRoute } from './routes/leaderboard';
+import { Route as challengeRoute } from './routes/challenge.$id';
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -14,6 +15,7 @@ const routeTree = rootRoute.addChildren([
   createRoute,
   profileRoute,
   leaderboardRoute,
+  challengeRoute,
 ]);
 
 export const router = createRouter({ routeTree });
