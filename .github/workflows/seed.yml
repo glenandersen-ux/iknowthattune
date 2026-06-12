@@ -1,0 +1,26 @@
+name: Seed Catalog & Daily Drop
+
+# Manual one-off (or re-run as needed) seeding of R2 catalog data and the
+# Daily Drop KV key. Runs on GitHub's x64 runners since wrangler/workerd has
+# no win32-arm64 build for local dev.
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Upload catalog data to R2
+        run: npx tsx catalog/scripts/upload-r2.ts --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Seed today's Daily Drop in KV
+        run: npx tsx catalog/scripts/seed-daily.ts --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
