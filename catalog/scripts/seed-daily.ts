@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { getDailyTrackId, todayIso } from '../../src/engine/DailyDrop';
 import type { Track } from '../../src/types/track';
 
@@ -37,6 +38,6 @@ function main(): void {
   execFileSync('npx', ['wrangler', ...args], { stdio: 'inherit' });
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   main();
 }

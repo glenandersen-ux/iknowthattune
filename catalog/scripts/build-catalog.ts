@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type { Track } from '../../src/types/track';
 
 /**
@@ -42,6 +43,6 @@ function main(): void {
   console.log(`Wrote ${merged.length} tracks to ${seedPath} and ${publicPath}`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   main();
 }

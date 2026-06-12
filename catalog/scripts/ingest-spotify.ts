@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type { ClipDuration, Track } from '../../src/types/track';
 
 /** One entry in `catalog/data/spotify-seed-list.json`. */
@@ -169,8 +170,10 @@ async function main(): Promise<void> {
     let artistGenres: string[] = [];
     const artistId = spotifyTrack.artists[0]?.id;
     if (artistId) {
-      const artist = await fetchJson<{ genres: string[] }>(`/artists/${artistId}`, token);
-      artistGenres = artist.genres;
+      // Spotify no longer returns `genres` for most apps; default to [] so
+      // `genre: { value: ... }` always serializes (undefined keys are dropped by JSON.stringify).
+      const artist = await fetchJson<{ genres?: string[] }>(`/artists/${artistId}`, token);
+      artistGenres = artist.genres ?? [];
     }
 
     const track = mapSpotifyTrackToTrack(entry.track_id, spotifyTrack, audioFeatures, artistGenres);
@@ -183,6 +186,6 @@ async function main(): Promise<void> {
   console.log('Run "npm run catalog:build" to merge them into catalog/data/seed-tracks.json.');
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   void main();
 }

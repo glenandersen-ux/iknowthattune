@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 /** R2 bucket name, must match `wrangler.toml`'s `[[r2_buckets]]` entry. */
 export const BUCKET_NAME = 'iknowthattune';
@@ -33,6 +34,6 @@ function main(): void {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   main();
 }

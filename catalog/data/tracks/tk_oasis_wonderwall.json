@@ -1,0 +1,91 @@
+{
+  "track_id": "tk_oasis_wonderwall",
+  "clip_urls": {
+    "1s": "",
+    "3s": "",
+    "5s": "",
+    "10s": "",
+    "30s": ""
+  },
+  "clip_start_offset_ms": 0,
+  "answers": {
+    "song_title": {
+      "value": "Wonderwall",
+      "aliases": []
+    },
+    "primary_artist": {
+      "value": "Oasis",
+      "aliases": []
+    },
+    "release_year": {
+      "value": 1995,
+      "tolerance": 2
+    },
+    "album_name": {
+      "value": "(What's the Story) Morning Glory?",
+      "aliases": []
+    },
+    "songwriter": {
+      "value": [],
+      "partial_credit": true
+    },
+    "producer": {
+      "value": null,
+      "aliases": []
+    },
+    "record_label": {
+      "value": null,
+      "aliases": []
+    },
+    "genre": {
+      "value": []
+    },
+    "band_members": {
+      "value": [],
+      "partial_credit": true
+    },
+    "featured_artist": {
+      "value": null
+    },
+    "bpm": {
+      "value": null,
+      "tolerance": 5
+    },
+    "key_signature": {
+      "value": null
+    },
+    "chart_peak": {
+      "value": null,
+      "tolerance": 2
+    },
+    "sample_source": {
+      "value": null
+    },
+    "certified_copies": {
+      "value": null
+    },
+    "music_video_director": {
+      "value": null
+    },
+    "opening_lyric": {
+      "value": null,
+      "fuzzy_tolerance": 2
+    },
+    "instrument_solo": {
+      "value": null
+    },
+    "covered_by": {
+      "value": [],
+      "partial_credit": true
+    },
+    "soundtrack": {
+      "value": null
+    }
+  },
+  "metadata": {
+    "decade": 1990,
+    "language": "en",
+    "tags": [],
+    "difficulty_score": 1
+  }
+}

@@ -1,81 +1,730 @@
 [
   {
-    "track_id": "tk_queen_bohrhap",
+    "track_id": "tk_adele_rollingdeep",
     "clip_urls": {
-      "1s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
-      "3s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
-      "5s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
-      "10s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
-      "30s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba"
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
     },
     "clip_start_offset_ms": 0,
     "answers": {
-      "song_title": { "value": "Bohemian Rhapsody", "aliases": [] },
-      "primary_artist": { "value": "Queen", "aliases": [] },
-      "release_year": { "value": 1975, "tolerance": 2 },
-      "album_name": { "value": "A Night at the Opera", "aliases": [] },
-      "songwriter": { "value": ["Freddie Mercury"], "partial_credit": true },
-      "producer": { "value": "Roy Thomas Baker", "aliases": ["Queen"] },
-      "record_label": { "value": "EMI", "aliases": [] },
-      "genre": { "value": ["Rock"] },
-      "band_members": { "value": ["Freddie Mercury", "Brian May", "Roger Taylor", "John Deacon"], "partial_credit": true },
-      "featured_artist": { "value": null },
-      "bpm": { "value": 72, "tolerance": 5 },
-      "key_signature": { "value": "B♭ major" },
-      "chart_peak": { "value": 9, "tolerance": 2 },
-      "sample_source": { "value": null },
-      "certified_copies": { "value": "Platinum" },
-      "music_video_director": { "value": "Bruce Gowers" },
-      "opening_lyric": { "value": "Is this the real life", "fuzzy_tolerance": 2 },
-      "instrument_solo": { "value": ["Guitar"] },
-      "covered_by": { "value": ["Panic! at the Disco"], "partial_credit": true },
-      "soundtrack": { "value": "Wayne's World" }
+      "song_title": {
+        "value": "Rolling in the Deep",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Adele",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 2011,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "21",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
     },
     "metadata": {
-      "decade": 1970,
+      "decade": 2010,
       "language": "en",
-      "tags": ["classic-rock", "queen", "operatic", "anthem"],
-      "difficulty_score": 2.3,
-      "curator_note": "BPM varies significantly across the song's sections; 72 reflects the opening ballad tempo."
+      "tags": [],
+      "difficulty_score": 1
     }
   },
   {
-    "track_id": "tk_mj_billiejean",
+    "track_id": "tk_aha_takeonme",
     "clip_urls": {
-      "1s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
-      "3s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
-      "5s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
-      "10s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
-      "30s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f"
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
     },
     "clip_start_offset_ms": 0,
     "answers": {
-      "song_title": { "value": "Billie Jean", "aliases": [] },
-      "primary_artist": { "value": "Michael Jackson", "aliases": ["MJ"] },
-      "release_year": { "value": 1983, "tolerance": 2 },
-      "album_name": { "value": "Thriller", "aliases": [] },
-      "songwriter": { "value": ["Michael Jackson"], "partial_credit": true },
-      "producer": { "value": "Quincy Jones", "aliases": [] },
-      "record_label": { "value": "Epic", "aliases": [] },
-      "genre": { "value": ["Pop", "R&B"] },
-      "band_members": { "value": [], "partial_credit": true },
-      "featured_artist": { "value": null },
-      "bpm": { "value": 117, "tolerance": 5 },
-      "key_signature": { "value": "F♯ minor" },
-      "chart_peak": { "value": 1, "tolerance": 0 },
-      "sample_source": { "value": null },
-      "certified_copies": { "value": "Platinum" },
-      "music_video_director": { "value": "Steve Barron" },
-      "opening_lyric": { "value": "She was more like a beauty queen from a movie scene", "fuzzy_tolerance": 2 },
-      "instrument_solo": { "value": ["Bass"] },
-      "covered_by": { "value": ["Chris Cornell", "Fall Out Boy"], "partial_credit": true },
-      "soundtrack": { "value": null }
+      "song_title": {
+        "value": "Take on Me",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "a-ha",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1985,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Hunting High and Low",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
     },
     "metadata": {
       "decade": 1980,
       "language": "en",
-      "tags": ["pop", "michael-jackson", "dance", "bassline"],
-      "difficulty_score": 1.8
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_beatles_heyjude",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Hey Jude",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "The Beatles",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1968,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": null,
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_billieeilish_badguy",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "bad guy",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Billie Eilish",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 2019,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 2010,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_clash_londoncalling",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "London Calling",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "The Clash",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1979,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "London Calling",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_daftpunk_getlucky",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Get Lucky",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Daft Punk",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 2013,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Random Access Memories",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": "Pharrell Williams, Nile Rodgers"
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 2010,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_destinys_saymyname",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Say My Name",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Destiny's Child",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1999,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "The Writing's On The Wall",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1990,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_dolly_jolene",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Jolene",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Dolly Parton",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1974,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Jolene",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
     }
   },
   {
@@ -89,32 +738,288 @@
     },
     "clip_start_offset_ms": 0,
     "answers": {
-      "song_title": { "value": "Hotel California", "aliases": [] },
-      "primary_artist": { "value": "Eagles", "aliases": ["The Eagles"] },
-      "release_year": { "value": 1976, "tolerance": 2 },
-      "album_name": { "value": "Hotel California", "aliases": [] },
-      "songwriter": { "value": ["Don Henley", "Glenn Frey", "Don Felder"], "partial_credit": true },
-      "producer": { "value": "Bill Szymczyk", "aliases": [] },
-      "record_label": { "value": "Asylum", "aliases": [] },
-      "genre": { "value": ["Rock"] },
-      "band_members": { "value": ["Don Henley", "Glenn Frey", "Don Felder", "Joe Walsh", "Randy Meisner"], "partial_credit": true },
-      "featured_artist": { "value": null },
-      "bpm": { "value": 75, "tolerance": 5 },
-      "key_signature": { "value": "B minor" },
-      "chart_peak": { "value": 1, "tolerance": 0 },
-      "sample_source": { "value": null },
-      "certified_copies": { "value": "Platinum" },
-      "music_video_director": { "value": null },
-      "opening_lyric": { "value": "On a dark desert highway, cool wind in my hair", "fuzzy_tolerance": 2 },
-      "instrument_solo": { "value": ["Guitar"] },
-      "covered_by": { "value": ["Gipsy Kings"], "partial_credit": true },
-      "soundtrack": { "value": null }
+      "song_title": {
+        "value": "Hotel California",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Eagles",
+        "aliases": [
+          "The Eagles"
+        ]
+      },
+      "release_year": {
+        "value": 1976,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Hotel California",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [
+          "Don Henley",
+          "Glenn Frey",
+          "Don Felder"
+        ],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": "Bill Szymczyk",
+        "aliases": []
+      },
+      "record_label": {
+        "value": "Asylum",
+        "aliases": []
+      },
+      "genre": {
+        "value": [
+          "Rock"
+        ]
+      },
+      "band_members": {
+        "value": [
+          "Don Henley",
+          "Glenn Frey",
+          "Don Felder",
+          "Joe Walsh",
+          "Randy Meisner"
+        ],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": 75,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": "B minor"
+      },
+      "chart_peak": {
+        "value": 1,
+        "tolerance": 0
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": "Platinum"
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": "On a dark desert highway, cool wind in my hair",
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": [
+          "Guitar"
+        ]
+      },
+      "covered_by": {
+        "value": [
+          "Gipsy Kings"
+        ],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
     },
     "metadata": {
       "decade": 1970,
       "language": "en",
-      "tags": ["classic-rock", "eagles", "guitar-solo"],
-      "difficulty_score": 2.0
+      "tags": [
+        "classic-rock",
+        "eagles",
+        "guitar-solo"
+      ],
+      "difficulty_score": 2
+    }
+  },
+  {
+    "track_id": "tk_gaynor_survive",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "I Will Survive",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Gloria Gaynor",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1978,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Love Tracks",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_gnarls_crazy",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Crazy",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Gnarls Barkley",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 2006,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "St. Elsewhere",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": "CeeLo Green, Danger Mouse"
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 2000,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
     }
   },
   {
@@ -128,32 +1033,220 @@
     },
     "clip_start_offset_ms": 0,
     "answers": {
-      "song_title": { "value": "Sweet Child O' Mine", "aliases": ["Sweet Child of Mine"] },
-      "primary_artist": { "value": "Guns N' Roses", "aliases": ["GNR", "Guns and Roses"] },
-      "release_year": { "value": 1987, "tolerance": 2 },
-      "album_name": { "value": "Appetite for Destruction", "aliases": [] },
-      "songwriter": { "value": ["Axl Rose", "Slash", "Izzy Stradlin", "Duff McKagan", "Steven Adler"], "partial_credit": true },
-      "producer": { "value": "Mike Clink", "aliases": [] },
-      "record_label": { "value": "Geffen", "aliases": [] },
-      "genre": { "value": ["Rock"] },
-      "band_members": { "value": ["Axl Rose", "Slash", "Izzy Stradlin", "Duff McKagan", "Steven Adler"], "partial_credit": true },
-      "featured_artist": { "value": null },
-      "bpm": { "value": 125, "tolerance": 5 },
-      "key_signature": { "value": "D major" },
-      "chart_peak": { "value": 1, "tolerance": 0 },
-      "sample_source": { "value": null },
-      "certified_copies": { "value": "Platinum" },
-      "music_video_director": { "value": "Nigel Dick" },
-      "opening_lyric": { "value": "She's got a smile that it seems to me", "fuzzy_tolerance": 2 },
-      "instrument_solo": { "value": ["Guitar"] },
-      "covered_by": { "value": ["Sheryl Crow"], "partial_credit": true },
-      "soundtrack": { "value": null }
+      "song_title": {
+        "value": "Sweet Child O' Mine",
+        "aliases": [
+          "Sweet Child of Mine"
+        ]
+      },
+      "primary_artist": {
+        "value": "Guns N' Roses",
+        "aliases": [
+          "GNR",
+          "Guns and Roses"
+        ]
+      },
+      "release_year": {
+        "value": 1987,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Appetite for Destruction",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [
+          "Axl Rose",
+          "Slash",
+          "Izzy Stradlin",
+          "Duff McKagan",
+          "Steven Adler"
+        ],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": "Mike Clink",
+        "aliases": []
+      },
+      "record_label": {
+        "value": "Geffen",
+        "aliases": []
+      },
+      "genre": {
+        "value": [
+          "Rock"
+        ]
+      },
+      "band_members": {
+        "value": [
+          "Axl Rose",
+          "Slash",
+          "Izzy Stradlin",
+          "Duff McKagan",
+          "Steven Adler"
+        ],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": 125,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": "D major"
+      },
+      "chart_peak": {
+        "value": 1,
+        "tolerance": 0
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": "Platinum"
+      },
+      "music_video_director": {
+        "value": "Nigel Dick"
+      },
+      "opening_lyric": {
+        "value": "She's got a smile that it seems to me",
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": [
+          "Guitar"
+        ]
+      },
+      "covered_by": {
+        "value": [
+          "Sheryl Crow"
+        ],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
     },
     "metadata": {
       "decade": 1980,
       "language": "en",
-      "tags": ["hard-rock", "guns-n-roses", "guitar-solo", "glam-metal"],
+      "tags": [
+        "hard-rock",
+        "guns-n-roses",
+        "guitar-solo",
+        "glam-metal"
+      ],
       "difficulty_score": 2.2
+    }
+  },
+  {
+    "track_id": "tk_mj_billiejean",
+    "clip_urls": {
+      "1s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
+      "3s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
+      "5s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
+      "10s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f",
+      "30s": "https://p.scdn.co/mp3-preview/0f6b8a3524ec410020457da4cdd7717f9addce2f"
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Billie Jean",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Michael Jackson",
+        "aliases": [
+          "MJ"
+        ]
+      },
+      "release_year": {
+        "value": 1983,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Thriller",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [
+          "Michael Jackson"
+        ],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": "Quincy Jones",
+        "aliases": []
+      },
+      "record_label": {
+        "value": "Epic",
+        "aliases": []
+      },
+      "genre": {
+        "value": [
+          "Pop",
+          "R&B"
+        ]
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": 117,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": "F♯ minor"
+      },
+      "chart_peak": {
+        "value": 1,
+        "tolerance": 0
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": "Platinum"
+      },
+      "music_video_director": {
+        "value": "Steve Barron"
+      },
+      "opening_lyric": {
+        "value": "She was more like a beauty queen from a movie scene",
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": [
+          "Bass"
+        ]
+      },
+      "covered_by": {
+        "value": [
+          "Chris Cornell",
+          "Fall Out Boy"
+        ],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1980,
+      "language": "en",
+      "tags": [
+        "pop",
+        "michael-jackson",
+        "dance",
+        "bassline"
+      ],
+      "difficulty_score": 1.8
     }
   },
   {
@@ -167,32 +1260,578 @@
     },
     "clip_start_offset_ms": 0,
     "answers": {
-      "song_title": { "value": "Smells Like Teen Spirit", "aliases": [] },
-      "primary_artist": { "value": "Nirvana", "aliases": [] },
-      "release_year": { "value": 1991, "tolerance": 2 },
-      "album_name": { "value": "Nevermind", "aliases": [] },
-      "songwriter": { "value": ["Kurt Cobain", "Krist Novoselic", "Dave Grohl"], "partial_credit": true },
-      "producer": { "value": "Butch Vig", "aliases": [] },
-      "record_label": { "value": "DGC", "aliases": [] },
-      "genre": { "value": ["Rock"] },
-      "band_members": { "value": ["Kurt Cobain", "Krist Novoselic", "Dave Grohl"], "partial_credit": true },
-      "featured_artist": { "value": null },
-      "bpm": { "value": 117, "tolerance": 5 },
-      "key_signature": { "value": "F minor" },
-      "chart_peak": { "value": 6, "tolerance": 2 },
-      "sample_source": { "value": null },
-      "certified_copies": { "value": "Platinum" },
-      "music_video_director": { "value": "Samuel Bayer" },
-      "opening_lyric": { "value": "Load up on guns, bring your friends", "fuzzy_tolerance": 2 },
-      "instrument_solo": { "value": ["Guitar"] },
-      "covered_by": { "value": ["Tori Amos"], "partial_credit": true },
-      "soundtrack": { "value": null }
+      "song_title": {
+        "value": "Smells Like Teen Spirit",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Nirvana",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1991,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Nevermind",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [
+          "Kurt Cobain",
+          "Krist Novoselic",
+          "Dave Grohl"
+        ],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": "Butch Vig",
+        "aliases": []
+      },
+      "record_label": {
+        "value": "DGC",
+        "aliases": []
+      },
+      "genre": {
+        "value": [
+          "Rock"
+        ]
+      },
+      "band_members": {
+        "value": [
+          "Kurt Cobain",
+          "Krist Novoselic",
+          "Dave Grohl"
+        ],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": 117,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": "F minor"
+      },
+      "chart_peak": {
+        "value": 6,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": "Platinum"
+      },
+      "music_video_director": {
+        "value": "Samuel Bayer"
+      },
+      "opening_lyric": {
+        "value": "Load up on guns, bring your friends",
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": [
+          "Guitar"
+        ]
+      },
+      "covered_by": {
+        "value": [
+          "Tori Amos"
+        ],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
     },
     "metadata": {
       "decade": 1990,
       "language": "en",
-      "tags": ["grunge", "nirvana", "alternative"],
+      "tags": [
+        "grunge",
+        "nirvana",
+        "alternative"
+      ],
       "difficulty_score": 1.9
+    }
+  },
+  {
+    "track_id": "tk_oasis_wonderwall",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Wonderwall",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Oasis",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1995,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "(What's the Story) Morning Glory?",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1990,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_queen_bohrhap",
+    "clip_urls": {
+      "1s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
+      "3s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
+      "5s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
+      "10s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba",
+      "30s": "https://p.scdn.co/mp3-preview/fafa71e6ec5fb83cec5136e3e6a357c6233141ba"
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Bohemian Rhapsody",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Queen",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1975,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "A Night at the Opera",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [
+          "Freddie Mercury"
+        ],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": "Roy Thomas Baker",
+        "aliases": [
+          "Queen"
+        ]
+      },
+      "record_label": {
+        "value": "EMI",
+        "aliases": []
+      },
+      "genre": {
+        "value": [
+          "Rock"
+        ]
+      },
+      "band_members": {
+        "value": [
+          "Freddie Mercury",
+          "Brian May",
+          "Roger Taylor",
+          "John Deacon"
+        ],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": 72,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": "B♭ major"
+      },
+      "chart_peak": {
+        "value": 9,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": "Platinum"
+      },
+      "music_video_director": {
+        "value": "Bruce Gowers"
+      },
+      "opening_lyric": {
+        "value": "Is this the real life",
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": [
+          "Guitar"
+        ]
+      },
+      "covered_by": {
+        "value": [
+          "Panic! at the Disco"
+        ],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": "Wayne's World"
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [
+        "classic-rock",
+        "queen",
+        "operatic",
+        "anthem"
+      ],
+      "difficulty_score": 2.3,
+      "curator_note": "BPM varies significantly across the song's sections; 72 reflects the opening ballad tempo."
+    }
+  },
+  {
+    "track_id": "tk_stevie_superstition",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Superstition",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Stevie Wonder",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1972,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Talking Book",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1970,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_vanilla_iceicebaby",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "Ice Ice Baby",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Vanilla Ice",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1990,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "To the Extreme",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1990,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
+    }
+  },
+  {
+    "track_id": "tk_whitney_iwanna",
+    "clip_urls": {
+      "1s": "",
+      "3s": "",
+      "5s": "",
+      "10s": "",
+      "30s": ""
+    },
+    "clip_start_offset_ms": 0,
+    "answers": {
+      "song_title": {
+        "value": "I Wanna Dance with Somebody (Who Loves Me)",
+        "aliases": []
+      },
+      "primary_artist": {
+        "value": "Whitney Houston",
+        "aliases": []
+      },
+      "release_year": {
+        "value": 1987,
+        "tolerance": 2
+      },
+      "album_name": {
+        "value": "Whitney",
+        "aliases": []
+      },
+      "songwriter": {
+        "value": [],
+        "partial_credit": true
+      },
+      "producer": {
+        "value": null,
+        "aliases": []
+      },
+      "record_label": {
+        "value": null,
+        "aliases": []
+      },
+      "genre": {
+        "value": []
+      },
+      "band_members": {
+        "value": [],
+        "partial_credit": true
+      },
+      "featured_artist": {
+        "value": null
+      },
+      "bpm": {
+        "value": null,
+        "tolerance": 5
+      },
+      "key_signature": {
+        "value": null
+      },
+      "chart_peak": {
+        "value": null,
+        "tolerance": 2
+      },
+      "sample_source": {
+        "value": null
+      },
+      "certified_copies": {
+        "value": null
+      },
+      "music_video_director": {
+        "value": null
+      },
+      "opening_lyric": {
+        "value": null,
+        "fuzzy_tolerance": 2
+      },
+      "instrument_solo": {
+        "value": null
+      },
+      "covered_by": {
+        "value": [],
+        "partial_credit": true
+      },
+      "soundtrack": {
+        "value": null
+      }
+    },
+    "metadata": {
+      "decade": 1980,
+      "language": "en",
+      "tags": [],
+      "difficulty_score": 1
     }
   }
 ]

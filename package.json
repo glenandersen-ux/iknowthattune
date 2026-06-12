@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "type-check": "tsc -b --noEmit",
-    "catalog:ingest": "tsx catalog/scripts/ingest-spotify.ts",
+    "catalog:ingest": "tsx --env-file=catalog/scripts/.env catalog/scripts/ingest-spotify.ts",
     "catalog:build": "tsx catalog/scripts/build-catalog.ts"
   },
   "dependencies": {
