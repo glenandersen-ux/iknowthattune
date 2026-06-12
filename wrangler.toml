@@ -23,7 +23,7 @@ class_name = "LeaderboardDO"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["LeaderboardDO"]
+new_sqlite_classes = ["LeaderboardDO"]
 
 # Rate limiting (TechStack §D.13) is configured in the Cloudflare Dashboard
 # under Security -> Rate Limiting, not via wrangler.toml. Apply these rules
