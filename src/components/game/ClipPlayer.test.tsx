@@ -42,7 +42,7 @@ describe('ClipPlayer', () => {
     await waitFor(() => expect(preloadTrack).toHaveBeenCalledWith(clipUrls));
   });
 
-  it('shows a "Tap to Start" overlay before the audio context is unlocked', async () => {
+  it('shows a "Start" button before the audio context is unlocked', async () => {
     render(
       <ClipPlayer
         clipUrls={clipUrls}

@@ -18,7 +18,7 @@ export interface ClipPlayerProps {
 
 /**
  * Wraps `AudioEngine` and renders the waveform plus an iOS-friendly
- * "Tap to Start" unlock overlay (Web Audio contexts must be resumed
+ * "Start" unlock button (Web Audio contexts must be resumed
  * from a user gesture before the first `play()` call).
  */
 export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlaybackEnd }: ClipPlayerProps): React.ReactElement {
@@ -103,15 +103,17 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
         </div>
       )}
       {!unlocked && status !== 'error' && (
-        <button
-          type="button"
-          onClick={(): void => void handleTapToStart()}
-          disabled={status === 'loading'}
-          className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 text-lg font-semibold text-white disabled:cursor-wait"
-          data-testid="tap-to-start"
-        >
-          {status === 'loading' ? 'Loading…' : 'Tap to Start'}
-        </button>
+        <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40">
+          <button
+            type="button"
+            onClick={(): void => void handleTapToStart()}
+            disabled={status === 'loading'}
+            className="rounded-full bg-white px-8 py-2 text-lg font-semibold text-slate-900 shadow-lg disabled:cursor-wait disabled:opacity-50"
+            data-testid="tap-to-start"
+          >
+            {status === 'loading' ? 'Loading…' : 'Start'}
+          </button>
+        </div>
       )}
     </div>
   );
