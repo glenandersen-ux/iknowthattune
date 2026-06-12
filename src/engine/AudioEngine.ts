@@ -20,17 +20,29 @@ export class AudioEngine {
     this.gainNode = ctx.createGain();
   }
 
-  /** Fetches and decodes all clip durations for a track in parallel. */
+  /**
+   * Fetches and decodes all clip durations for a track in parallel.
+   *
+   * Individual duration failures (e.g. an expired Spotify preview URL) are
+   * tolerated as long as at least one duration loads successfully — the
+   * game can still play with whatever durations are cached. Only throws if
+   * every duration fails, so callers can surface a clear error instead of
+   * hanging indefinitely.
+   */
   async preloadTrack(clipUrls: ClipUrlMap): Promise<void> {
     const entries = Object.entries(clipUrls) as [ClipDuration, string][];
-    await Promise.all(
+    await Promise.allSettled(
       entries.map(async ([duration, url]) => {
         const response = await fetch(url);
+        if (!response.ok) throw new Error(`Clip fetch failed for ${duration}: ${response.status}`);
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
         this.clipCache.set(duration, audioBuffer);
       }),
     );
+    if (this.clipCache.size === 0) {
+      throw new Error('Failed to preload any clip durations');
+    }
   }
 
   /** Plays a preloaded clip duration, resolving when playback ends. */

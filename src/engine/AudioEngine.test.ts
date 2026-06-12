@@ -48,7 +48,7 @@ describe('AudioEngine', () => {
     engine = new AudioEngine(ctx as unknown as AudioContext);
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue({ arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) }),
+      vi.fn().mockResolvedValue({ ok: true, status: 200, arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) }),
     );
   });
 
@@ -71,6 +71,29 @@ describe('AudioEngine', () => {
 
   it('play throws if the clip duration was not preloaded', async () => {
     await expect(engine.play('1s')).rejects.toThrow('Clip 1s not preloaded');
+  });
+
+  it('preloadTrack tolerates individual clip failures as long as one succeeds', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url: string) =>
+        url.includes('30s')
+          ? Promise.resolve({ ok: false, status: 404, arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) })
+          : Promise.resolve({ ok: true, status: 200, arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) }),
+      ),
+    );
+
+    await expect(engine.preloadTrack(CLIP_URLS)).resolves.toBeUndefined();
+    await expect(engine.play('30s')).rejects.toThrow('Clip 30s not preloaded');
+  });
+
+  it('preloadTrack throws if every clip duration fails', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ ok: false, status: 404, arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) }),
+    );
+
+    await expect(engine.preloadTrack(CLIP_URLS)).rejects.toThrow('Failed to preload any clip durations');
   });
 
   it('stop disconnects the active source node', async () => {

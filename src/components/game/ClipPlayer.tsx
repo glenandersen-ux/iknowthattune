@@ -3,7 +3,7 @@ import { AudioEngine } from '../../engine/AudioEngine';
 import { WaveformVisualizer } from './WaveformVisualizer';
 import type { ClipDuration, ClipUrlMap } from '../../types/track';
 
-export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended';
+export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended' | 'error';
 
 export interface ClipPlayerProps {
   clipUrls: ClipUrlMap;
@@ -43,6 +43,16 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
       .then(() => getEngine().preloadTrack(clipUrls))
       .then(() => {
         if (!cancelled) setStatus('idle');
+      })
+      .catch(() => {
+        if (cancelled) return;
+        // No clip durations loaded (e.g. an expired preview URL). Surface an
+        // error state and advance the game phase so the player isn't stuck
+        // on "Loading..." forever — they can still guess or give up.
+        setStatus('error');
+        setUnlocked(true);
+        onPlaybackStart();
+        onPlaybackEnd();
       });
     return (): void => {
       cancelled = true;
@@ -54,7 +64,12 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
       const engine = getEngine();
       setStatus('playing');
       onPlaybackStart();
-      await engine.play(duration);
+      try {
+        await engine.play(duration);
+      } catch {
+        setStatus('error');
+        return;
+      }
       setStatus('ended');
       onPlaybackEnd();
     },
@@ -62,7 +77,7 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
   );
 
   const handleTapToStart = useCallback(async (): Promise<void> => {
-    if (status === 'loading') return;
+    if (status === 'loading' || status === 'error') return;
     const engine = getEngine();
     await engine.unlock();
     setUnlocked(true);
@@ -79,7 +94,15 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
   return (
     <div className="relative overflow-hidden rounded-xl bg-slate-900 p-4" data-testid="clip-player">
       <WaveformVisualizer getData={(): Uint8Array => getEngine().getWaveformData()} isActive={status === 'playing'} />
-      {!unlocked && (
+      {status === 'error' && (
+        <div
+          className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 px-4 text-center text-sm font-semibold text-amber-300"
+          data-testid="clip-error"
+        >
+          ⚠️ Audio unavailable for this track — guess or give up to continue.
+        </div>
+      )}
+      {!unlocked && status !== 'error' && (
         <button
           type="button"
           onClick={(): void => void handleTapToStart()}

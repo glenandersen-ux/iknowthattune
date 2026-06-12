@@ -77,4 +77,44 @@ describe('ClipPlayer', () => {
     await waitFor(() => expect(onPlaybackEnd).toHaveBeenCalledOnce());
     expect(screen.queryByTestId('tap-to-start')).not.toBeInTheDocument();
   });
+
+  it('shows an error overlay and advances playback callbacks if preloading fails entirely', async () => {
+    preloadTrack.mockRejectedValueOnce(new Error('Failed to preload any clip durations'));
+    const onPlaybackStart = vi.fn();
+    const onPlaybackEnd = vi.fn();
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="1s"
+        onPlaybackStart={onPlaybackStart}
+        onPlaybackEnd={onPlaybackEnd}
+        onExtendRequest={vi.fn()}
+      />,
+    );
+
+    await waitFor(() => expect(screen.getByTestId('clip-error')).toBeInTheDocument());
+    expect(screen.queryByTestId('tap-to-start')).not.toBeInTheDocument();
+    expect(onPlaybackStart).toHaveBeenCalledOnce();
+    expect(onPlaybackEnd).toHaveBeenCalledOnce();
+  });
+
+  it('shows an error overlay if play() rejects mid-playback', async () => {
+    play.mockRejectedValueOnce(new Error('Clip 1s not preloaded'));
+    const onPlaybackEnd = vi.fn();
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="1s"
+        onPlaybackStart={vi.fn()}
+        onPlaybackEnd={onPlaybackEnd}
+        onExtendRequest={vi.fn()}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('tap-to-start')).not.toBeDisabled());
+
+    await userEvent.click(screen.getByTestId('tap-to-start'));
+
+    await waitFor(() => expect(screen.getByTestId('clip-error')).toBeInTheDocument());
+    expect(onPlaybackEnd).not.toHaveBeenCalled();
+  });
 });
