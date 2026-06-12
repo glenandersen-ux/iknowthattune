@@ -26,6 +26,9 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
   const previousDuration = useRef(currentDuration);
+  // Guards against `playClip`'s pending `engine.play()` promise also firing
+  // `onPlaybackEnd` once `handleStop` has already transitioned the player.
+  const stoppedRef = useRef(false);
 
   const getEngine = useCallback((): AudioEngine => {
     if (!engineRef.current) {
@@ -62,19 +65,29 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
   const playClip = useCallback(
     async (duration: ClipDuration): Promise<void> => {
       const engine = getEngine();
+      stoppedRef.current = false;
       setStatus('playing');
       onPlaybackStart();
       try {
         await engine.play(duration);
       } catch {
-        setStatus('error');
+        if (!stoppedRef.current) setStatus('error');
         return;
       }
+      if (stoppedRef.current) return;
       setStatus('ended');
       onPlaybackEnd();
     },
     [getEngine, onPlaybackStart, onPlaybackEnd],
   );
+
+  const handleStop = useCallback((): void => {
+    if (status !== 'playing') return;
+    stoppedRef.current = true;
+    getEngine().stop();
+    setStatus('ended');
+    onPlaybackEnd();
+  }, [status, getEngine, onPlaybackEnd]);
 
   const handleTapToStart = useCallback(async (): Promise<void> => {
     if (status === 'loading' || status === 'error') return;
@@ -112,6 +125,18 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
             data-testid="tap-to-start"
           >
             {status === 'loading' ? 'Loading…' : 'Start'}
+          </button>
+        </div>
+      )}
+      {status === 'playing' && (
+        <div className="absolute inset-x-0 bottom-2 flex justify-center">
+          <button
+            type="button"
+            onClick={handleStop}
+            className="rounded-full bg-white px-6 py-1.5 text-sm font-semibold text-slate-900 shadow-lg hover:bg-slate-100"
+            data-testid="stop-button"
+          >
+            Stop
           </button>
         </div>
       )}
