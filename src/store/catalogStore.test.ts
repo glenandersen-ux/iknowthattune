@@ -93,4 +93,12 @@ describe('catalogStore', () => {
     expect(useCatalogStore.getState().getTrack('track-1')?.track_id).toBe('track-1');
     expect(useCatalogStore.getState().getTrack('missing')).toBeUndefined();
   });
+
+  it('migrate discards a persisted v1 catalog so it refetches', () => {
+    const { migrate } = useCatalogStore.persist.getOptions();
+    const persisted = { tracks: [makeTrack({ track_id: 'stale-track' })] };
+
+    expect(migrate?.(persisted, 1)).toEqual({ tracks: [] });
+    expect(migrate?.(persisted, 2)).toEqual(persisted);
+  });
 });
