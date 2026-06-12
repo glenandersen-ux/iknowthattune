@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { difficultyLabel, getDailyTrackId, todayIso } from './DailyDrop';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { difficultyLabel, fetchDailyTrackOverride, getDailyTrackId, todayIso } from './DailyDrop';
 import type { Track } from '../types/track';
 
 const track = (id: string): Track =>
@@ -42,5 +42,34 @@ describe('difficultyLabel', () => {
 describe('todayIso', () => {
   it('returns a YYYY-MM-DD formatted date', () => {
     expect(todayIso()).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  });
+});
+
+describe('fetchDailyTrackOverride', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('returns the trackId when the API responds with one', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response(JSON.stringify({ date: '2026-06-12', trackId: 'tk_queen_bohrhap' }), { status: 200 })),
+    );
+    expect(await fetchDailyTrackOverride('2026-06-12')).toBe('tk_queen_bohrhap');
+  });
+
+  it('returns null on a 404 (no override scheduled)', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('not found', { status: 404 })));
+    expect(await fetchDailyTrackOverride('2026-06-12')).toBeNull();
+  });
+
+  it('returns null if the response body has no trackId', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ date: '2026-06-12' }), { status: 200 })));
+    expect(await fetchDailyTrackOverride('2026-06-12')).toBeNull();
+  });
+
+  it('returns null if the fetch throws', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network error')));
+    expect(await fetchDailyTrackOverride('2026-06-12')).toBeNull();
   });
 });

@@ -19,6 +19,25 @@ export function getDailyTrackId(tracks: Track[], date: string): string | null {
   return tracks[hash % tracks.length].track_id;
 }
 
+/**
+ * Looks up an editorially-curated Daily Drop override for `date` from
+ * `GET /api/daily`, which reads the `daily:YYYY-MM-DD` KV key written by
+ * `workers/api/daily.ts`. Returns `null` if no override is set or the
+ * request fails, so callers fall back to {@link getDailyTrackId}.
+ */
+export async function fetchDailyTrackOverride(date: string): Promise<string | null> {
+  try {
+    const response = await fetch(`/api/daily?date=${encodeURIComponent(date)}`);
+    if (!response.ok) return null;
+    const data: unknown = await response.json();
+    if (typeof data !== 'object' || data === null) return null;
+    const trackId = (data as { trackId?: unknown }).trackId;
+    return typeof trackId === 'string' ? trackId : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Difficulty badge tier from a track's `metadata.difficulty_score` (Blueprint §4). */
 export function difficultyLabel(score: number): 'Easy' | 'Medium' | 'Hard' {
   if (score <= 1.5) return 'Easy';

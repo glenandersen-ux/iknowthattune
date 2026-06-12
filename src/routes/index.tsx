@@ -4,7 +4,7 @@ import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
-import { difficultyLabel, getDailyTrackId, todayIso } from '../engine/DailyDrop';
+import { difficultyLabel, fetchDailyTrackOverride, getDailyTrackId, todayIso } from '../engine/DailyDrop';
 import {
   buildSoloSprintSeed,
   DEFAULT_SOLO_TRACKS,
@@ -45,13 +45,20 @@ export function HomeScreen(): JSX.Element {
   const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
   const [artist, setArtist] = useState('');
   const [trackCount, setTrackCount] = useState(DEFAULT_SOLO_TRACKS);
+  const [overrideTrackId, setOverrideTrackId] = useState<string | null>(null);
 
   useEffect(() => {
     void loadCatalog();
   }, [loadCatalog]);
 
   const date = todayIso();
-  const trackId = getDailyTrackId(tracks, date);
+
+  useEffect(() => {
+    void fetchDailyTrackOverride(date).then(setOverrideTrackId);
+  }, [date]);
+
+  const hasOverride = overrideTrackId !== null && tracks.some((t) => t.track_id === overrideTrackId);
+  const trackId = hasOverride ? overrideTrackId : getDailyTrackId(tracks, date);
   const track = trackId ? tracks.find((t) => t.track_id === trackId) : undefined;
 
   const handlePlay = (): void => {
