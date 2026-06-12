@@ -27,19 +27,25 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Adele Adkins",
+          "Paul Epworth"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Paul Epworth",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "XL Recordings",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Soul",
+          "Pop"
+        ]
       },
       "band_members": {
         "value": [],
@@ -49,14 +55,14 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 105,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -69,7 +75,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "There's a fire starting in my heart",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -86,8 +92,12 @@
     "metadata": {
       "decade": 2010,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "soul",
+        "pop",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -118,36 +128,47 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Morten Harket",
+          "Magne Furuholmen",
+          "Pål Waaktaar"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Alan Tarney",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Warner Bros.",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Synth-pop",
+          "New Wave"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Morten Harket",
+          "Magne Furuholmen",
+          "Pål Waaktaar"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 169,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -157,10 +178,10 @@
         "value": null
       },
       "music_video_director": {
-        "value": null
+        "value": "Steve Barron"
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Talking away",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -177,8 +198,13 @@
     "metadata": {
       "decade": 1980,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "synth-pop",
+        "new-wave",
+        "iconic-video",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -209,49 +235,60 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "John Lennon",
+          "Paul McCartney"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "George Martin",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Apple Records",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Rock",
+          "Pop"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "John Lennon",
+          "Paul McCartney",
+          "George Harrison",
+          "Ringo Starr"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 74,
         "tolerance": 5
       },
       "key_signature": {
-        "value": null
+        "value": "F major"
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
         "value": null
       },
       "certified_copies": {
-        "value": null
+        "value": "Gold"
       },
       "music_video_director": {
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Hey Jude, don't make it bad",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -266,10 +303,15 @@
       }
     },
     "metadata": {
-      "decade": 1970,
+      "decade": 1960,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "classic-rock",
+        "beatles",
+        "ballad",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -300,19 +342,25 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Billie Eilish",
+          "Finneas O'Connell"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Finneas O'Connell",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Darkroom/Interscope",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Pop",
+          "Electropop"
+        ]
       },
       "band_members": {
         "value": [],
@@ -322,14 +370,14 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 135,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -342,7 +390,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "White shirt now red, my bloody nose",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -359,8 +407,12 @@
     "metadata": {
       "decade": 2010,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "pop",
+        "electropop",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -391,22 +443,33 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Joe Strummer",
+          "Mick Jones"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Guy Stevens",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "CBS",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Punk Rock",
+          "Rock"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Joe Strummer",
+          "Mick Jones",
+          "Paul Simonon",
+          "Topper Headon"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
@@ -433,7 +496,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "London calling to the faraway towns",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -450,8 +513,12 @@
     "metadata": {
       "decade": 1970,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "punk",
+        "clash",
+        "anthem"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -482,36 +549,48 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Thomas Bangalter",
+          "Guy-Manuel de Homem-Christo",
+          "Pharrell Williams",
+          "Nile Rodgers"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Daft Punk",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Columbia",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Disco",
+          "Funk",
+          "Electronic"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Thomas Bangalter",
+          "Guy-Manuel de Homem-Christo"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
         "value": "Pharrell Williams, Nile Rodgers"
       },
       "bpm": {
-        "value": null,
+        "value": 116,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 2,
         "tolerance": 2
       },
       "sample_source": {
@@ -524,11 +603,13 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Like the legend of the phoenix",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
-        "value": null
+        "value": [
+          "Guitar"
+        ]
       },
       "covered_by": {
         "value": [],
@@ -541,8 +622,12 @@
     "metadata": {
       "decade": 2010,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "disco",
+        "funk",
+        "electronic"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -573,36 +658,51 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Beyoncé Knowles",
+          "Rodney Jerkins",
+          "LaShawn Daniels",
+          "Fred Jerkins III",
+          "LeToya Luckett",
+          "LaTavia Roberson",
+          "Kelly Rowland"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Rodney Jerkins",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Columbia",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "R&B"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Beyoncé Knowles",
+          "Kelly Rowland",
+          "LaTavia Roberson",
+          "LeToya Luckett"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 92,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -632,8 +732,12 @@
     "metadata": {
       "decade": 1990,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "r&b",
+        "girl-group",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -664,19 +768,23 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Dolly Parton"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Bob Ferguson",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "RCA Victor",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Country"
+        ]
       },
       "band_members": {
         "value": [],
@@ -686,7 +794,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 108,
         "tolerance": 5
       },
       "key_signature": {
@@ -706,14 +814,16 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Jolene, Jolene, Jolene, Jolene",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
         "value": null
       },
       "covered_by": {
-        "value": [],
+        "value": [
+          "The White Stripes"
+        ],
         "partial_credit": true
       },
       "soundtrack": {
@@ -723,8 +833,12 @@
     "metadata": {
       "decade": 1970,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "country",
+        "dolly-parton",
+        "ballad"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -868,19 +982,26 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Freddie Perren",
+          "Dino Fekaris"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
-        "aliases": []
+        "value": "Dino Fekaris",
+        "aliases": [
+          "Freddie Perren"
+        ]
       },
       "record_label": {
-        "value": null,
+        "value": "Polydor",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Disco"
+        ]
       },
       "band_members": {
         "value": [],
@@ -890,14 +1011,14 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 117,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -910,14 +1031,16 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "At first I was afraid",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
         "value": null
       },
       "covered_by": {
-        "value": [],
+        "value": [
+          "Cake"
+        ],
         "partial_credit": true
       },
       "soundtrack": {
@@ -927,8 +1050,12 @@
     "metadata": {
       "decade": 1970,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "disco",
+        "anthem",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -959,36 +1086,45 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Danger Mouse",
+          "CeeLo Green"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Danger Mouse",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Downtown Records",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Soul",
+          "Alternative"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Danger Mouse",
+          "CeeLo Green"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
-        "value": "CeeLo Green, Danger Mouse"
+        "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 112,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 2,
         "tolerance": 2
       },
       "sample_source": {
@@ -1001,7 +1137,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "I remember when, I remember, I remember when I lost my mind",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -1018,8 +1154,12 @@
     "metadata": {
       "decade": 2000,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "soul",
+        "alternative",
+        "duo"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -1386,36 +1526,49 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Noel Gallagher"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
-        "aliases": []
+        "value": "Owen Morris",
+        "aliases": [
+          "Noel Gallagher"
+        ]
       },
       "record_label": {
-        "value": null,
+        "value": "Creation Records",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Britpop",
+          "Rock"
+        ]
       },
       "band_members": {
-        "value": [],
+        "value": [
+          "Liam Gallagher",
+          "Noel Gallagher",
+          "Paul Arthurs",
+          "Paul McGuigan",
+          "Alan White"
+        ],
         "partial_credit": true
       },
       "featured_artist": {
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 87,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 8,
         "tolerance": 2
       },
       "sample_source": {
@@ -1428,7 +1581,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Today is gonna be the day",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -1445,8 +1598,12 @@
     "metadata": {
       "decade": 1990,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "britpop",
+        "rock",
+        "anthem"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -1589,19 +1746,24 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Stevie Wonder"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Stevie Wonder",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Tamla",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Funk",
+          "Soul"
+        ]
       },
       "band_members": {
         "value": [],
@@ -1611,14 +1773,14 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 100,
         "tolerance": 5
       },
       "key_signature": {
-        "value": null
+        "value": "E♭ minor"
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -1631,14 +1793,18 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Very superstitious",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
-        "value": null
+        "value": [
+          "Clavinet"
+        ]
       },
       "covered_by": {
-        "value": [],
+        "value": [
+          "Stevie Ray Vaughan"
+        ],
         "partial_credit": true
       },
       "soundtrack": {
@@ -1648,8 +1814,13 @@
     "metadata": {
       "decade": 1970,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "funk",
+        "soul",
+        "motown",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -1680,19 +1851,28 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "Robert Van Winkle",
+          "David Bowie",
+          "Freddie Mercury",
+          "Brian May",
+          "Roger Taylor",
+          "John Deacon"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Vanilla Ice",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "SBK Records",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Hip Hop"
+        ]
       },
       "band_members": {
         "value": [],
@@ -1702,18 +1882,18 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
-        "value": null
+        "value": "Under Pressure by Queen and David Bowie"
       },
       "certified_copies": {
         "value": null
@@ -1722,7 +1902,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Yo, VIP, let's kick it",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -1739,8 +1919,12 @@
     "metadata": {
       "decade": 1990,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "hip-hop",
+        "sample",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   },
   {
@@ -1771,19 +1955,25 @@
         "aliases": []
       },
       "songwriter": {
-        "value": [],
+        "value": [
+          "George Merrill",
+          "Shannon Rubicam"
+        ],
         "partial_credit": true
       },
       "producer": {
-        "value": null,
+        "value": "Narada Michael Walden",
         "aliases": []
       },
       "record_label": {
-        "value": null,
+        "value": "Arista",
         "aliases": []
       },
       "genre": {
-        "value": []
+        "value": [
+          "Pop",
+          "Dance"
+        ]
       },
       "band_members": {
         "value": [],
@@ -1793,14 +1983,14 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 119,
         "tolerance": 5
       },
       "key_signature": {
         "value": null
       },
       "chart_peak": {
-        "value": null,
+        "value": 1,
         "tolerance": 2
       },
       "sample_source": {
@@ -1813,7 +2003,7 @@
         "value": null
       },
       "opening_lyric": {
-        "value": null,
+        "value": "Clock strikes upon the hour",
         "fuzzy_tolerance": 2
       },
       "instrument_solo": {
@@ -1830,8 +2020,12 @@
     "metadata": {
       "decade": 1980,
       "language": "en",
-      "tags": [],
-      "difficulty_score": 1
+      "tags": [
+        "pop",
+        "dance",
+        "number-one"
+      ],
+      "difficulty_score": 1.5
     }
   }
 ]

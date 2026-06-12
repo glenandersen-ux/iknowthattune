@@ -26,36 +26,36 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Morten Harket", "Magne Furuholmen", "Pål Waaktaar"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Alan Tarney",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Warner Bros.",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Synth-pop", "New Wave"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Morten Harket", "Magne Furuholmen", "Pål Waaktaar"],
       "partial_credit": true
     },
     "featured_artist": {
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 169,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -65,10 +65,10 @@
       "value": null
     },
     "music_video_director": {
-      "value": null
+      "value": "Steve Barron"
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Talking away",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1980,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["synth-pop", "new-wave", "iconic-video", "number-one"],
+    "difficulty_score": 1.5
   }
 }

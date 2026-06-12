@@ -26,36 +26,36 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Noel Gallagher"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
-      "aliases": []
+      "value": "Owen Morris",
+      "aliases": ["Noel Gallagher"]
     },
     "record_label": {
-      "value": null,
+      "value": "Creation Records",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Britpop", "Rock"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Liam Gallagher", "Noel Gallagher", "Paul Arthurs", "Paul McGuigan", "Alan White"],
       "partial_credit": true
     },
     "featured_artist": {
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 87,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 8,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Today is gonna be the day",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1990,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["britpop", "rock", "anthem"],
+    "difficulty_score": 1.5
   }
 }

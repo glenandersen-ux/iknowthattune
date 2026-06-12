@@ -26,36 +26,36 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Danger Mouse", "CeeLo Green"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Danger Mouse",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Downtown Records",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Soul", "Alternative"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Danger Mouse", "CeeLo Green"],
       "partial_credit": true
     },
     "featured_artist": {
-      "value": "CeeLo Green, Danger Mouse"
+      "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 112,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 2,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "I remember when, I remember, I remember when I lost my mind",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 2000,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["soul", "alternative", "duo"],
+    "difficulty_score": 1.5
   }
 }

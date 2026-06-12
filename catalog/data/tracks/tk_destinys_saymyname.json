@@ -26,36 +26,36 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Beyoncé Knowles", "Rodney Jerkins", "LaShawn Daniels", "Fred Jerkins III", "LeToya Luckett", "LaTavia Roberson", "Kelly Rowland"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Rodney Jerkins",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Columbia",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["R&B"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Beyoncé Knowles", "Kelly Rowland", "LaTavia Roberson", "LeToya Luckett"],
       "partial_credit": true
     },
     "featured_artist": {
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 92,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1990,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["r&b", "girl-group", "number-one"],
+    "difficulty_score": 1.5
   }
 }

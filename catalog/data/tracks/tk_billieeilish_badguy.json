@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Billie Eilish", "Finneas O'Connell"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Finneas O'Connell",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Darkroom/Interscope",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Pop", "Electropop"]
     },
     "band_members": {
       "value": [],
@@ -48,14 +48,14 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 135,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "White shirt now red, my bloody nose",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 2010,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["pop", "electropop", "number-one"],
+    "difficulty_score": 1.5
   }
 }

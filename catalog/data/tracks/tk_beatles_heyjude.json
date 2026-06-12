@@ -26,49 +26,49 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["John Lennon", "Paul McCartney"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "George Martin",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Apple Records",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Rock", "Pop"]
     },
     "band_members": {
-      "value": [],
+      "value": ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"],
       "partial_credit": true
     },
     "featured_artist": {
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 74,
       "tolerance": 5
     },
     "key_signature": {
-      "value": null
+      "value": "F major"
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
       "value": null
     },
     "certified_copies": {
-      "value": null
+      "value": "Gold"
     },
     "music_video_director": {
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Hey Jude, don't make it bad",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -83,9 +83,9 @@
     }
   },
   "metadata": {
-    "decade": 1970,
+    "decade": 1960,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["classic-rock", "beatles", "ballad", "number-one"],
+    "difficulty_score": 1.5
   }
 }

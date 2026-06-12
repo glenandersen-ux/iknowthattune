@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Freddie Perren", "Dino Fekaris"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
-      "aliases": []
+      "value": "Dino Fekaris",
+      "aliases": ["Freddie Perren"]
     },
     "record_label": {
-      "value": null,
+      "value": "Polydor",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Disco"]
     },
     "band_members": {
       "value": [],
@@ -48,14 +48,14 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 117,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,14 +68,14 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "At first I was afraid",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
       "value": null
     },
     "covered_by": {
-      "value": [],
+      "value": ["Cake"],
       "partial_credit": true
     },
     "soundtrack": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1970,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["disco", "anthem", "number-one"],
+    "difficulty_score": 1.5
   }
 }

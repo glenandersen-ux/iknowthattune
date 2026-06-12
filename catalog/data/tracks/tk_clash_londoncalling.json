@@ -26,22 +26,22 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Joe Strummer", "Mick Jones"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Guy Stevens",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "CBS",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Punk Rock", "Rock"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Joe Strummer", "Mick Jones", "Paul Simonon", "Topper Headon"],
       "partial_credit": true
     },
     "featured_artist": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "London calling to the faraway towns",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1970,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["punk", "clash", "anthem"],
+    "difficulty_score": 1.5
   }
 }

@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Dolly Parton"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Bob Ferguson",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "RCA Victor",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Country"]
     },
     "band_members": {
       "value": [],
@@ -48,7 +48,7 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 108,
       "tolerance": 5
     },
     "key_signature": {
@@ -68,14 +68,14 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Jolene, Jolene, Jolene, Jolene",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
       "value": null
     },
     "covered_by": {
-      "value": [],
+      "value": ["The White Stripes"],
       "partial_credit": true
     },
     "soundtrack": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1970,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["country", "dolly-parton", "ballad"],
+    "difficulty_score": 1.5
   }
 }

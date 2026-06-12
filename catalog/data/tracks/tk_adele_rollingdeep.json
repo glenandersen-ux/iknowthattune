@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Adele Adkins", "Paul Epworth"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Paul Epworth",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "XL Recordings",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Soul", "Pop"]
     },
     "band_members": {
       "value": [],
@@ -48,14 +48,14 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 105,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "There's a fire starting in my heart",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 2010,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["soul", "pop", "number-one"],
+    "difficulty_score": 1.5
   }
 }

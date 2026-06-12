@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["George Merrill", "Shannon Rubicam"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Narada Michael Walden",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Arista",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Pop", "Dance"]
     },
     "band_members": {
       "value": [],
@@ -48,14 +48,14 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 119,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Clock strikes upon the hour",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1980,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["pop", "dance", "number-one"],
+    "difficulty_score": 1.5
   }
 }

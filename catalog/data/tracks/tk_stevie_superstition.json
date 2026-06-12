@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Stevie Wonder"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Stevie Wonder",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Tamla",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Funk", "Soul"]
     },
     "band_members": {
       "value": [],
@@ -48,14 +48,14 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 100,
       "tolerance": 5
     },
     "key_signature": {
-      "value": null
+      "value": "E♭ minor"
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,14 +68,14 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Very superstitious",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
-      "value": null
+      "value": ["Clavinet"]
     },
     "covered_by": {
-      "value": [],
+      "value": ["Stevie Ray Vaughan"],
       "partial_credit": true
     },
     "soundtrack": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1970,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["funk", "soul", "motown", "number-one"],
+    "difficulty_score": 1.5
   }
 }

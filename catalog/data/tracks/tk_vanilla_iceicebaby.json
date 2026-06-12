@@ -26,19 +26,19 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Robert Van Winkle", "David Bowie", "Freddie Mercury", "Brian May", "Roger Taylor", "John Deacon"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Vanilla Ice",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "SBK Records",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Hip Hop"]
     },
     "band_members": {
       "value": [],
@@ -48,18 +48,18 @@
       "value": null
     },
     "bpm": {
-      "value": null,
+      "value": 120,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 1,
       "tolerance": 2
     },
     "sample_source": {
-      "value": null
+      "value": "Under Pressure by Queen and David Bowie"
     },
     "certified_copies": {
       "value": null
@@ -68,7 +68,7 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Yo, VIP, let's kick it",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 1990,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["hip-hop", "sample", "number-one"],
+    "difficulty_score": 1.5
   }
 }

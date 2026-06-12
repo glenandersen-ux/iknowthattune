@@ -26,36 +26,36 @@
       "aliases": []
     },
     "songwriter": {
-      "value": [],
+      "value": ["Thomas Bangalter", "Guy-Manuel de Homem-Christo", "Pharrell Williams", "Nile Rodgers"],
       "partial_credit": true
     },
     "producer": {
-      "value": null,
+      "value": "Daft Punk",
       "aliases": []
     },
     "record_label": {
-      "value": null,
+      "value": "Columbia",
       "aliases": []
     },
     "genre": {
-      "value": []
+      "value": ["Disco", "Funk", "Electronic"]
     },
     "band_members": {
-      "value": [],
+      "value": ["Thomas Bangalter", "Guy-Manuel de Homem-Christo"],
       "partial_credit": true
     },
     "featured_artist": {
       "value": "Pharrell Williams, Nile Rodgers"
     },
     "bpm": {
-      "value": null,
+      "value": 116,
       "tolerance": 5
     },
     "key_signature": {
       "value": null
     },
     "chart_peak": {
-      "value": null,
+      "value": 2,
       "tolerance": 2
     },
     "sample_source": {
@@ -68,11 +68,11 @@
       "value": null
     },
     "opening_lyric": {
-      "value": null,
+      "value": "Like the legend of the phoenix",
       "fuzzy_tolerance": 2
     },
     "instrument_solo": {
-      "value": null
+      "value": ["Guitar"]
     },
     "covered_by": {
       "value": [],
@@ -85,7 +85,7 @@
   "metadata": {
     "decade": 2010,
     "language": "en",
-    "tags": [],
-    "difficulty_score": 1
+    "tags": ["disco", "funk", "electronic"],
+    "difficulty_score": 1.5
   }
 }
