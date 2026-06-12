@@ -92,26 +92,25 @@ async function confirmUpload(request: Request, env: Env): Promise<Response> {
   return Response.json({ key });
 }
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    const segments = url.pathname.split('/').filter(Boolean);
+/** Routes all `/api/ugc/*` requests (TechStack §D.7, §4.2). */
+export async function handleUgcRequest(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const segments = url.pathname.split('/').filter(Boolean);
 
-    // GET /api/ugc/presign?challengeId=&slot=
-    if (request.method === 'GET' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'presign') {
-      return presignUpload(url, env);
-    }
+  // GET /api/ugc/presign?challengeId=&slot=
+  if (request.method === 'GET' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'presign') {
+    return presignUpload(url, env);
+  }
 
-    // POST /api/ugc/confirm
-    if (request.method === 'POST' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'confirm') {
-      return confirmUpload(request, env);
-    }
+  // POST /api/ugc/confirm
+  if (request.method === 'POST' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'confirm') {
+    return confirmUpload(request, env);
+  }
 
-    // GET /api/ugc/clip-url?challengeId=&slot=
-    if (request.method === 'GET' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'clip-url') {
-      return presignClip(url, env);
-    }
+  // GET /api/ugc/clip-url?challengeId=&slot=
+  if (request.method === 'GET' && segments.length === 3 && segments[1] === 'ugc' && segments[2] === 'clip-url') {
+    return presignClip(url, env);
+  }
 
-    return new Response('Not found', { status: 404 });
-  },
-};
+  return new Response('Not found', { status: 404 });
+}

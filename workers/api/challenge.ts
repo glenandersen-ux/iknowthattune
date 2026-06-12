@@ -4,8 +4,6 @@ import type { Track } from '../../src/types/track';
 import { computeMaxPossibleScore, validateResultScore } from '../../src/engine/ScoringEngine';
 import { generateOgCard } from '../og-generator';
 
-export { LeaderboardDO } from '../durable-objects/Leaderboard';
-
 const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 /** Max length for creator-supplied challenge/display names (TechStack §D.13 threat model). */
@@ -107,41 +105,40 @@ async function getLeaderboard(id: string, env: Env): Promise<Response> {
   return new Response(response.body, response);
 }
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    const segments = url.pathname.split('/').filter(Boolean);
+/** Routes all `/api/challenge*` requests (TechStack §D.7). */
+export async function handleChallengeRequest(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url);
+  const segments = url.pathname.split('/').filter(Boolean);
 
-    // POST /api/challenge
-    if (request.method === 'POST' && segments.length === 2 && segments[1] === 'challenge') {
-      return createChallenge(request, env);
-    }
+  // POST /api/challenge
+  if (request.method === 'POST' && segments.length === 2 && segments[1] === 'challenge') {
+    return createChallenge(request, env);
+  }
 
-    // GET /api/challenge/:id
-    if (request.method === 'GET' && segments.length === 3 && segments[1] === 'challenge') {
-      return getChallenge(segments[2] as string, env);
-    }
+  // GET /api/challenge/:id
+  if (request.method === 'GET' && segments.length === 3 && segments[1] === 'challenge') {
+    return getChallenge(segments[2] as string, env);
+  }
 
-    // POST /api/challenge/:id/result
-    if (
-      request.method === 'POST' &&
-      segments.length === 4 &&
-      segments[1] === 'challenge' &&
-      segments[3] === 'result'
-    ) {
-      return submitResult(segments[2] as string, request, env);
-    }
+  // POST /api/challenge/:id/result
+  if (
+    request.method === 'POST' &&
+    segments.length === 4 &&
+    segments[1] === 'challenge' &&
+    segments[3] === 'result'
+  ) {
+    return submitResult(segments[2] as string, request, env);
+  }
 
-    // GET /api/challenge/:id/leaderboard
-    if (
-      request.method === 'GET' &&
-      segments.length === 4 &&
-      segments[1] === 'challenge' &&
-      segments[3] === 'leaderboard'
-    ) {
-      return getLeaderboard(segments[2] as string, env);
-    }
+  // GET /api/challenge/:id/leaderboard
+  if (
+    request.method === 'GET' &&
+    segments.length === 4 &&
+    segments[1] === 'challenge' &&
+    segments[3] === 'leaderboard'
+  ) {
+    return getLeaderboard(segments[2] as string, env);
+  }
 
-    return new Response('Not found', { status: 404 });
-  },
-};
+  return new Response('Not found', { status: 404 });
+}

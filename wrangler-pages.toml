@@ -1,0 +1,21 @@
+# Cloudflare Pages config for the `iknowthattune` Pages project, used by
+# `wrangler pages deploy dist --config wrangler-pages.toml`. This is a
+# separate file from `wrangler.toml` (which deploys the standalone
+# `iknowthattune` Worker via `main = "workers/api/router.ts"`) — Pages and
+# Workers are distinct deployments and each need their own bindings.
+name = "iknowthattune"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-06-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "3d3a4327a036de9902a7760a03e23ec4"
+
+# Used by functions/og/[challengeId].ts to read challenge metadata for OG tags.
+[[kv_namespaces]]
+binding = "CHALLENGES_KV"
+id = "335289cc2fe64069ad118f9fcc4f13d6"
+
+# Used by functions/api/[[path]].ts to forward /api/* to the iknowthattune
+# Worker, which holds the R2 and Durable Object bindings.
+[[services]]
+binding = "API"
+service = "iknowthattune"

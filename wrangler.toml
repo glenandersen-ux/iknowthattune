@@ -1,5 +1,5 @@
 name = "iknowthattune"
-main = "workers/api/challenge.ts"
+main = "workers/api/router.ts"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
 account_id = "3d3a4327a036de9902a7760a03e23ec4"
