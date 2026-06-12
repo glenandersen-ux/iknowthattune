@@ -4,6 +4,8 @@ import type { Track } from '../../src/types/track';
 import { computeMaxPossibleScore, validateResultScore } from '../../src/engine/ScoringEngine';
 import { generateOgCard } from '../og-generator';
 
+export { LeaderboardDO } from '../durable-objects/Leaderboard';
+
 const BASE62 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 /** Max length for creator-supplied challenge/display names (TechStack §D.13 threat model). */

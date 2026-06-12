@@ -21,13 +21,9 @@ bucket_name = "iknowthattune"
 name = "LEADERBOARD"
 class_name = "LeaderboardDO"
 
-[[durable_objects.bindings]]
-name = "DAILY_DROP"
-class_name = "DailyDropDO"
-
 [[migrations]]
 tag = "v1"
-new_classes = ["LeaderboardDO", "DailyDropDO"]
+new_classes = ["LeaderboardDO"]
 
 # Rate limiting (TechStack §D.13) is configured in the Cloudflare Dashboard
 # under Security -> Rate Limiting, not via wrangler.toml. Apply these rules
