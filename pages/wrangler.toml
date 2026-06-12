@@ -1,8 +1,10 @@
-# Cloudflare Pages config for the `iknowthattune` Pages project, used by
-# `wrangler pages deploy dist --config wrangler-pages.toml`. This is a
-# separate file from `wrangler.toml` (which deploys the standalone
-# `iknowthattune` Worker via `main = "workers/api/router.ts"`) — Pages and
-# Workers are distinct deployments and each need their own bindings.
+# Cloudflare Pages config for the `iknowthattune` Pages project. Pages
+# doesn't support `--config <path>` or `--cwd`, so the deploy step copies this
+# file over the repo-root `wrangler.toml` (after the Worker deploy step, which
+# uses that root config) and runs `wrangler pages deploy` from the repo root —
+# see .github/workflows/deploy.yml. The standalone Worker
+# (main = "workers/api/router.ts") is a separate deployment with its own
+# bindings, defined in the original root wrangler.toml.
 name = "iknowthattune"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-06-01"
