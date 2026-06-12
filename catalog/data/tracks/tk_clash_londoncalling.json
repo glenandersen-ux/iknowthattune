@@ -1,11 +1,11 @@
 {
   "track_id": "tk_clash_londoncalling",
   "clip_urls": {
-    "1s": "",
-    "3s": "",
-    "5s": "",
-    "10s": "",
-    "30s": ""
+    "1s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/f5/b4/fbf5b472-dd9d-5984-c8c5-114716c105cb/mzaf_14673080368047782781.plus.aac.p.m4a",
+    "3s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/f5/b4/fbf5b472-dd9d-5984-c8c5-114716c105cb/mzaf_14673080368047782781.plus.aac.p.m4a",
+    "5s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/f5/b4/fbf5b472-dd9d-5984-c8c5-114716c105cb/mzaf_14673080368047782781.plus.aac.p.m4a",
+    "10s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/f5/b4/fbf5b472-dd9d-5984-c8c5-114716c105cb/mzaf_14673080368047782781.plus.aac.p.m4a",
+    "30s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/f5/b4/fbf5b472-dd9d-5984-c8c5-114716c105cb/mzaf_14673080368047782781.plus.aac.p.m4a"
   },
   "clip_start_offset_ms": 0,
   "answers": {

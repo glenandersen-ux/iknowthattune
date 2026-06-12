@@ -3,17 +3,28 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { Track } from '../../src/types/track';
 
+/** True if every clip duration is an empty string (i.e. no playable audio yet). */
+function hasNoClips(track: Track): boolean {
+  return Object.values(track.clip_urls).every((url) => !url);
+}
+
 /**
  * Merges hand-curated tracks with tracks ingested by `ingest-spotify.ts`
  * (one JSON file per track in `catalog/data/tracks/`). Existing entries win
  * on `track_id` collisions, so hand-tuned niche trivia is never clobbered by
- * a re-ingest; ingested tracks only ever *add* new entries.
+ * a re-ingest; ingested tracks only ever *add* new entries. The one exception
+ * is `clip_urls`: if the existing entry has no clips yet and a re-run of an
+ * ingestion script (e.g. `fill-clip-previews.ts`) found some, those are
+ * adopted so previews can be backfilled without hand-editing seed-tracks.json.
  */
 export function mergeCatalogs(existing: Track[], ingested: Track[]): Track[] {
   const byId = new Map(existing.map((track) => [track.track_id, track]));
   for (const track of ingested) {
-    if (!byId.has(track.track_id)) {
+    const current = byId.get(track.track_id);
+    if (!current) {
       byId.set(track.track_id, track);
+    } else if (hasNoClips(current) && !hasNoClips(track)) {
+      byId.set(track.track_id, { ...current, clip_urls: track.clip_urls });
     }
   }
   return [...byId.values()].sort((a, b) => a.track_id.localeCompare(b.track_id));

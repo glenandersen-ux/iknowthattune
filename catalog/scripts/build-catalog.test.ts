@@ -44,6 +44,24 @@ describe('mergeCatalogs', () => {
     expect(merged.map((t) => t.track_id)).toEqual(['tk_a', 'tk_b']);
   });
 
+  it('adopts clip_urls from a re-ingested track when the existing entry has none', () => {
+    const curated = mapSpotifyTrackToTrack(
+      'tk_shared',
+      { ...makeSpotifyTrack('curated', 'Curated Title'), preview_url: null },
+      null,
+      [],
+    );
+    curated.metadata.curator_note = 'hand-tuned niche trivia';
+    const reingested = mapSpotifyTrackToTrack('tk_shared', makeSpotifyTrack('shared', 'Re-ingested Title'), null, []);
+
+    const merged = mergeCatalogs([curated], [reingested]);
+
+    expect(merged).toHaveLength(1);
+    expect(merged[0].answers.song_title.value).toBe('Curated Title');
+    expect(merged[0].metadata.curator_note).toBe('hand-tuned niche trivia');
+    expect(merged[0].clip_urls).toEqual(reingested.clip_urls);
+  });
+
   it('returns the existing catalog unchanged when there is nothing to ingest', () => {
     const existing = [mapSpotifyTrackToTrack('tk_only', makeSpotifyTrack('only', 'Only Song'), null, [])];
 

@@ -1,11 +1,11 @@
 {
   "track_id": "tk_daftpunk_getlucky",
   "clip_urls": {
-    "1s": "",
-    "3s": "",
-    "5s": "",
-    "10s": "",
-    "30s": ""
+    "1s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/2e/16/682e16c2-6c6d-6bf4-9cd9-42c742fa6bbc/mzaf_11789558788925782439.plus.aac.p.m4a",
+    "3s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/2e/16/682e16c2-6c6d-6bf4-9cd9-42c742fa6bbc/mzaf_11789558788925782439.plus.aac.p.m4a",
+    "5s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/2e/16/682e16c2-6c6d-6bf4-9cd9-42c742fa6bbc/mzaf_11789558788925782439.plus.aac.p.m4a",
+    "10s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/2e/16/682e16c2-6c6d-6bf4-9cd9-42c742fa6bbc/mzaf_11789558788925782439.plus.aac.p.m4a",
+    "30s": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/68/2e/16/682e16c2-6c6d-6bf4-9cd9-42c742fa6bbc/mzaf_11789558788925782439.plus.aac.p.m4a"
   },
   "clip_start_offset_ms": 0,
   "answers": {
