@@ -2,6 +2,7 @@ name = "iknowthattune"
 main = "workers/api/challenge.ts"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
+account_id = "3d3a4327a036de9902a7760a03e23ec4"
 
 [[rules]]
 type = "Data"
@@ -10,7 +11,7 @@ fallthrough = true
 
 [[kv_namespaces]]
 binding = "CHALLENGES_KV"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "335289cc2fe64069ad118f9fcc4f13d6"
 
 [[r2_buckets]]
 binding = "R2"
