@@ -18,8 +18,9 @@ declare global {
 }
 
 /**
- * Fires a Plausible custom event. No-ops silently if the Plausible script
- * isn't loaded (e.g. in dev, or before a domain is configured — TODO Phase 4 §4.5).
+ * Fires a Plausible custom event. No-ops silently since the Plausible script
+ * isn't loaded — the site uses Cloudflare Web Analytics for pageviews instead.
+ * Kept as a stub so these call sites are ready if Plausible is added later.
  */
 export function trackEvent(name: AnalyticsEventName, props?: AnalyticsProps): void {
   window.plausible?.(name, props ? { props } : undefined);
