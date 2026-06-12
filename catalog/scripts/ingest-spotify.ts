@@ -148,11 +148,22 @@ async function main(): Promise<void> {
   for (const entry of seedList) {
     const spotifyTrack = await fetchJson<SpotifyTrack>(`/tracks/${entry.spotify_id}`, token);
 
+    if (!spotifyTrack.preview_url) {
+      console.warn(
+        `  - ${entry.track_id}: no preview_url (Spotify has stopped returning preview URLs for most apps). ` +
+          'clip_urls will be empty; add real clips via the BYOC uploader before this track is playable.',
+      );
+    }
+
     let audioFeatures: SpotifyAudioFeatures | null = null;
     try {
       audioFeatures = await fetchJson<SpotifyAudioFeatures>(`/audio-features/${entry.spotify_id}`, token);
     } catch {
       audioFeatures = null;
+      console.warn(
+        `  - ${entry.track_id}: /audio-features request failed (this endpoint requires extended API access). ` +
+          'bpm and key_signature will be null and can be filled in manually.',
+      );
     }
 
     let artistGenres: string[] = [];
@@ -167,6 +178,9 @@ async function main(): Promise<void> {
     writeFileSync(outPath, JSON.stringify(track, null, 2) + '\n');
     console.log(`Wrote ${outPath}`);
   }
+
+  console.log(`\nIngested ${seedList.length} track(s) into ${tracksDir}.`);
+  console.log('Run "npm run catalog:build" to merge them into catalog/data/seed-tracks.json.');
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

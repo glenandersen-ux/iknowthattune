@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "type-check": "tsc -b --noEmit"
+    "type-check": "tsc -b --noEmit",
+    "catalog:ingest": "tsx catalog/scripts/ingest-spotify.ts",
+    "catalog:build": "tsx catalog/scripts/build-catalog.ts"
   },
   "dependencies": {
     "@resvg/resvg-wasm": "^2.6.2",
@@ -46,6 +48,7 @@
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4.3.0",
+    "tsx": "^4.22.4",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
