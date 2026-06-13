@@ -38,6 +38,7 @@ function createDefaultProfile(): PlayerProfile {
     sample_sources_correct: 0,
     years_within_one: 0,
     field_stats: {},
+    assist_mode: 'regular',
   };
 }
 
@@ -47,6 +48,7 @@ export interface PlayerStore extends PlayerProfile {
   updateAfterGame: (session: PlayerSession) => BadgeId[];
   setDisplayName: (name: string) => void;
   unlockBadge: (badge: BadgeId) => void;
+  setAssistMode: (mode: 'regular' | 'expert') => void;
 }
 
 export const usePlayerStore = create<PlayerStore>()(
@@ -114,6 +116,8 @@ export const usePlayerStore = create<PlayerStore>()(
 
       setDisplayName: (name) => set({ display_name: name }),
 
+      setAssistMode: (mode) => set({ assist_mode: mode }),
+
       unlockBadge: (badge) => {
         const { badges } = get();
         if (badges.includes(badge)) return;
@@ -122,7 +126,7 @@ export const usePlayerStore = create<PlayerStore>()(
     }),
     {
       name: 'iktt-player',
-      version: 3,
+      version: 4,
       migrate: (persistedState, version): PlayerStore => {
         let state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
         if (version < 1) {
@@ -138,6 +142,9 @@ export const usePlayerStore = create<PlayerStore>()(
         }
         if (version < 3) {
           state = { ...state, field_stats: state.field_stats ?? {} };
+        }
+        if (version < 4) {
+          state = { ...state, assist_mode: state.assist_mode ?? 'regular' };
         }
         return state as PlayerStore;
       },

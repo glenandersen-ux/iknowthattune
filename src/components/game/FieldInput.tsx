@@ -19,6 +19,11 @@ export interface FieldInputProps {
   catalogData?: string[];
   /** Chip options for "choice" fields; falls back to `DEFAULT_CHOICE_OPTIONS`. */
   choices?: string[];
+  /**
+   * `'regular'` (default) shows autocomplete suggestions for "text" fields;
+   * `'expert'` suppresses all suggestions so the player must type unaided.
+   */
+  assistMode?: 'regular' | 'expert';
 }
 
 const MAX_SUGGESTIONS = 8;
@@ -35,6 +40,7 @@ export function FieldInput({
   tolerance,
   catalogData,
   choices,
+  assistMode = 'regular',
 }: FieldInputProps): React.ReactElement {
   if (locked) {
     return (
@@ -59,7 +65,7 @@ export function FieldInput({
           label={label}
           value={typeof value === 'string' ? value : ''}
           onChange={onChange}
-          catalogData={catalogData}
+          catalogData={assistMode === 'expert' ? undefined : catalogData}
         />
       );
     case 'year':

@@ -233,6 +233,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   const playerId = usePlayerStore((state) => state.player_id);
   const playerName = usePlayerStore((state) => state.display_name);
   const updateAfterGame = usePlayerStore((state) => state.updateAfterGame);
+  const assistMode = usePlayerStore((state) => state.assist_mode);
 
   const trackStartRef = useRef<number | null>(null);
   const updatedAfterGameRef = useRef(false);
@@ -424,6 +425,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         track={track}
         activeFields={activeFields}
         fieldTries={fieldTries}
+        assistMode={assistMode}
         onSubmit={(_results, guesses): void => submitGuess(guesses)}
         onGiveUp={skipTrack}
       />

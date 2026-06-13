@@ -86,6 +86,7 @@ function makeProfile(overrides: Partial<PlayerProfile> = {}): PlayerProfile {
     sample_sources_correct: 0,
     years_within_one: 0,
     field_stats: {},
+    assist_mode: 'regular',
     ...overrides,
   };
 }

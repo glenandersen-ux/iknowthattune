@@ -1,6 +1,7 @@
 import { useState, type JSX } from 'react';
 import { createRoute } from '@tanstack/react-router';
 import { z } from 'zod';
+import clsx from 'clsx';
 import { Route as rootRoute } from './__root';
 import { usePlayerStore } from '../store/playerStore';
 import { BADGE_DEFINITIONS } from '../engine/BadgeEngine';
@@ -51,6 +52,7 @@ function FieldAccuracyList({ title, accuracy }: FieldAccuracyListProps): JSX.Ele
 export function ProfileScreen(): JSX.Element {
   const profile = usePlayerStore((state) => state);
   const setDisplayName = usePlayerStore((state) => state.setDisplayName);
+  const setAssistMode = usePlayerStore((state) => state.setAssistMode);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(profile.display_name);
 
@@ -93,6 +95,31 @@ export function ProfileScreen(): JSX.Element {
         {profile.daily_drop_streak > 0 && (
           <p className="text-sm text-amber-400">🔥 {profile.daily_drop_streak}-day streak</p>
         )}
+      </div>
+
+      <div className="rounded-lg bg-slate-800 p-4">
+        <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-slate-400">Assist Mode</h3>
+        <p className="mb-3 text-sm text-slate-400">
+          Regular shows autocomplete suggestions as you type. Expert hides all suggestions.
+        </p>
+        <div className="flex gap-2" role="group" aria-label="Assist mode">
+          {(['regular', 'expert'] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              aria-pressed={profile.assist_mode === mode}
+              onClick={() => setAssistMode(mode)}
+              className={clsx(
+                'flex-1 rounded-lg border px-3 py-2 text-sm font-semibold capitalize transition-colors',
+                profile.assist_mode === mode
+                  ? 'bg-cyan-600 border-cyan-400 text-white'
+                  : 'bg-slate-900 border-slate-600 text-slate-300 hover:bg-slate-700',
+              )}
+            >
+              {mode}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

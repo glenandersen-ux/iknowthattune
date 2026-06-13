@@ -11,6 +11,11 @@ export interface GuessPanelProps {
   activeFields: FieldId[];
   /** Per-field autocomplete values from `catalogStore` (text fields only). */
   fieldTries: Partial<Record<FieldId, string[]>>;
+  /**
+   * `'regular'` (default) shows autocomplete suggestions for text fields;
+   * `'expert'` suppresses all suggestions.
+   */
+  assistMode?: 'regular' | 'expert';
   /** Called when "Submit Guess" is pressed, with match results and raw guesses for every active field. */
   onSubmit: (results: Partial<Record<FieldId, FieldMatchResult>>, guesses: FieldGuess[]) => void;
   /** Called when "Give Up" is pressed; scores 0 and reveals answers. */
@@ -28,7 +33,14 @@ function toleranceFor(track: Track, fieldId: FieldId): number | undefined {
 }
 
 /** Renders one `<FieldInput>` per active field and submits all unlocked fields together. */
-export function GuessPanel({ track, activeFields, fieldTries, onSubmit, onGiveUp }: GuessPanelProps): React.ReactElement {
+export function GuessPanel({
+  track,
+  activeFields,
+  fieldTries,
+  assistMode = 'regular',
+  onSubmit,
+  onGiveUp,
+}: GuessPanelProps): React.ReactElement {
   const [values, setValues] = useState<Partial<Record<FieldId, FieldGuessValue>>>({});
   const [locked, setLocked] = useState<Partial<Record<FieldId, FieldMatchResult>>>({});
 
@@ -80,6 +92,7 @@ export function GuessPanel({ track, activeFields, fieldTries, onSubmit, onGiveUp
             locked={isLocked}
             tolerance={toleranceFor(track, fieldId)}
             catalogData={fieldTries[fieldId]}
+            assistMode={assistMode}
           />
         );
       })}

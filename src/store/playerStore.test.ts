@@ -85,4 +85,10 @@ describe('playerStore', () => {
     usePlayerStore.getState().unlockBadge('first_blood');
     expect(usePlayerStore.getState().badges).toEqual(['first_blood']);
   });
+
+  it('defaults to "regular" assist mode and setAssistMode toggles to "expert"', () => {
+    expect(usePlayerStore.getState().assist_mode).toBe('regular');
+    usePlayerStore.getState().setAssistMode('expert');
+    expect(usePlayerStore.getState().assist_mode).toBe('expert');
+  });
 });

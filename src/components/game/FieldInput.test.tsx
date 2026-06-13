@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FieldInput } from './FieldInput';
 
 describe('FieldInput', () => {
@@ -67,6 +67,39 @@ describe('FieldInput', () => {
     fireEvent.change(input, { target: { value: 'Brian May' } });
     fireEvent.click(screen.getByText('+ Add'));
     expect(onChange).toHaveBeenCalledWith(['Freddie Mercury', 'Brian May']);
+  });
+
+  it('shows autocomplete suggestions for text fields in regular assist mode', async () => {
+    render(
+      <FieldInput
+        fieldId="song_title"
+        type="text"
+        label="Song Title"
+        value="Bohem"
+        onChange={vi.fn()}
+        locked={false}
+        catalogData={['Bohemian Rhapsody', 'Bohemian Like You']}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('field-song_title-suggestions')).toBeInTheDocument());
+    expect(screen.getByText('Bohemian Rhapsody')).toBeInTheDocument();
+  });
+
+  it('suppresses autocomplete suggestions in expert assist mode', async () => {
+    render(
+      <FieldInput
+        fieldId="song_title"
+        type="text"
+        label="Song Title"
+        value="Bohem"
+        onChange={vi.fn()}
+        locked={false}
+        catalogData={['Bohemian Rhapsody', 'Bohemian Like You']}
+        assistMode="expert"
+      />,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(screen.queryByTestId('field-song_title-suggestions')).not.toBeInTheDocument();
   });
 
   it('renders a locked field as a checked, read-only summary', () => {

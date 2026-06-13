@@ -165,4 +165,10 @@ export interface PlayerProfile {
   years_within_one: number;
   /** Lifetime per-field attempt/correct counts, used to derive `hardest_field_accuracy` / `easiest_field_accuracy`. */
   field_stats: Partial<Record<FieldId, { attempted: number; correct: number }>>;
+  /**
+   * Player-controlled assist level: `'regular'` shows autocomplete suggestions
+   * for text fields (song title, artist, album, etc.); `'expert'` hides all
+   * suggestions and requires the player to type every answer unaided.
+   */
+  assist_mode: 'regular' | 'expert';
 }

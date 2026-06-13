@@ -38,6 +38,20 @@ describe('ProfileScreen', () => {
     expect(screen.getByText('90%')).toBeInTheDocument();
   });
 
+  it('toggles assist mode between regular and expert', async () => {
+    render(<ProfileScreen />);
+
+    const regularButton = screen.getByRole('button', { name: 'regular' });
+    const expertButton = screen.getByRole('button', { name: 'expert' });
+    expect(regularButton).toHaveAttribute('aria-pressed', 'true');
+    expect(expertButton).toHaveAttribute('aria-pressed', 'false');
+
+    await userEvent.click(expertButton);
+    expect(usePlayerStore.getState().assist_mode).toBe('expert');
+    expect(expertButton).toHaveAttribute('aria-pressed', 'true');
+    expect(regularButton).toHaveAttribute('aria-pressed', 'false');
+  });
+
   it('allows editing the display name', async () => {
     render(<ProfileScreen />);
 

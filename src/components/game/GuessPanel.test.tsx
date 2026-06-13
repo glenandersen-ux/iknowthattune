@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { GuessPanel } from './GuessPanel';
 import type { Track } from '../../types/track';
 
@@ -76,6 +76,35 @@ describe('GuessPanel', () => {
 
     expect(screen.getByTestId('field-song_title-locked')).toBeInTheDocument();
     expect(screen.getByLabelText('Primary Artist')).toBeInTheDocument();
+  });
+
+  it('shows autocomplete suggestions by default but suppresses them in expert assist mode', async () => {
+    const fieldTries = { song_title: ['Bohemian Rhapsody', 'Bohemian Like You'] };
+
+    const { rerender } = render(
+      <GuessPanel
+        track={track}
+        activeFields={['song_title']}
+        fieldTries={fieldTries}
+        onSubmit={vi.fn()}
+        onGiveUp={vi.fn()}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText('Song Title'), { target: { value: 'Bohem' } });
+    await waitFor(() => expect(screen.getByTestId('field-song_title-suggestions')).toBeInTheDocument());
+
+    rerender(
+      <GuessPanel
+        track={track}
+        activeFields={['song_title']}
+        fieldTries={fieldTries}
+        assistMode="expert"
+        onSubmit={vi.fn()}
+        onGiveUp={vi.fn()}
+      />,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(screen.queryByTestId('field-song_title-suggestions')).not.toBeInTheDocument();
   });
 
   it('calls onGiveUp when the Give Up button is pressed', () => {
