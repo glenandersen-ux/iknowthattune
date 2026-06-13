@@ -21,12 +21,23 @@ export class AudioEngine {
   private sourceNode: AudioBufferSourceNode | null = null;
   private readonly analyser: AnalyserNode;
   private readonly gainNode: GainNode;
+  private readonly streamDestination: MediaStreamAudioDestinationNode;
+  private audioElement: HTMLAudioElement | null = null;
   private readonly clipCache: Map<ClipDuration, AudioBuffer> = new Map();
 
   constructor(ctx: AudioContext = new AudioContext()) {
     this.ctx = ctx;
     this.analyser = ctx.createAnalyser();
     this.gainNode = ctx.createGain();
+    // Route through a MediaStream + <audio> element rather than
+    // `ctx.destination` directly. iOS Safari/Chrome treat raw AudioContext
+    // output as "ambient" audio, which can silently fail to reach the
+    // built-in speaker (while still routing to Bluetooth/AirPlay) even with
+    // the ringer unmuted. An <audio> element uses the standard media
+    // playback audio session and reliably reaches the speaker everywhere.
+    this.streamDestination = ctx.createMediaStreamDestination();
+    this.analyser.connect(this.gainNode);
+    this.gainNode.connect(this.streamDestination);
   }
 
   /**
@@ -90,8 +101,6 @@ export class AudioEngine {
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.analyser);
-    this.analyser.connect(this.gainNode);
-    this.gainNode.connect(this.ctx.destination);
     this.sourceNode = source;
 
     const offset = Math.min(Math.max(offsetSeconds, 0), buffer.duration);
@@ -117,8 +126,25 @@ export class AudioEngine {
     this.sourceNode = null;
   }
 
-  /** Resumes a suspended AudioContext; required by iOS Safari before first playback. */
+  /**
+   * Resumes a suspended AudioContext and starts the hidden `<audio>` element
+   * that carries the engine's output. Both must happen inside the same
+   * user-gesture call stack for iOS Safari/Chrome to grant audio playback —
+   * resuming the context alone is not enough to route sound to the built-in
+   * speaker.
+   */
   unlock(): Promise<void> {
-    return this.ctx.resume();
+    if (!this.audioElement && typeof document !== 'undefined') {
+      const audioElement = new Audio();
+      audioElement.srcObject = this.streamDestination.stream;
+      audioElement.autoplay = true;
+      audioElement.setAttribute('playsinline', 'true');
+      audioElement.style.display = 'none';
+      document.body.appendChild(audioElement);
+      this.audioElement = audioElement;
+    }
+    const playResult = this.audioElement?.play();
+    const playPromise = playResult instanceof Promise ? playResult.catch(() => undefined) : Promise.resolve();
+    return Promise.all([this.ctx.resume(), playPromise]).then(() => undefined);
   }
 }

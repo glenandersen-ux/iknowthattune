@@ -21,12 +21,17 @@ class MockGainNode {
   connect = vi.fn();
 }
 
+class MockMediaStreamAudioDestinationNode {
+  stream = {} as MediaStream;
+}
+
 class MockAudioContext {
   destination = {};
   currentTime = 0;
   createBufferSource = vi.fn(() => new MockAudioBufferSourceNode());
   createAnalyser = vi.fn(() => new MockAnalyserNode());
   createGain = vi.fn(() => new MockGainNode());
+  createMediaStreamDestination = vi.fn(() => new MockMediaStreamAudioDestinationNode());
   decodeAudioData = vi.fn(async () => ({}) as AudioBuffer);
   resume = vi.fn(async () => undefined);
 }
@@ -44,6 +49,7 @@ describe('AudioEngine', () => {
   let engine: AudioEngine;
 
   beforeEach(() => {
+    document.body.innerHTML = '';
     ctx = new MockAudioContext();
     engine = new AudioEngine(ctx as unknown as AudioContext);
     vi.stubGlobal(
@@ -145,6 +151,26 @@ describe('AudioEngine', () => {
     );
 
     await expect(engine.preloadTrack(CLIP_URLS)).rejects.toThrow('Failed to preload any clip durations');
+  });
+
+  it('unlock resumes the context and attaches a hidden audio element carrying the stream output', async () => {
+    await engine.unlock();
+
+    expect(ctx.resume).toHaveBeenCalledOnce();
+    expect(ctx.createMediaStreamDestination).toHaveBeenCalledOnce();
+
+    const audioElement = document.querySelector('audio');
+    expect(audioElement).not.toBeNull();
+    expect(audioElement?.autoplay).toBe(true);
+    expect(audioElement?.getAttribute('playsinline')).toBe('true');
+  });
+
+  it('unlock reuses the same audio element across repeated calls', async () => {
+    await engine.unlock();
+    await engine.unlock();
+
+    expect(document.querySelectorAll('audio')).toHaveLength(1);
+    expect(ctx.createMediaStreamDestination).toHaveBeenCalledOnce();
   });
 
   it('stop disconnects the active source node', async () => {
