@@ -211,4 +211,18 @@ describe('GameScreen', () => {
 
     vi.unstubAllGlobals();
   });
+
+  it('loads a new Solo Sprint seed even if a previous game challenge is still in the store', async () => {
+    // Simulate a previously-played game (e.g. Daily Drop) leaving its challenge in the global store.
+    const { buildSoloChallenge } = await import('../engine/ChallengeBuilder');
+    useGameStore.getState().loadChallenge(buildSoloChallenge([buildTrack('track-1', 'Track One')], 'daily', 'p1'), 'daily', 'Player');
+
+    const { rerender } = render(<GameScreen search={{ mode: 'solo', seed: 'track-2' }} />);
+
+    await waitFor(() => expect(useGameStore.getState().challenge?.tracks).toEqual(['track-2']));
+    expect(screen.getByText(/Track 1 of 1/)).toBeInTheDocument();
+
+    rerender(<GameScreen search={{ mode: 'solo', seed: 'track-2' }} />);
+    expect(useGameStore.getState().challenge?.tracks).toEqual(['track-2']);
+  });
 });

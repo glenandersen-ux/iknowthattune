@@ -236,19 +236,34 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
 
   const trackStartRef = useRef<number | null>(null);
   const updatedAfterGameRef = useRef(false);
+  // Tracks which `search` params the current `challenge` was built from, so a
+  // new Solo Sprint / Daily Drop / micro-challenge link is loaded even though
+  // `challenge` from a previous game is still sitting in the global store.
+  const loadedSearchKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
     void loadCatalog();
   }, [loadCatalog]);
 
   useEffect(() => {
-    if (challenge || tracks.length === 0) return;
+    if (tracks.length === 0) return;
+
+    const searchKey = JSON.stringify([search.mode, search.seed, search.t, search.p, search.r]);
+    if (loadedSearchKeyRef.current === searchKey) return;
+
+    // No mode/seed specified: rely on a challenge pre-loaded externally
+    // (e.g. accepted via /challenge/:id before navigating here).
+    if (!search.mode && !search.seed && challenge) {
+      loadedSearchKeyRef.current = searchKey;
+      return;
+    }
 
     if (search.mode === 'micro' && search.t && search.p) {
       const track = getTrack(search.t);
       if (!track) return;
       const activeFields = search.p.split(',') as FieldId[];
       const challenger = search.r ? decodeResult(search.r) : null;
+      loadedSearchKeyRef.current = searchKey;
       loadChallenge(
         buildMicroChallenge(track, activeFields, challenger?.u ?? 'a friend', challenger?.s ?? null),
         'micro',
@@ -264,8 +279,9 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         : tracks;
     if (selected.length === 0) return;
     const mode = search.mode === 'daily' ? 'daily' : 'solo';
+    loadedSearchKeyRef.current = searchKey;
     loadChallenge(buildSoloChallenge(selected, mode, playerId), mode, playerName);
-  }, [challenge, tracks, search.seed, search.mode, search.t, search.p, search.r, getTrack, loadChallenge, playerId, playerName]);
+  }, [tracks, challenge, search.seed, search.mode, search.t, search.p, search.r, getTrack, loadChallenge, playerId, playerName]);
 
   useEffect(() => {
     if (phase !== 'playing' && phase !== 'guessing') return;
