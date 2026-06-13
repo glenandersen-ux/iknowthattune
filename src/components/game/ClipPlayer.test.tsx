@@ -19,14 +19,22 @@ vi.mock('../../engine/AudioEngine', () => ({
   }),
 }));
 
+const fetchItunesPreview = vi.fn();
+
+vi.mock('../../engine/ItunesPreview', () => ({
+  fetchItunesPreview: (...args: unknown[]) => fetchItunesPreview(...args),
+}));
+
 const clipUrls = { '1s': 'a', '3s': 'b', '5s': 'c', '10s': 'd', '30s': 'e' };
 
 describe('ClipPlayer', () => {
   beforeEach(() => {
     preloadTrack.mockClear();
+    preloadTrack.mockResolvedValue(undefined);
     unlock.mockClear();
     play.mockClear();
     stop.mockClear();
+    fetchItunesPreview.mockReset();
   });
 
   it('preloads all clip durations on mount', async () => {
@@ -112,6 +120,69 @@ describe('ClipPlayer', () => {
 
     await waitFor(() => expect(screen.getByTestId('clip-error')).toBeInTheDocument());
     expect(screen.queryByTestId('tap-to-start')).not.toBeInTheDocument();
+    expect(onPlaybackStart).toHaveBeenCalledOnce();
+    expect(onPlaybackEnd).toHaveBeenCalledOnce();
+  });
+
+  it('falls back to an iTunes preview and shows the attribution badge if the catalog clip fails to load', async () => {
+    preloadTrack.mockRejectedValueOnce(new Error('Failed to preload any clip durations'));
+    preloadTrack.mockResolvedValueOnce(undefined);
+    fetchItunesPreview.mockResolvedValueOnce({
+      previewUrl: 'https://audio.example/preview.m4a',
+      trackViewUrl: 'https://music.apple.com/track/1',
+    });
+    const onPlaybackStart = vi.fn();
+    const onPlaybackEnd = vi.fn();
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="1s"
+        onPlaybackStart={onPlaybackStart}
+        onPlaybackEnd={onPlaybackEnd}
+        onExtendRequest={vi.fn()}
+        fallbackSongTitle="Some Song"
+        fallbackArtistName="Some Artist"
+      />,
+    );
+
+    await waitFor(() => expect(fetchItunesPreview).toHaveBeenCalledWith('Some Song', 'Some Artist'));
+    await waitFor(() => expect(screen.getByTestId('itunes-fallback-badge')).toBeInTheDocument());
+    expect(screen.getByTestId('itunes-fallback-badge')).toHaveAttribute('href', 'https://music.apple.com/track/1');
+    expect(screen.queryByTestId('clip-error')).not.toBeInTheDocument();
+    expect(screen.getByTestId('tap-to-start')).not.toBeDisabled();
+    expect(onPlaybackStart).not.toHaveBeenCalled();
+    expect(onPlaybackEnd).not.toHaveBeenCalled();
+
+    await waitFor(() =>
+      expect(preloadTrack).toHaveBeenLastCalledWith({
+        '1s': 'https://audio.example/preview.m4a',
+        '3s': 'https://audio.example/preview.m4a',
+        '5s': 'https://audio.example/preview.m4a',
+        '10s': 'https://audio.example/preview.m4a',
+        '30s': 'https://audio.example/preview.m4a',
+      }),
+    );
+  });
+
+  it('shows the error overlay when both the catalog clip and the iTunes fallback fail', async () => {
+    preloadTrack.mockRejectedValueOnce(new Error('Failed to preload any clip durations'));
+    fetchItunesPreview.mockResolvedValueOnce(null);
+    const onPlaybackStart = vi.fn();
+    const onPlaybackEnd = vi.fn();
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="1s"
+        onPlaybackStart={onPlaybackStart}
+        onPlaybackEnd={onPlaybackEnd}
+        onExtendRequest={vi.fn()}
+        fallbackSongTitle="Some Song"
+        fallbackArtistName="Some Artist"
+      />,
+    );
+
+    await waitFor(() => expect(screen.getByTestId('clip-error')).toBeInTheDocument());
+    expect(screen.queryByTestId('itunes-fallback-badge')).not.toBeInTheDocument();
     expect(onPlaybackStart).toHaveBeenCalledOnce();
     expect(onPlaybackEnd).toHaveBeenCalledOnce();
   });

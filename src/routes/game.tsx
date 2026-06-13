@@ -442,6 +442,8 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         onPlaybackStart={handlePlaybackStart}
         onPlaybackEnd={clipEnded}
         onExtendRequest={(): void => {}}
+        fallbackSongTitle={track.answers.song_title.value ?? undefined}
+        fallbackArtistName={track.answers.primary_artist.value ?? undefined}
       />
       <div className="flex items-center justify-between">
         <SpeedMultiplierBadge multiplier={speedMultiplier} />

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioEngine } from '../../engine/AudioEngine';
 import { MultiplierBackground } from './MultiplierBackground';
 import { MAX_SPEED_MULTIPLIER } from '../../engine/ScoringEngine';
+import { fetchItunesPreview, type ItunesPreview } from '../../engine/ItunesPreview';
 import type { ClipDuration, ClipUrlMap } from '../../types/track';
 
 export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended' | 'error';
@@ -22,6 +23,12 @@ export interface ClipPlayerProps {
   onPlaybackEnd: () => void;
   /** Reserved for a future tap-to-extend gesture; `<ClipExtendBar>` drives extensions for now. */
   onExtendRequest: () => void;
+  /**
+   * Song title / primary artist used to look up an iTunes Search API preview
+   * if the catalog clip fails to load. Omit to disable the fallback.
+   */
+  fallbackSongTitle?: string;
+  fallbackArtistName?: string;
 }
 
 /**
@@ -36,14 +43,20 @@ export function ClipPlayer({
   multiplier = MAX_SPEED_MULTIPLIER,
   onPlaybackStart,
   onPlaybackEnd,
+  fallbackSongTitle,
+  fallbackArtistName,
 }: ClipPlayerProps): React.ReactElement {
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
+  const [fallback, setFallback] = useState<ItunesPreview | null>(null);
   const previousDuration = useRef(currentDuration);
   // Guards against `playClip`'s pending `engine.play()` promise also firing
   // `onPlaybackEnd` once `handleStop` has already transitioned the player.
   const stoppedRef = useRef(false);
+  // The fallback preview is a single clip reused for every duration, so its
+  // start offset is always 0 regardless of the catalog track's hook offset.
+  const usingFallbackRef = useRef(false);
 
   const getEngine = useCallback((): AudioEngine => {
     if (!engineRef.current) {
@@ -62,11 +75,36 @@ export function ClipPlayer({
       .then(() => {
         if (!cancelled) setStatus('idle');
       })
-      .catch(() => {
+      .catch(async () => {
         if (cancelled) return;
-        // No clip durations loaded (e.g. an expired preview URL). Surface an
-        // error state and advance the game phase so the player isn't stuck
-        // on "Loading..." forever — they can still guess or give up.
+        // Catalog clip failed to load (e.g. an expired preview URL). Try the
+        // iTunes Search API as a "BYOC" fallback before giving up.
+        if (fallbackSongTitle && fallbackArtistName) {
+          const preview = await fetchItunesPreview(fallbackSongTitle, fallbackArtistName);
+          if (!cancelled && preview) {
+            const fallbackUrls: ClipUrlMap = {
+              '1s': preview.previewUrl,
+              '3s': preview.previewUrl,
+              '5s': preview.previewUrl,
+              '10s': preview.previewUrl,
+              '30s': preview.previewUrl,
+            };
+            try {
+              await getEngine().preloadTrack(fallbackUrls);
+              if (!cancelled) {
+                usingFallbackRef.current = true;
+                setFallback(preview);
+                setStatus('idle');
+                return;
+              }
+            } catch {
+              // Fall through to the error state below.
+            }
+          }
+        }
+        if (cancelled) return;
+        // Surface an error state and advance the game phase so the player
+        // isn't stuck on "Loading..." forever — they can still guess or give up.
         setStatus('error');
         setUnlocked(true);
         onPlaybackStart();
@@ -75,7 +113,7 @@ export function ClipPlayer({
     return (): void => {
       cancelled = true;
     };
-  }, [clipUrls, getEngine]);
+  }, [clipUrls, getEngine, fallbackSongTitle, fallbackArtistName, onPlaybackStart, onPlaybackEnd]);
 
   const playClip = useCallback(
     async (duration: ClipDuration): Promise<void> => {
@@ -84,7 +122,7 @@ export function ClipPlayer({
       setStatus('playing');
       onPlaybackStart();
       try {
-        await engine.play(duration, clipStartOffsetMs / 1000);
+        await engine.play(duration, usingFallbackRef.current ? 0 : clipStartOffsetMs / 1000);
       } catch {
         if (!stoppedRef.current) setStatus('error');
         return;
@@ -154,6 +192,17 @@ export function ClipPlayer({
             Stop
           </button>
         </div>
+      )}
+      {fallback && (
+        <a
+          href={fallback.trackViewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute right-2 top-2 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white hover:bg-black/80"
+          data-testid="itunes-fallback-badge"
+        >
+          🎵 Preview via Apple Music
+        </a>
       )}
     </div>
   );
