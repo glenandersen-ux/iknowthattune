@@ -57,6 +57,24 @@ describe('ClipPlayer', () => {
     await waitFor(() => expect(screen.getByTestId('tap-to-start')).not.toBeDisabled());
   });
 
+  it('passes the clip start offset (in seconds) to the audio engine', async () => {
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="5s"
+        clipStartOffsetMs={1500}
+        onPlaybackStart={vi.fn()}
+        onPlaybackEnd={vi.fn()}
+        onExtendRequest={vi.fn()}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('tap-to-start')).not.toBeDisabled());
+
+    await userEvent.click(screen.getByTestId('tap-to-start'));
+
+    await waitFor(() => expect(play).toHaveBeenCalledWith('5s', 1.5));
+  });
+
   it('unlocks audio and plays the clip on tap, then calls playback callbacks', async () => {
     const onPlaybackStart = vi.fn();
     const onPlaybackEnd = vi.fn();
@@ -75,7 +93,7 @@ describe('ClipPlayer', () => {
 
     await waitFor(() => expect(unlock).toHaveBeenCalledOnce());
     expect(onPlaybackStart).toHaveBeenCalledOnce();
-    expect(play).toHaveBeenCalledWith('1s');
+    expect(play).toHaveBeenCalledWith('1s', 0);
     await waitFor(() => expect(onPlaybackEnd).toHaveBeenCalledOnce());
     expect(screen.queryByTestId('tap-to-start')).not.toBeInTheDocument();
   });

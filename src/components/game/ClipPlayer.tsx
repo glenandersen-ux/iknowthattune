@@ -8,6 +8,8 @@ export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ende
 export interface ClipPlayerProps {
   clipUrls: ClipUrlMap;
   currentDuration: ClipDuration;
+  /** Offset, in milliseconds, into the clip where playback should start (e.g. a track's "hook"). */
+  clipStartOffsetMs?: number;
   /** Starts the speed clock. */
   onPlaybackStart: () => void;
   /** Signals the clip finished playing (auto-loop or "extend available"). */
@@ -21,7 +23,13 @@ export interface ClipPlayerProps {
  * "Start" unlock button (Web Audio contexts must be resumed
  * from a user gesture before the first `play()` call).
  */
-export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlaybackEnd }: ClipPlayerProps): React.ReactElement {
+export function ClipPlayer({
+  clipUrls,
+  currentDuration,
+  clipStartOffsetMs = 0,
+  onPlaybackStart,
+  onPlaybackEnd,
+}: ClipPlayerProps): React.ReactElement {
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
@@ -69,7 +77,7 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
       setStatus('playing');
       onPlaybackStart();
       try {
-        await engine.play(duration);
+        await engine.play(duration, clipStartOffsetMs / 1000);
       } catch {
         if (!stoppedRef.current) setStatus('error');
         return;
@@ -78,7 +86,7 @@ export function ClipPlayer({ clipUrls, currentDuration, onPlaybackStart, onPlayb
       setStatus('ended');
       onPlaybackEnd();
     },
-    [getEngine, onPlaybackStart, onPlaybackEnd],
+    [getEngine, onPlaybackStart, onPlaybackEnd, clipStartOffsetMs],
   );
 
   const handleStop = useCallback((): void => {

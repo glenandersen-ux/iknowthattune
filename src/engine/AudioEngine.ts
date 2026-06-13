@@ -1,5 +1,14 @@
 import type { ClipDuration, ClipUrlMap } from '../types/track';
 
+/** Nominal playback length, in seconds, for each `ClipDuration` tier. */
+const CLIP_DURATION_SECONDS: Record<ClipDuration, number> = {
+  '1s': 1,
+  '3s': 3,
+  '5s': 5,
+  '10s': 10,
+  '30s': 30,
+};
+
 /**
  * Wraps the Web Audio API to preload, play, and visualize track clips.
  *
@@ -64,8 +73,16 @@ export class AudioEngine {
     }
   }
 
-  /** Plays a preloaded clip duration, resolving when playback ends. */
-  async play(duration: ClipDuration): Promise<void> {
+  /**
+   * Plays a preloaded clip, trimmed to the nominal length of `duration`
+   * (e.g. `'1s'` plays exactly ~1 second), resolving when playback ends.
+   *
+   * `offsetSeconds` shifts the start position within the underlying buffer
+   * (e.g. to start at a track's "hook" rather than its beginning). If the
+   * trimmed window would run past the end of the buffer, playback is
+   * clamped to the buffer's end.
+   */
+  async play(duration: ClipDuration, offsetSeconds = 0): Promise<void> {
     this.stop();
     const buffer = this.clipCache.get(duration);
     if (!buffer) throw new Error(`Clip ${duration} not preloaded`);
@@ -77,9 +94,12 @@ export class AudioEngine {
     this.gainNode.connect(this.ctx.destination);
     this.sourceNode = source;
 
+    const offset = Math.min(Math.max(offsetSeconds, 0), buffer.duration);
+    const playbackSeconds = Math.min(CLIP_DURATION_SECONDS[duration], buffer.duration - offset);
+
     return new Promise((resolve) => {
       source.onended = (): void => resolve();
-      source.start();
+      source.start(0, offset, playbackSeconds);
     });
   }
 

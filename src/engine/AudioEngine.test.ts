@@ -85,6 +85,30 @@ describe('AudioEngine', () => {
     await playPromise2;
   });
 
+  it('play trims playback to the nominal duration for the requested clip tier', async () => {
+    ctx.decodeAudioData = vi.fn(async () => ({ duration: 30 }) as AudioBuffer);
+    await engine.preloadTrack(CLIP_URLS);
+
+    const playPromise = engine.play('3s');
+    const source = ctx.createBufferSource.mock.results[0]?.value as MockAudioBufferSourceNode;
+    expect(source.start).toHaveBeenCalledWith(0, 0, 3);
+
+    source.onended?.();
+    await playPromise;
+  });
+
+  it('play offsets into the buffer and clamps the trimmed window to the buffer end', async () => {
+    ctx.decodeAudioData = vi.fn(async () => ({ duration: 10 }) as AudioBuffer);
+    await engine.preloadTrack(CLIP_URLS);
+
+    const playPromise = engine.play('30s', 8);
+    const source = ctx.createBufferSource.mock.results[0]?.value as MockAudioBufferSourceNode;
+    expect(source.start).toHaveBeenCalledWith(0, 8, 2);
+
+    source.onended?.();
+    await playPromise;
+  });
+
   it('play resolves after the source node fires onended', async () => {
     await engine.preloadTrack(CLIP_URLS);
     const playPromise = engine.play('1s');
