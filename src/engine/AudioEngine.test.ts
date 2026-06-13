@@ -58,6 +58,33 @@ describe('AudioEngine', () => {
     expect(ctx.decodeAudioData).toHaveBeenCalledTimes(5);
   });
 
+  it('preloadTrack fetches a URL shared across durations only once', async () => {
+    const sharedUrl = 'https://example.com/shared.mp3';
+    const clipUrls: ClipUrlMap = {
+      '1s': sharedUrl,
+      '3s': sharedUrl,
+      '5s': sharedUrl,
+      '10s': sharedUrl,
+      '30s': sharedUrl,
+    };
+
+    await engine.preloadTrack(clipUrls);
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+    expect(ctx.decodeAudioData).toHaveBeenCalledTimes(1);
+
+    // Both durations should resolve to a preloaded buffer (no "not preloaded" error).
+    const playPromise = engine.play('1s');
+    let source = ctx.createBufferSource.mock.results[0]?.value as MockAudioBufferSourceNode;
+    source.onended?.();
+    await playPromise;
+
+    const playPromise2 = engine.play('30s');
+    source = ctx.createBufferSource.mock.results[1]?.value as MockAudioBufferSourceNode;
+    source.onended?.();
+    await playPromise2;
+  });
+
   it('play resolves after the source node fires onended', async () => {
     await engine.preloadTrack(CLIP_URLS);
     const playPromise = engine.play('1s');

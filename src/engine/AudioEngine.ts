@@ -23,21 +23,40 @@ export class AudioEngine {
   /**
    * Fetches and decodes all clip durations for a track in parallel.
    *
-   * Individual duration failures (e.g. an expired Spotify preview URL) are
-   * tolerated as long as at least one duration loads successfully — the
-   * game can still play with whatever durations are cached. Only throws if
-   * every duration fails, so callers can surface a clear error instead of
-   * hanging indefinitely.
+   * Catalog tracks currently reuse the same preview URL for every duration,
+   * so each distinct URL is fetched and decoded only once and the resulting
+   * `AudioBuffer` is shared across all durations that reference it — issuing
+   * 5 parallel requests for an identical URL was wasteful and made some CDNs
+   * intermittently fail a subset of them, leaving individual durations
+   * "not preloaded" even though the track as a whole loaded fine.
+   *
+   * Individual URL failures (e.g. an expired Spotify preview URL) are
+   * tolerated as long as at least one URL loads successfully — the game can
+   * still play with whatever durations are cached. Only throws if every URL
+   * fails, so callers can surface a clear error instead of hanging
+   * indefinitely.
    */
   async preloadTrack(clipUrls: ClipUrlMap): Promise<void> {
     const entries = Object.entries(clipUrls) as [ClipDuration, string][];
+    const durationsByUrl = new Map<string, ClipDuration[]>();
+    for (const [duration, url] of entries) {
+      const durations = durationsByUrl.get(url);
+      if (durations) {
+        durations.push(duration);
+      } else {
+        durationsByUrl.set(url, [duration]);
+      }
+    }
+
     await Promise.allSettled(
-      entries.map(async ([duration, url]) => {
+      [...durationsByUrl.entries()].map(async ([url, durations]) => {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`Clip fetch failed for ${duration}: ${response.status}`);
+        if (!response.ok) throw new Error(`Clip fetch failed for ${url}: ${response.status}`);
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
-        this.clipCache.set(duration, audioBuffer);
+        for (const duration of durations) {
+          this.clipCache.set(duration, audioBuffer);
+        }
       }),
     );
     if (this.clipCache.size === 0) {
