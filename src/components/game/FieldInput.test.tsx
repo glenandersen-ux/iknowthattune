@@ -85,6 +85,40 @@ describe('FieldInput', () => {
     expect(screen.getByText('Bohemian Rhapsody')).toBeInTheDocument();
   });
 
+  it('closes the suggestion list after picking a suggestion and does not reopen it', async () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <FieldInput
+        fieldId="song_title"
+        type="text"
+        label="Song Title"
+        value="Bohem"
+        onChange={onChange}
+        locked={false}
+        catalogData={['Bohemian Rhapsody', 'Bohemian Like You']}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('field-song_title-suggestions')).toBeInTheDocument());
+
+    fireEvent.click(screen.getByText('Bohemian Rhapsody'));
+    expect(onChange).toHaveBeenCalledWith('Bohemian Rhapsody');
+    expect(screen.queryByTestId('field-song_title-suggestions')).not.toBeInTheDocument();
+
+    rerender(
+      <FieldInput
+        fieldId="song_title"
+        type="text"
+        label="Song Title"
+        value="Bohemian Rhapsody"
+        onChange={onChange}
+        locked={false}
+        catalogData={['Bohemian Rhapsody', 'Bohemian Like You']}
+      />,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(screen.queryByTestId('field-song_title-suggestions')).not.toBeInTheDocument();
+  });
+
   it('suppresses autocomplete suggestions in expert assist mode', async () => {
     render(
       <FieldInput

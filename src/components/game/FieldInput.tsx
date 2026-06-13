@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Fuse from 'fuse.js';
 import clsx from 'clsx';
 import { DEFAULT_CHOICE_OPTIONS } from '../../engine/FieldMatching';
@@ -114,8 +114,16 @@ function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFi
     () => (catalogData && catalogData.length > 0 ? new Fuse(catalogData, { threshold: 0.3 }) : null),
     [catalogData],
   );
+  // Set when a suggestion is picked, so the resulting value change doesn't
+  // immediately reopen the suggestion list with that same value.
+  const suppressNextSuggestions = useRef(false);
 
   useEffect(() => {
+    if (suppressNextSuggestions.current) {
+      suppressNextSuggestions.current = false;
+      setSuggestions([]);
+      return;
+    }
     const timer = setTimeout(() => {
       if (!fuse || value.trim().length < MIN_CHARS_FOR_SUGGESTIONS) {
         setSuggestions([]);
@@ -150,6 +158,7 @@ function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFi
                 type="button"
                 className="w-full text-left px-3 py-1.5 hover:bg-slate-700 text-white"
                 onClick={() => {
+                  suppressNextSuggestions.current = true;
                   onChange(suggestion);
                   setSuggestions([]);
                 }}
