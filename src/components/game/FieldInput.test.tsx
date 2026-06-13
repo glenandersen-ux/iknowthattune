@@ -85,6 +85,23 @@ describe('FieldInput', () => {
     expect(screen.getByText('Bohemian Rhapsody')).toBeInTheDocument();
   });
 
+  it('only suggests entries that start with the typed text, not ones that merely contain it', async () => {
+    render(
+      <FieldInput
+        fieldId="song_title"
+        type="text"
+        label="Song Title"
+        value="Rhap"
+        onChange={vi.fn()}
+        locked={false}
+        catalogData={['Bohemian Rhapsody', 'Rhapsody in Blue']}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('field-song_title-suggestions')).toBeInTheDocument());
+    expect(screen.getByText('Rhapsody in Blue')).toBeInTheDocument();
+    expect(screen.queryByText('Bohemian Rhapsody')).not.toBeInTheDocument();
+  });
+
   it('closes the suggestion list after picking a suggestion and does not reopen it', async () => {
     const onChange = vi.fn();
     const { rerender } = render(

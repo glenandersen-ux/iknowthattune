@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import Fuse from 'fuse.js';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { DEFAULT_CHOICE_OPTIONS } from '../../engine/FieldMatching';
 import type { FieldId, FieldInputType } from '../../types/track';
@@ -110,10 +109,6 @@ interface TextFieldInputProps {
 
 function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFieldInputProps): React.ReactElement {
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const fuse = useMemo(
-    () => (catalogData && catalogData.length > 0 ? new Fuse(catalogData, { threshold: 0.3 }) : null),
-    [catalogData],
-  );
   // Set when a suggestion is picked, so the resulting value change doesn't
   // immediately reopen the suggestion list with that same value.
   const suppressNextSuggestions = useRef(false);
@@ -125,14 +120,18 @@ function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFi
       return;
     }
     const timer = setTimeout(() => {
-      if (!fuse || value.trim().length < MIN_CHARS_FOR_SUGGESTIONS) {
+      const trimmed = value.trim();
+      if (!catalogData || trimmed.length < MIN_CHARS_FOR_SUGGESTIONS) {
         setSuggestions([]);
         return;
       }
-      setSuggestions(fuse.search(value).slice(0, MAX_SUGGESTIONS).map((result) => result.item));
+      const lower = trimmed.toLowerCase();
+      setSuggestions(
+        catalogData.filter((entry) => entry.toLowerCase().startsWith(lower)).slice(0, MAX_SUGGESTIONS),
+      );
     }, SUGGESTION_DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [value, fuse]);
+  }, [value, catalogData]);
 
   return (
     <div className="relative" data-testid={`field-${fieldId}`}>
