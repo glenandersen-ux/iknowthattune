@@ -64,6 +64,18 @@ describe('catalogStore', () => {
     expect(state.fieldTries.song_title).toContain('Bohemian Rhapsody');
   });
 
+  it('always offers "Single" as an album suggestion, for tracks released without an album', async () => {
+    const tracks = [makeTrack({ track_id: 'track-1' })];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({ json: () => Promise.resolve(tracks) }),
+    );
+
+    await useCatalogStore.getState().loadCatalog();
+
+    expect(useCatalogStore.getState().fieldTries.album_name).toContain('Single');
+  });
+
   it('search filters by query and decade', () => {
     const tracks = [
       makeTrack({ track_id: 'track-1', metadata: { decade: 1970, language: 'en', tags: [], difficulty_score: 2 } }),

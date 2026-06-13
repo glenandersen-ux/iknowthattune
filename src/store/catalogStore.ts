@@ -73,7 +73,9 @@ function matchesFilters(track: Track, filters: FilterSet): boolean {
 function buildFieldTries(tracks: Track[]): Partial<Record<FieldId, string[]>> {
   const songTitles = new Set<string>();
   const artists = new Set<string>();
-  const albums = new Set<string>();
+  // "Single" is always offered as an album suggestion, since tracks released
+  // as standalone singles (rather than on an album) use it as their answer.
+  const albums = new Set<string>(['Single']);
   for (const track of tracks) {
     if (track.answers.song_title.value) songTitles.add(track.answers.song_title.value);
     if (track.answers.primary_artist.value) artists.add(track.answers.primary_artist.value);
