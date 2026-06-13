@@ -6,7 +6,6 @@ import { ClipPlayer } from './ClipPlayer';
 const preloadTrack = vi.fn().mockResolvedValue(undefined);
 const unlock = vi.fn().mockResolvedValue(undefined);
 const play = vi.fn().mockResolvedValue(undefined);
-const getWaveformData = vi.fn(() => new Uint8Array(8));
 const stop = vi.fn();
 
 vi.mock('../../engine/AudioEngine', () => ({
@@ -15,7 +14,6 @@ vi.mock('../../engine/AudioEngine', () => ({
       preloadTrack,
       unlock,
       play,
-      getWaveformData,
       stop,
     };
   }),
@@ -145,6 +143,27 @@ describe('ClipPlayer', () => {
     resolvePlay?.();
     await Promise.resolve();
     expect(onPlaybackEnd).toHaveBeenCalledOnce();
+  });
+
+  it('shows the live multiplier in the background while playing', async () => {
+    let resolvePlay: (() => void) | undefined;
+    play.mockImplementationOnce(() => new Promise<void>((resolve) => (resolvePlay = resolve)));
+    render(
+      <ClipPlayer
+        clipUrls={clipUrls}
+        currentDuration="1s"
+        multiplier={1.7}
+        onPlaybackStart={vi.fn()}
+        onPlaybackEnd={vi.fn()}
+        onExtendRequest={vi.fn()}
+      />,
+    );
+    await waitFor(() => expect(screen.getByTestId('tap-to-start')).not.toBeDisabled());
+    await userEvent.click(screen.getByTestId('tap-to-start'));
+
+    await waitFor(() => expect(screen.getByText('1.7×')).toBeInTheDocument());
+
+    resolvePlay?.();
   });
 
   it('shows an error overlay if play() rejects mid-playback', async () => {

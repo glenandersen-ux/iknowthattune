@@ -411,6 +411,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         clipUrls={track.clip_urls}
         currentDuration={activeClipDuration}
         clipStartOffsetMs={track.clip_start_offset_ms}
+        multiplier={speedMultiplier}
         onPlaybackStart={handlePlaybackStart}
         onPlaybackEnd={clipEnded}
         onExtendRequest={(): void => {}}

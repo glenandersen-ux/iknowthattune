@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioEngine } from '../../engine/AudioEngine';
-import { WaveformVisualizer } from './WaveformVisualizer';
+import { MultiplierBackground } from './MultiplierBackground';
+import { MAX_SPEED_MULTIPLIER } from '../../engine/ScoringEngine';
 import type { ClipDuration, ClipUrlMap } from '../../types/track';
 
 export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended' | 'error';
@@ -10,6 +11,11 @@ export interface ClipPlayerProps {
   currentDuration: ClipDuration;
   /** Offset, in milliseconds, into the clip where playback should start (e.g. a track's "hook"). */
   clipStartOffsetMs?: number;
+  /**
+   * Live speed multiplier (DeepDive §A.4), recomputed every animation frame
+   * by the caller. Drives the shrinking bonus meter shown while playing.
+   */
+  multiplier?: number;
   /** Starts the speed clock. */
   onPlaybackStart: () => void;
   /** Signals the clip finished playing (auto-loop or "extend available"). */
@@ -19,14 +25,15 @@ export interface ClipPlayerProps {
 }
 
 /**
- * Wraps `AudioEngine` and renders the waveform plus an iOS-friendly
- * "Start" unlock button (Web Audio contexts must be resumed
+ * Wraps `AudioEngine` and renders the shrinking-multiplier background plus
+ * an iOS-friendly "Start" unlock button (Web Audio contexts must be resumed
  * from a user gesture before the first `play()` call).
  */
 export function ClipPlayer({
   clipUrls,
   currentDuration,
   clipStartOffsetMs = 0,
+  multiplier = MAX_SPEED_MULTIPLIER,
   onPlaybackStart,
   onPlaybackEnd,
 }: ClipPlayerProps): React.ReactElement {
@@ -114,7 +121,7 @@ export function ClipPlayer({
 
   return (
     <div className="relative overflow-hidden rounded-xl bg-slate-900 p-4" data-testid="clip-player">
-      <WaveformVisualizer getData={(): Uint8Array => getEngine().getWaveformData()} isActive={status === 'playing'} />
+      <MultiplierBackground multiplier={multiplier} isActive={status === 'playing'} />
       {status === 'error' && (
         <div
           className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 px-4 text-center text-sm font-semibold text-amber-300"
