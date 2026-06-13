@@ -5,6 +5,29 @@ import { FUSE_OPTIONS, hydrateFuseIndex, type SerializedFuseIndex } from '../eng
 import type { FieldId, FilterSet, Track } from '../types/track';
 
 const CATALOG_URL = '/catalog/data/seed-tracks.json';
+const SUGGESTION_POOL_URL = '/catalog/data/suggestion-pool.json';
+
+/**
+ * Text-only autocomplete suggestions (song titles, artists, albums) for
+ * songs that aren't yet in the playable catalog. These widen the typeahead
+ * pool without requiring audio clips.
+ */
+interface SuggestionPool {
+  song_titles: string[];
+  artists: string[];
+  albums: string[];
+}
+
+const EMPTY_SUGGESTION_POOL: SuggestionPool = { song_titles: [], artists: [], albums: [] };
+
+async function fetchSuggestionPool(): Promise<SuggestionPool> {
+  try {
+    const response = await fetch(SUGGESTION_POOL_URL);
+    return (await response.json()) as SuggestionPool;
+  } catch {
+    return EMPTY_SUGGESTION_POOL;
+  }
+}
 
 /**
  * Builds the Fuse index off the main thread when Web Workers are available
@@ -70,12 +93,12 @@ function matchesFilters(track: Track, filters: FilterSet): boolean {
   return true;
 }
 
-function buildFieldTries(tracks: Track[]): Partial<Record<FieldId, string[]>> {
-  const songTitles = new Set<string>();
-  const artists = new Set<string>();
+function buildFieldTries(tracks: Track[], suggestionPool: SuggestionPool = EMPTY_SUGGESTION_POOL): Partial<Record<FieldId, string[]>> {
+  const songTitles = new Set<string>(suggestionPool.song_titles);
+  const artists = new Set<string>(suggestionPool.artists);
   // "Single" is always offered as an album suggestion, since tracks released
   // as standalone singles (rather than on an album) use it as their answer.
-  const albums = new Set<string>(['Single']);
+  const albums = new Set<string>(['Single', ...suggestionPool.albums]);
   for (const track of tracks) {
     if (track.answers.song_title.value) songTitles.add(track.answers.song_title.value);
     if (track.answers.primary_artist.value) artists.add(track.answers.primary_artist.value);
@@ -100,11 +123,11 @@ export const useCatalogStore = create<CatalogStore>()(
         if (get().tracks.length > 0 || get().isLoading) return;
         set({ isLoading: true });
         try {
-          const response = await fetch(CATALOG_URL);
+          const [response, suggestionPool] = await Promise.all([fetch(CATALOG_URL), fetchSuggestionPool()]);
           const tracks = (await response.json()) as Track[];
           // Render with the catalog immediately; the Fuse index builds off the
           // main thread and is patched in once ready (Phase 4 §4.3).
-          set({ tracks, fieldTries: buildFieldTries(tracks), isLoading: false });
+          set({ tracks, fieldTries: buildFieldTries(tracks, suggestionPool), isLoading: false });
           const fuseIndex = await buildFuseIndex(tracks);
           set({ fuseIndex });
         } catch {
@@ -140,6 +163,9 @@ export const useCatalogStore = create<CatalogStore>()(
           state.fieldTries = buildFieldTries(state.tracks);
           void buildFuseIndex(state.tracks).then((fuseIndex) => {
             useCatalogStore.setState({ fuseIndex });
+          });
+          void fetchSuggestionPool().then((suggestionPool) => {
+            useCatalogStore.setState((current) => ({ fieldTries: buildFieldTries(current.tracks, suggestionPool) }));
           });
         }
       },

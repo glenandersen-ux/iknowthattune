@@ -49,12 +49,23 @@ describe('catalogStore', () => {
     vi.unstubAllGlobals();
   });
 
-  it('loadCatalog fetches and indexes tracks', async () => {
-    const tracks = [makeTrack({ track_id: 'track-1' })];
+  function stubCatalogFetch(tracks: Track[], suggestionPool?: { song_titles: string[]; artists: string[]; albums: string[] }): void {
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue({ json: () => Promise.resolve(tracks) }),
+      vi.fn((url: string) => {
+        if (url.includes('suggestion-pool')) {
+          return Promise.resolve({
+            json: () => Promise.resolve(suggestionPool ?? { song_titles: [], artists: [], albums: [] }),
+          });
+        }
+        return Promise.resolve({ json: () => Promise.resolve(tracks) });
+      }),
     );
+  }
+
+  it('loadCatalog fetches and indexes tracks', async () => {
+    const tracks = [makeTrack({ track_id: 'track-1' })];
+    stubCatalogFetch(tracks);
 
     await useCatalogStore.getState().loadCatalog();
 
@@ -66,14 +77,27 @@ describe('catalogStore', () => {
 
   it('always offers "Single" as an album suggestion, for tracks released without an album', async () => {
     const tracks = [makeTrack({ track_id: 'track-1' })];
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({ json: () => Promise.resolve(tracks) }),
-    );
+    stubCatalogFetch(tracks);
 
     await useCatalogStore.getState().loadCatalog();
 
     expect(useCatalogStore.getState().fieldTries.album_name).toContain('Single');
+  });
+
+  it('merges the suggestion pool into the autocomplete lists', async () => {
+    const tracks = [makeTrack({ track_id: 'track-1' })];
+    stubCatalogFetch(tracks, {
+      song_titles: ['Yesterday'],
+      artists: ['The Beatles'],
+      albums: ['Abbey Road'],
+    });
+
+    await useCatalogStore.getState().loadCatalog();
+
+    const state = useCatalogStore.getState();
+    expect(state.fieldTries.song_title).toContain('Yesterday');
+    expect(state.fieldTries.primary_artist).toContain('The Beatles');
+    expect(state.fieldTries.album_name).toContain('Abbey Road');
   });
 
   it('search filters by query and decade', () => {
