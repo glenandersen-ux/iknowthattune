@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import Fuse from 'fuse.js';
 import { FUSE_OPTIONS, hydrateFuseIndex, type SerializedFuseIndex } from '../engine/CatalogSearchIndex';
+import { findUnplayableTrackIds } from '../engine/ClipAvailability';
 import type { FieldId, FilterSet, Track } from '../types/track';
 
 const CATALOG_URL = '/catalog/data/seed-tracks.json';
@@ -56,10 +57,23 @@ export interface CatalogStore {
   /** Per-field autocomplete lists, derived from `tracks` after load. */
   fieldTries: Partial<Record<FieldId, string[]>>;
   isLoading: boolean;
+  /**
+   * `track_id`s whose clip URLs all failed a reachability check
+   * (`verifyPlayability`). Used to exclude tracks with no downloadable audio
+   * from Daily Drop / Solo Sprint selection.
+   */
+  unplayableTrackIds: Set<string>;
 
   loadCatalog: () => Promise<void>;
   search: (query: string, filters: FilterSet) => Track[];
   getTrack: (id: string) => Track | undefined;
+  /** Checks each track's clip URLs and records any that are entirely unreachable. */
+  verifyPlayability: () => Promise<void>;
+}
+
+/** Returns `tracks` minus any flagged as unplayable by `verifyPlayability`. */
+export function selectPlayableTracks(state: CatalogStore): Track[] {
+  return state.tracks.filter((track) => !state.unplayableTrackIds.has(track.track_id));
 }
 
 function matchesFilters(track: Track, filters: FilterSet): boolean {
@@ -118,6 +132,7 @@ export const useCatalogStore = create<CatalogStore>()(
       fuseIndex: null,
       fieldTries: {},
       isLoading: false,
+      unplayableTrackIds: new Set(),
 
       loadCatalog: async () => {
         if (get().tracks.length > 0 || get().isLoading) return;
@@ -130,6 +145,7 @@ export const useCatalogStore = create<CatalogStore>()(
           set({ tracks, fieldTries: buildFieldTries(tracks, suggestionPool), isLoading: false });
           const fuseIndex = await buildFuseIndex(tracks);
           set({ fuseIndex });
+          void get().verifyPlayability();
         } catch {
           set({ isLoading: false });
         }
@@ -144,6 +160,17 @@ export const useCatalogStore = create<CatalogStore>()(
       },
 
       getTrack: (id) => get().tracks.find((track) => track.track_id === id),
+
+      verifyPlayability: async () => {
+        const { tracks } = get();
+        if (tracks.length === 0) return;
+        try {
+          const unplayable = await findUnplayableTrackIds(tracks);
+          set({ unplayableTrackIds: new Set(unplayable) });
+        } catch {
+          // Reachability check failed outright (e.g. offline); leave tracks as-is.
+        }
+      },
     }),
     {
       name: 'iktt-catalog',
@@ -167,6 +194,7 @@ export const useCatalogStore = create<CatalogStore>()(
           void fetchSuggestionPool().then((suggestionPool) => {
             useCatalogStore.setState((current) => ({ fieldTries: buildFieldTries(current.tracks, suggestionPool) }));
           });
+          void useCatalogStore.getState().verifyPlayability();
         }
       },
     },

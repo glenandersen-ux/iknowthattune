@@ -1,4 +1,4 @@
-import { useEffect, useState, type JSX } from 'react';
+import { useEffect, useMemo, useState, type JSX } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
@@ -37,7 +37,12 @@ function formatGenre(value: string[] | string | null): string {
 
 export function HomeScreen(): JSX.Element {
   const navigate = useNavigate();
-  const tracks = useCatalogStore((state) => state.tracks);
+  const allTracks = useCatalogStore((state) => state.tracks);
+  const unplayableTrackIds = useCatalogStore((state) => state.unplayableTrackIds);
+  const tracks = useMemo(
+    () => allTracks.filter((track) => !unplayableTrackIds.has(track.track_id)),
+    [allTracks, unplayableTrackIds],
+  );
   const loadCatalog = useCatalogStore((state) => state.loadCatalog);
   const dailyStreak = usePlayerStore((state) => state.daily_drop_streak);
 

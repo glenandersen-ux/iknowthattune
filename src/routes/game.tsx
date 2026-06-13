@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type JSX } from 'react';
+import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
@@ -209,6 +209,11 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   const navigate = useNavigate();
 
   const tracks = useCatalogStore((state) => state.tracks);
+  const unplayableTrackIds = useCatalogStore((state) => state.unplayableTrackIds);
+  const playableTracks = useMemo(
+    () => tracks.filter((track) => !unplayableTrackIds.has(track.track_id)),
+    [tracks, unplayableTrackIds],
+  );
   const fieldTries = useCatalogStore((state) => state.fieldTries);
   const loadCatalog = useCatalogStore((state) => state.loadCatalog);
   const getTrack = useCatalogStore((state) => state.getTrack);
@@ -274,15 +279,36 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     }
 
     const seedIds = search.seed?.split(',').filter((id) => id.length > 0);
-    const selected =
-      seedIds && seedIds.length > 0
-        ? seedIds.map((id) => getTrack(id)).filter((t): t is Track => t !== undefined)
-        : tracks;
+    let selected: Track[];
+    if (seedIds && seedIds.length > 0) {
+      const seeded = seedIds.map((id) => getTrack(id)).filter((t): t is Track => t !== undefined);
+      const playableSeeded = seeded.filter((t) => !unplayableTrackIds.has(t.track_id));
+      // Prefer dropping seeded tracks with no working audio, but fall back to
+      // the full seed (with ClipPlayer's "audio unavailable" state) rather
+      // than getting stuck if every seeded track failed the check.
+      selected = playableSeeded.length > 0 ? playableSeeded : seeded;
+    } else {
+      selected = playableTracks;
+    }
     if (selected.length === 0) return;
     const mode = search.mode === 'daily' ? 'daily' : 'solo';
     loadedSearchKeyRef.current = searchKey;
     loadChallenge(buildSoloChallenge(selected, mode, playerId), mode, playerName);
-  }, [tracks, challenge, search.seed, search.mode, search.t, search.p, search.r, getTrack, loadChallenge, playerId, playerName]);
+  }, [
+    tracks,
+    playableTracks,
+    unplayableTrackIds,
+    challenge,
+    search.seed,
+    search.mode,
+    search.t,
+    search.p,
+    search.r,
+    getTrack,
+    loadChallenge,
+    playerId,
+    playerName,
+  ]);
 
   useEffect(() => {
     if (phase !== 'playing' && phase !== 'guessing') return;

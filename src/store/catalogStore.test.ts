@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import Fuse from 'fuse.js';
-import { useCatalogStore } from './catalogStore';
+import { selectPlayableTracks, useCatalogStore } from './catalogStore';
 import type { Track } from '../types/track';
 
 function makeTrack(overrides: Partial<Track>): Track {
@@ -121,6 +121,22 @@ describe('catalogStore', () => {
     const results = useCatalogStore.getState().search('', { decade: [1980] });
     expect(results).toHaveLength(1);
     expect(results[0]?.track_id).toBe('track-2');
+  });
+
+  it('verifyPlayability flags tracks whose clip URLs are all unreachable', async () => {
+    const playable = makeTrack({ track_id: 'playable', clip_urls: { '1s': 'good', '3s': 'good', '5s': 'good', '10s': 'good', '30s': 'good' } });
+    const unplayable = makeTrack({ track_id: 'unplayable', clip_urls: { '1s': 'bad', '3s': 'bad', '5s': 'bad', '10s': 'bad', '30s': 'bad' } });
+    useCatalogStore.setState({ tracks: [playable, unplayable], unplayableTrackIds: new Set() });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url: string) => Promise.resolve({ ok: url === 'good' })),
+    );
+
+    await useCatalogStore.getState().verifyPlayability();
+
+    const state = useCatalogStore.getState();
+    expect(state.unplayableTrackIds).toEqual(new Set(['unplayable']));
+    expect(selectPlayableTracks(state)).toEqual([playable]);
   });
 
   it('getTrack returns the matching track or undefined', () => {
