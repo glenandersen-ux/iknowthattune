@@ -7,11 +7,16 @@ import { useCatalogStore } from '../store/catalogStore';
 import type { Challenge } from '../types/challenge';
 import type { Track } from '../types/track';
 import type { TrackSession } from '../types/session';
+import { fetchItunesPreview } from '../engine/ItunesPreview';
 
 const toDataURL = vi.fn(() => 'data:image/png;base64,fake');
 
 vi.mock('html2canvas', () => ({
   default: vi.fn(async () => ({ toDataURL })),
+}));
+
+vi.mock('../engine/ItunesPreview', () => ({
+  fetchItunesPreview: vi.fn(() => Promise.resolve(null)),
 }));
 
 const buildTrack = (id: string, title: string): Track =>
@@ -110,6 +115,26 @@ describe('ResultScreen', () => {
     expect(screen.getAllByText('5,180').length).toBeGreaterThan(0);
     expect(screen.getByText('TOTAL')).toBeInTheDocument();
     expect(screen.getByText('4/4')).toBeInTheDocument();
+  });
+
+  it('shows an Apple Music link for a track once the lookup resolves', async () => {
+    vi.mocked(fetchItunesPreview).mockResolvedValueOnce({
+      previewUrl: 'https://audio.example/preview.m4a',
+      trackViewUrl: 'https://music.apple.com/track/1',
+    });
+    useGameStore.getState().loadChallenge(mockChallenge, 'solo', 'Glen');
+    useGameStore.setState((state) => ({
+      session: {
+        ...state.session,
+        tracks: [buildTrackSession()],
+        totals: { ...state.session.totals, total_score: 5180 },
+      },
+    }));
+
+    render(<ResultScreen />);
+
+    expect(fetchItunesPreview).toHaveBeenCalledWith('Track One', 'Test Artist');
+    await waitFor(() => expect(screen.getByTestId('apple-music-link')).toHaveAttribute('href', 'https://music.apple.com/track/1'));
   });
 
   it('copies the emoji grid to the clipboard', async () => {

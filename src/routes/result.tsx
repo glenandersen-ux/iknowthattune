@@ -8,6 +8,7 @@ import { usePlayerStore } from '../store/playerStore';
 import { buildEmojiGrid } from '../engine/ShareText';
 import { trackEvent } from '../engine/Analytics';
 import { BadgeUnlock } from '../components/result/BadgeUnlock';
+import { AppleMusicLink } from '../components/result/AppleMusicLink';
 import { PublishScreen } from '../components/creator/PublishScreen';
 import type { ClipDuration } from '../types/track';
 import type { Challenge } from '../types/challenge';
@@ -129,6 +130,7 @@ export function ResultScreen(): JSX.Element {
             <th className="py-1 text-center">1st?</th>
             <th className="py-1 text-right">Clips</th>
             <th className="py-1 text-right">Params</th>
+            <th className="py-1 text-center">Listen</th>
           </tr>
         </thead>
         <tbody>
@@ -136,6 +138,7 @@ export function ResultScreen(): JSX.Element {
             const score = Math.max(0, track.raw_score + track.clip_penalty_applied);
             const trackData = getTrack(track.track_id);
             const title = trackData?.answers.song_title.value ?? track.track_id;
+            const artist = trackData?.answers.primary_artist.value;
             return (
               <tr key={track.track_id} className="border-t border-slate-800">
                 <td className="py-2">{title}</td>
@@ -144,6 +147,11 @@ export function ResultScreen(): JSX.Element {
                 <td className="py-2 text-right">{formatClipsUsed(track.clip_sequence_used)}</td>
                 <td className="py-2 text-right">
                   {track.fields_correct.length}/{track.fields_attempted.length}
+                </td>
+                <td className="py-2 text-center">
+                  {trackData?.answers.song_title.value && artist && (
+                    <AppleMusicLink songTitle={trackData.answers.song_title.value} artistName={artist} />
+                  )}
                 </td>
               </tr>
             );
