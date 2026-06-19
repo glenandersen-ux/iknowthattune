@@ -31,6 +31,29 @@ function fromUrlSafeBase64(encoded: string): string {
   return new TextDecoder().decode(bytes);
 }
 
+/**
+ * Encodes a comma-separated list of track IDs for the `seed` / `t` URL params
+ * so that human-readable IDs (e.g. `tk_adele_rollingdeep`) don't spoil the
+ * answer via the browser's address bar.
+ */
+export function encodeSeed(trackIds: string | string[]): string {
+  const raw = Array.isArray(trackIds) ? trackIds.join(',') : trackIds;
+  return toUrlSafeBase64(raw);
+}
+
+/**
+ * Decodes a seed string back to the original comma-separated track IDs.
+ * Falls back to treating the input as a plain (legacy) ID string so old
+ * bookmarked URLs that pre-date encoding still work.
+ */
+export function decodeSeed(encoded: string): string {
+  try {
+    return fromUrlSafeBase64(encoded);
+  } catch {
+    return encoded;
+  }
+}
+
 const compactResultSchema = z.object({
   u: z.string(),
   s: z.number(),

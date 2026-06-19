@@ -13,7 +13,7 @@ import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuil
 import { trackEvent } from '../engine/Analytics';
 import { FIELD_DEFINITIONS, computeStreakBonus } from '../engine/ScoringEngine';
 import { currentStreakLength } from '../store/gameStore';
-import { decodeResult, encodeResult } from '../engine/UrlCodec';
+import { decodeResult, decodeSeed, encodeResult, encodeSeed } from '../engine/UrlCodec';
 import type { CompactResult, PlayerResult } from '../types/challenge';
 import type { SessionComparison, TrackSession } from '../types/session';
 import type { FieldId, Track } from '../types/track';
@@ -106,7 +106,7 @@ function MicroChallengeToast({
       t: Math.round(lastTrack.total_time_on_track_ms / 1000),
       p: lastTrack.fields_correct.length,
     };
-    const url = `${window.location.origin}/?mode=micro&t=${track.track_id}&p=${activeFields.join(',')}&r=${encodeResult(result)}`;
+    const url = `${window.location.origin}/?mode=micro&t=${encodeSeed(track.track_id)}&p=${activeFields.join(',')}&r=${encodeResult(result)}`;
     void navigator.clipboard.writeText(url);
     setCopied(true);
     trackEvent('share_initiated', { channel: 'micro', mode: 'micro' });
@@ -265,7 +265,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     }
 
     if (search.mode === 'micro' && search.t && search.p) {
-      const track = getTrack(search.t);
+      const track = getTrack(decodeSeed(search.t));
       if (!track) return;
       const activeFields = search.p.split(',') as FieldId[];
       const challenger = search.r ? decodeResult(search.r) : null;
@@ -278,7 +278,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
       return;
     }
 
-    const seedIds = search.seed?.split(',').filter((id) => id.length > 0);
+    const seedIds = search.seed ? decodeSeed(search.seed).split(',').filter((id) => id.length > 0) : undefined;
     let selected: Track[];
     if (seedIds && seedIds.length > 0) {
       const seeded = seedIds.map((id) => getTrack(id)).filter((t): t is Track => t !== undefined);

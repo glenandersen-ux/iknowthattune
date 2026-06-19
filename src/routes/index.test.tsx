@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { HomeScreen } from './index';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
+import { encodeSeed } from '../engine/UrlCodec';
 import type { Track } from '../types/track';
 
 const navigate = vi.fn();
@@ -71,7 +72,7 @@ describe('HomeScreen', () => {
     const call = navigate.mock.calls[0]?.[0] as { to: string; search: { mode: string; seed: string; date: string } };
     expect(call.to).toBe('/game');
     expect(call.search.mode).toBe('daily');
-    expect(['track-1', 'track-2']).toContain(call.search.seed);
+    expect([encodeSeed('track-1'), encodeSeed('track-2')]).toContain(call.search.seed);
     expect(call.search.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
@@ -89,6 +90,6 @@ describe('HomeScreen', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Rock' }));
     await userEvent.click(screen.getByRole('button', { name: 'Start Solo Sprint' }));
 
-    expect(navigate).toHaveBeenCalledWith({ to: '/game', search: { mode: 'solo', seed: 'track-1' } });
+    expect(navigate).toHaveBeenCalledWith({ to: '/game', search: { mode: 'solo', seed: encodeSeed('track-1') } });
   });
 });

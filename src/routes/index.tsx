@@ -5,6 +5,7 @@ import { gameSearchSchema, type GameSearch } from './searchSchemas';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { difficultyLabel, fetchDailyTrackOverride, getDailyTrackId, todayIso } from '../engine/DailyDrop';
+import { encodeSeed } from '../engine/UrlCodec';
 import {
   buildSoloSprintSeed,
   DEFAULT_SOLO_TRACKS,
@@ -68,7 +69,7 @@ export function HomeScreen(): JSX.Element {
 
   const handlePlay = (): void => {
     if (!trackId) return;
-    void navigate({ to: '/game', search: { mode: 'daily', seed: trackId, date } });
+    void navigate({ to: '/game', search: { mode: 'daily', seed: encodeSeed(trackId), date } });
   };
 
   const genres = listGenres(tracks);
@@ -87,7 +88,7 @@ export function HomeScreen(): JSX.Element {
     const pool = filtered.length > 0 ? filtered : tracks;
     const selected = pickRandomTracks(pool, trackCount);
     if (selected.length === 0) return;
-    void navigate({ to: '/game', search: { mode: 'solo', seed: buildSoloSprintSeed(selected) } });
+    void navigate({ to: '/game', search: { mode: 'solo', seed: encodeSeed(buildSoloSprintSeed(selected)) } });
   };
 
   return (

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateChallengeId, encodeResult, decodeResult, encodeMiniChallenge, decodeMiniChallenge } from './UrlCodec';
+import { generateChallengeId, encodeResult, decodeResult, encodeMiniChallenge, decodeMiniChallenge, encodeSeed, decodeSeed } from './UrlCodec';
 import type { Challenge, CompactResult } from '../types/challenge';
 
 const buildChallenge = (trackCount: number): Challenge => ({
@@ -69,5 +69,29 @@ describe('encodeMiniChallenge / decodeMiniChallenge', () => {
   it('returns null when decoded JSON does not match the Challenge schema', () => {
     const badPayload = btoa(JSON.stringify({ id: 'abc' })).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     expect(decodeMiniChallenge(badPayload)).toBeNull();
+  });
+});
+
+describe('encodeSeed / decodeSeed', () => {
+  it('round-trips a single track ID', () => {
+    const id = 'tk_adele_rollingdeep';
+    expect(decodeSeed(encodeSeed(id))).toBe(id);
+  });
+
+  it('round-trips a comma-separated list of track IDs passed as an array', () => {
+    const ids = ['tk_beatles_heyjude', 'tk_adele_rollingdeep', 'tk_eagles_hotelcalifornia'];
+    expect(decodeSeed(encodeSeed(ids))).toBe(ids.join(','));
+  });
+
+  it('produces a string with no readable track-ID characters', () => {
+    const encoded = encodeSeed('tk_adele_rollingdeep');
+    expect(encoded).not.toContain('adele');
+    expect(encoded).not.toContain('rolling');
+  });
+
+  it('returns an opaque string with no human-readable content from a single ID', () => {
+    const encoded = encodeSeed('tk_adele_rollingdeep');
+    // Encoded form must not contain any part of the track ID.
+    expect(encoded).not.toMatch(/adele|rolling|deep/i);
   });
 });

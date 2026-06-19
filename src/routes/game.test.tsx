@@ -5,7 +5,7 @@ import { GameScreen } from './game';
 import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
-import { encodeResult } from '../engine/UrlCodec';
+import { encodeResult, encodeSeed } from '../engine/UrlCodec';
 import { DEFAULT_CHALLENGE_SCORING } from '../engine/ChallengeBuilder';
 import type { Challenge } from '../types/challenge';
 import type { Track } from '../types/track';
@@ -86,7 +86,7 @@ describe('GameScreen', () => {
   });
 
   it('plays through a 2-track game and reaches the result screen', async () => {
-    render(<GameScreen search={{ seed: 'track-1,track-2' }} />);
+    render(<GameScreen search={{ seed: encodeSeed('track-1,track-2') }} />);
 
     // Track 1: idle -> playing -> guessing -> reveal
     await waitFor(() => expect(screen.getByText('Track 1 of 2')).toBeInTheDocument());
@@ -121,7 +121,7 @@ describe('GameScreen', () => {
   });
 
   it('reveals the canonical answer and scores zero when the player gives up', async () => {
-    render(<GameScreen search={{ seed: 'track-1,track-2' }} />);
+    render(<GameScreen search={{ seed: encodeSeed('track-1,track-2') }} />);
 
     await waitFor(() => expect(screen.getByText('Track 1 of 2')).toBeInTheDocument());
     await userEvent.click(screen.getByRole('button', { name: 'start clip' }));
@@ -135,7 +135,7 @@ describe('GameScreen', () => {
   });
 
   it('offers a micro-challenge link after a correct guess and copies it to the clipboard', async () => {
-    render(<GameScreen search={{ seed: 'track-1,track-2' }} />);
+    render(<GameScreen search={{ seed: encodeSeed('track-1,track-2') }} />);
 
     await waitFor(() => expect(screen.getByText('Track 1 of 2')).toBeInTheDocument());
     await userEvent.click(screen.getByRole('button', { name: 'start clip' }));
@@ -146,7 +146,7 @@ describe('GameScreen', () => {
     await userEvent.click(challengeButton);
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      expect.stringContaining('/?mode=micro&t=track-1&p=song_title,primary_artist,release_year,album_name&r='),
+      expect.stringContaining(`/?mode=micro&t=${encodeSeed('track-1')}&p=song_title,primary_artist,release_year,album_name&r=`),
     );
     expect(screen.getByRole('button', { name: 'Link copied!' })).toBeInTheDocument();
   });
@@ -155,7 +155,7 @@ describe('GameScreen', () => {
     const r = encodeResult({ u: 'Glen', s: 1, g: [1], t: 30, p: 4 });
     render(
       <GameScreen
-        search={{ mode: 'micro', t: 'track-1', p: 'song_title,primary_artist,release_year,album_name', r }}
+        search={{ mode: 'micro', t: encodeSeed('track-1'), p: 'song_title,primary_artist,release_year,album_name', r }}
       />,
     );
 
@@ -217,12 +217,12 @@ describe('GameScreen', () => {
     const { buildSoloChallenge } = await import('../engine/ChallengeBuilder');
     useGameStore.getState().loadChallenge(buildSoloChallenge([buildTrack('track-1', 'Track One')], 'daily', 'p1'), 'daily', 'Player');
 
-    const { rerender } = render(<GameScreen search={{ mode: 'solo', seed: 'track-2' }} />);
+    const { rerender } = render(<GameScreen search={{ mode: 'solo', seed: encodeSeed('track-2') }} />);
 
     await waitFor(() => expect(useGameStore.getState().challenge?.tracks).toEqual(['track-2']));
     expect(screen.getByText(/Track 1 of 1/)).toBeInTheDocument();
 
-    rerender(<GameScreen search={{ mode: 'solo', seed: 'track-2' }} />);
+    rerender(<GameScreen search={{ mode: 'solo', seed: encodeSeed('track-2') }} />);
     expect(useGameStore.getState().challenge?.tracks).toEqual(['track-2']);
   });
 });
