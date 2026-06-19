@@ -16,7 +16,8 @@ export function RootComponent(): JSX.Element {
         <Link
           to="/"
           data-testid="home-button"
-          className="fixed top-3 left-3 z-50 flex items-center gap-1 rounded-full bg-slate-800/90 px-3 py-1.5 text-sm font-semibold text-white shadow-lg hover:bg-slate-700"
+          className="fixed top-3 left-3 z-50 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg transition-opacity hover:opacity-80"
+          style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg)', fontFamily: 'var(--font-body)' }}
         >
           <span aria-hidden="true">🏠</span>
           Home

@@ -142,13 +142,13 @@ describe('GameScreen', () => {
     await userEvent.click(screen.getByRole('button', { name: 'end clip' }));
     await submitCorrectGuesses('Track One');
 
-    const challengeButton = screen.getByRole('button', { name: /Challenge a friend on this track/ });
+    const challengeButton = screen.getByRole('button', { name: /Challenge a friend/ });
     await userEvent.click(challengeButton);
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      expect.stringContaining(`/?mode=micro&t=${encodeSeed('track-1')}&p=song_title,primary_artist,release_year,album_name&r=`),
+      expect.stringContaining(`mode=micro&t=${encodeSeed('track-1')}&p=song_title,primary_artist,release_year,album_name&r=`),
     );
-    expect(screen.getByRole('button', { name: 'Link copied!' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /copied/i })).toBeInTheDocument();
   });
 
   it('loads a single-track micro-challenge from the URL and computes a win/loss comparison', async () => {

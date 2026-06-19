@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useState, type JSX } from 'react';
+import { useEffect, useMemo, useState, type JSX, type CSSProperties } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { difficultyLabel, fetchDailyTrackOverride, getDailyTrackId, todayIso } from '../engine/DailyDrop';
-import { encodeSeed } from '../engine/UrlCodec';
 import {
   buildSoloSprintSeed,
   DEFAULT_SOLO_TRACKS,
@@ -16,6 +15,7 @@ import {
   MIN_SOLO_TRACKS,
   pickRandomTracks,
 } from '../engine/SoloSprint';
+import { encodeSeed } from '../engine/UrlCodec';
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -30,10 +30,72 @@ function HomeRoute(): JSX.Element {
   return <HomeScreen />;
 }
 
+/** Animated equalizer bars — the ambient stage atmosphere behind the hero. */
+function EqualizerHero(): JSX.Element {
+  const BAR_COUNT = 40;
+  const bars = Array.from({ length: BAR_COUNT }, (_, i) => i);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-end justify-center gap-[3px] overflow-hidden px-4 pb-0">
+      {bars.map((i) => {
+        const duration = 0.6 + (i % 7) * 0.18;
+        const delay = (i % 11) * 0.09;
+        const heightPct = 20 + (i % 9) * 9;
+        return (
+          <div
+            key={i}
+            style={
+              {
+                height: `${heightPct}%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `${delay}s`,
+                transformOrigin: 'bottom',
+                '--tw-bg-opacity': '1',
+              } as CSSProperties
+            }
+            className="w-[3px] flex-shrink-0 animate-[equalizer_linear_infinite] rounded-t-sm bg-violet/30"
+          />
+        );
+      })}
+      {/* second layer slightly brighter, offset phase */}
+      {bars.map((i) => {
+        const duration = 0.5 + (i % 5) * 0.22;
+        const delay = 0.3 + (i % 8) * 0.11;
+        return (
+          <div
+            key={`b${i}`}
+            style={
+              {
+                height: `${15 + (i % 6) * 12}%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `${delay}s`,
+                transformOrigin: 'bottom',
+                position: 'absolute',
+              } as CSSProperties
+            }
+            className="w-[2px] animate-[equalizer_linear_infinite] rounded-t-sm bg-spotlight/10"
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 function formatGenre(value: string[] | string | null): string {
   if (value === null) return 'Unknown';
-  if (Array.isArray(value)) return value.length > 0 ? value.join(', ') : 'Unknown';
+  if (Array.isArray(value)) return value.length > 0 ? value.join(' · ') : 'Unknown';
   return value;
+}
+
+function DifficultyDots({ score }: { score: number }): JSX.Element {
+  const filled = Math.round(score * 2);
+  return (
+    <span className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }, (_, i) => (
+        <span key={i} className={`h-1.5 w-1.5 rounded-full ${i < filled ? 'bg-spotlight' : 'bg-stage-border'}`} />
+      ))}
+    </span>
+  );
 }
 
 export function HomeScreen(): JSX.Element {
@@ -92,44 +154,166 @@ export function HomeScreen(): JSX.Element {
   };
 
   return (
-    <div className="mx-auto flex min-h-svh max-w-md flex-col items-center justify-center gap-6 p-4 text-center text-white">
-      <h1 className="text-3xl font-bold">I Know That Tune</h1>
+    <div className="min-h-svh" style={{ background: 'var(--color-stage)', fontFamily: 'var(--font-body)' }}>
 
-      {dailyStreak > 0 && (
-        <p className="text-sm text-amber-400">🔥 {dailyStreak}-day streak — keep it going!</p>
-      )}
+      {/* ── HERO ───────────────────────────────────────────────────── */}
+      <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-4 pb-16 pt-8 text-center">
+        <EqualizerHero />
 
-      <div className="flex w-full flex-col gap-4 rounded-lg bg-slate-800 p-6">
-        <h2 className="text-lg font-semibold">Today&apos;s Drop</h2>
-        {track ? (
-          <>
-            <div className="flex justify-center gap-2">
-              <span className="rounded-full bg-slate-700 px-3 py-1 text-xs font-medium uppercase tracking-wide">
-                {formatGenre(track.answers.genre.value)}
-              </span>
-              <span className="rounded-full bg-slate-700 px-3 py-1 text-xs font-medium uppercase tracking-wide">
-                {difficultyLabel(track.metadata.difficulty_score)}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={handlePlay}
-              className="rounded-lg bg-cyan-600 px-4 py-3 font-semibold text-white hover:bg-cyan-500"
+        {/* gradient fade at top so bars don't compete with the headline */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-48"
+          style={{ background: 'linear-gradient(to bottom, var(--color-stage) 40%, transparent)' }}
+        />
+        {/* gradient fade at bottom */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+          style={{ background: 'linear-gradient(to top, var(--color-stage) 30%, transparent)' }}
+        />
+
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          {/* eyebrow */}
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.3em]"
+            style={{ color: 'var(--color-violet)', fontFamily: 'var(--font-body)' }}
+          >
+            Daily Drop · Music Trivia
+          </p>
+
+          {/* headline */}
+          <h1
+            className="leading-none tracking-tight"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(3rem, 14vw, 7rem)',
+              color: '#ffffff',
+              textTransform: 'uppercase',
+            }}
+          >
+            Hear it.
+            <br />
+            <span style={{ color: 'var(--color-spotlight)' }}>Know it.</span>
+          </h1>
+
+          {/* sub-headline */}
+          <p className="max-w-xs text-base" style={{ color: 'var(--color-fg-muted)' }}>
+            One clip. One second. How fast can you name the song?
+          </p>
+
+          {/* streak badge */}
+          {dailyStreak > 0 && (
+            <div
+              className="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold"
+              style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-spotlight)' }}
             >
-              Play Today&apos;s Drop
-            </button>
-          </>
-        ) : (
-          <p className="text-sm text-slate-400">Loading…</p>
-        )}
-      </div>
+              🔥 {dailyStreak}-day streak
+            </div>
+          )}
 
-      <div className="flex w-full flex-col gap-4 rounded-lg bg-slate-800 p-6 text-left">
-        <h2 className="text-center text-lg font-semibold">Solo Sprint</h2>
+          {/* daily drop CTA */}
+          {track ? (
+            <div className="flex w-full max-w-xs flex-col items-center gap-3">
+              <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+                Today&apos;s Drop
+              </p>
+              <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+                <span
+                  className="rounded-full px-3 py-1 font-semibold uppercase tracking-wider"
+                  style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}
+                >
+                  {formatGenre(track.answers.genre.value)}
+                </span>
+                <DifficultyDots score={track.metadata.difficulty_score} />
+                <span>{difficultyLabel(track.metadata.difficulty_score)}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handlePlay}
+                aria-label="Play Today's Drop"
+                className="group relative w-full overflow-hidden rounded-2xl px-8 py-5 text-xl font-bold uppercase tracking-widest transition-transform active:scale-95"
+                style={{
+                  background: 'var(--color-spotlight)',
+                  color: 'var(--color-stage)',
+                  fontFamily: 'var(--font-display)',
+                }}
+              >
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-sm"
+                    style={{ background: 'var(--color-stage)', color: 'var(--color-spotlight)' }}
+                  >
+                    ▶
+                  </span>
+                  Play Today's Drop
+                  <span
+                    className="rounded-md px-2 py-0.5 text-sm"
+                    style={{ background: 'rgba(0,0,0,0.15)' }}
+                  >
+                    1s
+                  </span>
+                </span>
+                {/* shimmer on hover */}
+                <span
+                  className="absolute inset-0 -translate-x-full skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-[120%]"
+                  style={{ background: 'rgba(255,255,255,0.2)', width: '60%' }}
+                />
+              </button>
+            </div>
+          ) : (
+            <div
+              className="rounded-2xl px-10 py-5 text-sm"
+              style={{ background: 'var(--color-stage-card)', color: 'var(--color-fg-muted)' }}
+            >
+              Loading today's track…
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── VALUE PROPS ──────────────────────────────────────────────── */}
+      <section className="mx-auto grid max-w-lg grid-cols-3 gap-3 px-4 pb-12">
+        {[
+          { icon: '⚡', stat: '1s', label: 'to recognize a song' },
+          { icon: '📅', stat: 'Daily', label: 'new drop every day' },
+          { icon: '🏆', stat: 'Beat', label: "your friends' scores" },
+        ].map(({ icon, stat, label }) => (
+          <div
+            key={stat}
+            className="flex flex-col items-center gap-1 rounded-xl px-3 py-5 text-center"
+            style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}
+          >
+            <span className="text-2xl">{icon}</span>
+            <span
+              className="text-2xl font-bold leading-none"
+              style={{ fontFamily: 'var(--font-display)', color: 'var(--color-spotlight)' }}
+            >
+              {stat}
+            </span>
+            <span className="text-xs leading-snug" style={{ color: 'var(--color-fg-muted)' }}>
+              {label}
+            </span>
+          </div>
+        ))}
+      </section>
+
+      {/* ── SOLO SPRINT ──────────────────────────────────────────────── */}
+      <section
+        className="mx-auto max-w-lg rounded-2xl px-6 py-8 mx-4 mb-12"
+        style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', margin: '0 1rem 3rem' }}
+      >
+        <h2
+          className="mb-6 text-center text-3xl uppercase tracking-wide"
+          style={{ fontFamily: 'var(--font-display)', color: '#fff' }}
+        >
+          Solo Sprint
+        </h2>
 
         {genres.length > 0 && (
-          <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Genre</p>
+          <div className="mb-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+              Genre
+            </p>
             <div className="flex flex-wrap gap-2">
               {genres.map((genre) => (
                 <button
@@ -137,9 +321,12 @@ export function HomeScreen(): JSX.Element {
                   type="button"
                   onClick={() => toggleGenre(genre)}
                   aria-pressed={selectedGenres.includes(genre)}
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${
-                    selectedGenres.includes(genre) ? 'bg-cyan-600 text-white' : 'bg-slate-700 text-slate-300'
-                  }`}
+                  className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors"
+                  style={
+                    selectedGenres.includes(genre)
+                      ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)' }
+                      : { background: 'var(--color-stage)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }
+                  }
                 >
                   {genre}
                 </button>
@@ -149,8 +336,10 @@ export function HomeScreen(): JSX.Element {
         )}
 
         {decades.length > 0 && (
-          <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Decade</p>
+          <div className="mb-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+              Decade
+            </p>
             <div className="flex flex-wrap gap-2">
               {decades.map((decade) => (
                 <button
@@ -158,9 +347,12 @@ export function HomeScreen(): JSX.Element {
                   type="button"
                   onClick={() => toggleDecade(decade)}
                   aria-pressed={selectedDecades.includes(decade)}
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${
-                    selectedDecades.includes(decade) ? 'bg-cyan-600 text-white' : 'bg-slate-700 text-slate-300'
-                  }`}
+                  className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors"
+                  style={
+                    selectedDecades.includes(decade)
+                      ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)' }
+                      : { background: 'var(--color-stage)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }
+                  }
                 >
                   {decade}s
                 </button>
@@ -169,8 +361,12 @@ export function HomeScreen(): JSX.Element {
           </div>
         )}
 
-        <div>
-          <label htmlFor="solo-artist" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+        <div className="mb-4">
+          <label
+            htmlFor="solo-artist"
+            className="mb-2 block text-xs font-semibold uppercase tracking-widest"
+            style={{ color: 'var(--color-fg-muted)' }}
+          >
             Artist
           </label>
           <input
@@ -179,14 +375,28 @@ export function HomeScreen(): JSX.Element {
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
             placeholder="Any artist"
-            className="w-full rounded-lg bg-slate-700 px-3 py-2 text-sm text-white placeholder:text-slate-500"
+            className="w-full rounded-lg px-4 py-2.5 text-sm outline-none"
+            style={{
+              background: 'var(--color-stage)',
+              border: '1px solid var(--color-stage-border)',
+              color: 'var(--color-fg)',
+            }}
           />
         </div>
 
-        <div>
-          <label htmlFor="solo-track-count" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Tracks: {trackCount}
-          </label>
+        <div className="mb-6">
+          <div className="mb-2 flex items-center justify-between">
+            <label
+              htmlFor="solo-track-count"
+              className="text-xs font-semibold uppercase tracking-widest"
+              style={{ color: 'var(--color-fg-muted)' }}
+            >
+              Tracks
+            </label>
+            <span className="text-sm font-bold" style={{ color: 'var(--color-spotlight)', fontFamily: 'var(--font-display)' }}>
+              {trackCount}
+            </span>
+          </div>
           <input
             id="solo-track-count"
             type="range"
@@ -194,18 +404,23 @@ export function HomeScreen(): JSX.Element {
             max={MAX_SOLO_TRACKS}
             value={trackCount}
             onChange={(e) => setTrackCount(Number(e.target.value))}
-            className="w-full"
+            className="w-full accent-[#D4FF00]"
           />
         </div>
 
         <button
           type="button"
           onClick={handleStartSoloSprint}
-          className="rounded-lg bg-cyan-600 px-4 py-3 font-semibold text-white hover:bg-cyan-500"
+          className="w-full rounded-xl py-4 text-lg font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, var(--color-violet), var(--color-violet-dim))',
+            color: '#fff',
+            fontFamily: 'var(--font-display)',
+          }}
         >
           Start Solo Sprint
         </button>
-      </div>
+      </section>
     </div>
   );
 }

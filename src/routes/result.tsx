@@ -110,71 +110,90 @@ export function ResultScreen(): JSX.Element {
 
   if (session.tracks.length === 0) {
     return (
-      <div className="flex min-h-svh flex-col items-center justify-center gap-2 text-center text-white">
-        <h1 className="text-2xl font-bold">No results yet</h1>
-        <p className="text-sm text-slate-400">Play a game to see your score here.</p>
+      <div className="flex min-h-svh flex-col items-center justify-center gap-2 text-center" style={{ color: 'var(--color-fg)' }}>
+        <h1 className="text-3xl uppercase tracking-widest" style={{ fontFamily: 'var(--font-display)' }}>No results yet</h1>
+        <p className="text-sm" style={{ color: 'var(--color-fg-muted)' }}>Play a game to see your score here.</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-4 p-4 text-white">
-      <h1 className="text-center text-2xl font-bold">Your Results</h1>
-      <p className="text-center text-sm text-slate-400">{challengeName}</p>
+    <div className="mx-auto flex max-w-md flex-col gap-4 p-4" style={{ color: 'var(--color-fg)' }}>
+      {/* header */}
+      <div className="pt-8 text-center">
+        <p className="mb-1 text-xs uppercase tracking-[0.3em]" style={{ color: 'var(--color-fg-muted)' }}>{challengeName}</p>
+        <h1 className="text-4xl uppercase" style={{ fontFamily: 'var(--font-display)', color: '#fff' }}>Your Results</h1>
+        <p className="mt-2 text-5xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-spotlight)' }}>
+          {Math.round(session.totals.total_score).toLocaleString()}
+        </p>
+        <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>total points</p>
+      </div>
 
-      <table className="w-full table-auto text-left text-sm">
-        <thead>
-          <tr className="text-slate-400">
-            <th className="py-1">Track</th>
-            <th className="py-1 text-right">Score</th>
-            <th className="py-1 text-center">1st?</th>
-            <th className="py-1 text-right">Clips</th>
-            <th className="py-1 text-right">Params</th>
-            <th className="py-1 text-center">Listen</th>
-          </tr>
-        </thead>
-        <tbody>
-          {session.tracks.map((track) => {
-            const score = Math.max(0, track.raw_score + track.clip_penalty_applied);
-            const trackData = getTrack(track.track_id);
-            const title = trackData?.answers.song_title.value ?? track.track_id;
-            const artist = trackData?.answers.primary_artist.value;
-            return (
-              <tr key={track.track_id} className="border-t border-slate-800">
-                <td className="py-2">{title}</td>
-                <td className="py-2 text-right">{Math.round(score).toLocaleString()}</td>
-                <td className="py-2 text-center">{track.first_guess_bonus_earned ? '✅' : '❌'}</td>
-                <td className="py-2 text-right">{formatClipsUsed(track.clip_sequence_used)}</td>
-                <td className="py-2 text-right">
-                  {track.fields_correct.length}/{track.fields_attempted.length}
-                </td>
-                <td className="py-2 text-center">
-                  {trackData?.answers.song_title.value && artist && (
-                    <AppleMusicLink songTitle={trackData.answers.song_title.value} artistName={artist} />
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-        <tfoot>
-          <tr className="border-t border-slate-700 font-bold">
-            <td className="py-2">TOTAL</td>
-            <td className="py-2 text-right">{Math.round(session.totals.total_score).toLocaleString()}</td>
-            <td colSpan={3} />
-          </tr>
-        </tfoot>
-      </table>
+      {/* per-track table */}
+      <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--color-stage-border)' }}>
+        <table className="w-full table-auto text-left text-xs">
+          <thead>
+            <tr style={{ background: 'var(--color-stage-card)', color: 'var(--color-fg-muted)' }}>
+              <th className="px-3 py-2">Track</th>
+              <th className="px-3 py-2 text-right">Score</th>
+              <th className="px-3 py-2 text-center">1st?</th>
+              <th className="px-3 py-2 text-right">Clips</th>
+              <th className="px-3 py-2 text-right">Fields</th>
+              <th className="px-3 py-2 text-center">Listen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {session.tracks.map((track) => {
+              const score = Math.max(0, track.raw_score + track.clip_penalty_applied);
+              const trackData = getTrack(track.track_id);
+              const title = trackData?.answers.song_title.value ?? track.track_id;
+              const artist = trackData?.answers.primary_artist.value;
+              return (
+                <tr
+                  key={track.track_id}
+                  style={{ borderTop: '1px solid var(--color-stage-border)', background: 'var(--color-stage)' }}
+                >
+                  <td className="px-3 py-2.5 font-medium" style={{ color: 'var(--color-fg)' }}>{title}</td>
+                  <td className="px-3 py-2.5 text-right font-bold" style={{ color: 'var(--color-spotlight)', fontFamily: 'var(--font-display)', fontSize: '0.95rem' }}>
+                    {Math.round(score).toLocaleString()}
+                  </td>
+                  <td className="px-3 py-2.5 text-center">{track.first_guess_bonus_earned ? '✅' : '❌'}</td>
+                  <td className="px-3 py-2.5 text-right" style={{ color: 'var(--color-fg-muted)' }}>{formatClipsUsed(track.clip_sequence_used)}</td>
+                  <td className="px-3 py-2.5 text-right" style={{ color: 'var(--color-fg-muted)' }}>
+                    {track.fields_correct.length}/{track.fields_attempted.length}
+                  </td>
+                  <td className="px-3 py-2.5 text-center">
+                    {trackData?.answers.song_title.value && artist && (
+                      <AppleMusicLink songTitle={trackData.answers.song_title.value} artistName={artist} />
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot>
+            <tr style={{ borderTop: '2px solid var(--color-stage-border)', background: 'var(--color-stage-card)' }}>
+              <td className="px-3 py-2.5 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>TOTAL</td>
+              <td className="px-3 py-2.5 text-right font-bold" style={{ color: 'var(--color-spotlight)', fontFamily: 'var(--font-display)', fontSize: '0.95rem' }}>
+                {Math.round(session.totals.total_score).toLocaleString()}
+              </td>
+              <td colSpan={4} />
+            </tr>
+          </tfoot>
+        </table>
+      </div>
 
+      {/* vs challenger */}
       {session.comparison && (
         <div
-          className={`rounded-lg p-3 text-center font-semibold ${
+          className="rounded-xl p-4 text-center font-semibold"
+          style={
             session.comparison.result === 'win'
-              ? 'bg-green-900 text-green-300'
+              ? { background: 'rgba(74,222,128,0.1)', border: '1px solid var(--color-correct)', color: 'var(--color-correct)' }
               : session.comparison.result === 'loss'
-                ? 'bg-red-900 text-red-300'
-                : 'bg-slate-800 text-slate-300'
-          }`}
+                ? { background: 'rgba(248,113,113,0.1)', border: '1px solid var(--color-incorrect)', color: 'var(--color-incorrect)' }
+                : { background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }
+          }
         >
           vs. {session.comparison.challenger_name}: {session.comparison.challenger_score.toLocaleString()} pts
           {session.comparison.result === 'win' &&
@@ -185,18 +204,21 @@ export function ResultScreen(): JSX.Element {
         </div>
       )}
 
-      <div className="flex flex-col gap-2">
+      {/* action buttons */}
+      <div className="flex flex-col gap-2 pb-8">
         <button
           type="button"
           onClick={handleCopyEmojiGrid}
-          className="rounded-lg bg-slate-700 px-4 py-3 font-semibold text-white hover:bg-slate-600"
+          className="rounded-xl px-4 py-3.5 text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-80"
+          style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg)' }}
         >
           📋 Copy Emoji Grid
         </button>
         <button
           type="button"
           onClick={(): void => void handleDownloadCard()}
-          className="rounded-lg bg-cyan-600 px-4 py-3 font-semibold text-white hover:bg-cyan-500"
+          className="rounded-xl px-4 py-3.5 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
+          style={{ background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-display)' }}
         >
           ⬇️ Download Card
         </button>
@@ -206,7 +228,8 @@ export function ResultScreen(): JSX.Element {
         {challenge && !CLIENT_ONLY_CHALLENGE_IDS.has(challenge.id) && (
           <a
             href={`/leaderboard?c=${challenge.id}`}
-            className="rounded-lg bg-slate-700 px-4 py-3 text-center font-semibold text-white hover:bg-slate-600"
+            className="rounded-xl px-4 py-3.5 text-center text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-80"
+            style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg)' }}
           >
             🏆 View Leaderboard
           </a>
@@ -215,7 +238,8 @@ export function ResultScreen(): JSX.Element {
           <button
             type="button"
             onClick={() => setShowShareChallenge(true)}
-            className="rounded-lg bg-slate-700 px-4 py-3 font-semibold text-white hover:bg-slate-600"
+            className="rounded-xl px-4 py-3.5 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg, var(--color-violet), var(--color-violet-dim))', color: '#fff', fontFamily: 'var(--font-display)' }}
           >
             🔗 Share This as a Challenge
           </button>

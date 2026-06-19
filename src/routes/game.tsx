@@ -45,8 +45,8 @@ function formatAnswer(track: Track, fieldId: FieldId): string {
 
 function LoadingScreen(): JSX.Element {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-2 text-center text-white">
-      <p className="text-lg">Loading…</p>
+    <div className="flex min-h-svh flex-col items-center justify-center gap-2 text-center" style={{ color: 'var(--color-fg-muted)' }}>
+      <p className="text-lg" style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.1em', color: 'var(--color-fg)' }}>Loading…</p>
     </div>
   );
 }
@@ -113,17 +113,18 @@ function MicroChallengeToast({
   };
 
   return (
-    <div className="rounded-lg bg-slate-800 p-4 text-center">
-      <p className="mb-2 text-sm text-slate-300">
+    <div className="rounded-xl p-4 text-center" style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}>
+      <p className="mb-3 text-sm" style={{ color: 'var(--color-fg-muted)' }}>
         ✅ You got &quot;{formatAnswer(track, 'song_title')}&quot;
         {lastTrack.first_guess_bonus_earned ? ' on the first clip!' : '!'}
       </p>
       <button
         type="button"
         onClick={handleChallengeFriend}
-        className="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white hover:bg-amber-500"
+        className="rounded-xl px-4 py-2 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-80"
+        style={{ background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-display)' }}
       >
-        {copied ? 'Link copied!' : '🔥 Challenge a friend on this track →'}
+        {copied ? '✓ Link copied!' : '🔥 Challenge a friend →'}
       </button>
     </div>
   );
@@ -144,13 +145,18 @@ function RevealScreen({
   streakLength,
 }: RevealScreenProps): JSX.Element {
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-4 p-4 text-white">
-      <h1 className="text-center text-xl font-bold">
+    <div className="mx-auto flex max-w-md flex-col gap-4 p-4" style={{ color: 'var(--color-fg)' }}>
+      <h1
+        className="text-center text-2xl uppercase tracking-widest"
+        style={{ fontFamily: 'var(--font-display)', color: 'var(--color-fg-muted)' }}
+      >
         Track {trackNumber} of {trackCount}
       </h1>
-      <div className="rounded-lg bg-slate-800 p-4 text-center">
-        <p className="text-sm text-slate-400">Score earned</p>
-        <p className="text-3xl font-bold text-cyan-400">{Math.round(scoreEarned)}</p>
+      <div className="rounded-xl p-5 text-center" style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}>
+        <p className="mb-1 text-xs uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>Score earned</p>
+        <p className="text-4xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-spotlight)' }}>
+          {Math.round(scoreEarned).toLocaleString()}
+        </p>
       </div>
       <StreakBanner streakLength={streakLength} isLastTrack={isLastTrack} />
       <MicroChallengeToast
@@ -166,10 +172,11 @@ function RevealScreen({
           return (
             <li
               key={fieldId}
-              className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-2"
+              className="flex items-center justify-between rounded-xl px-4 py-2.5"
+              style={{ background: 'var(--color-stage-card)', border: `1px solid ${correct ? 'var(--color-correct)' : 'var(--color-stage-border)'}` }}
             >
-              <span className="text-sm text-slate-300">{FIELD_DEFINITIONS[fieldId].label}</span>
-              <span className={correct ? 'text-green-400' : 'text-red-400'}>
+              <span className="text-sm" style={{ color: 'var(--color-fg-muted)' }}>{FIELD_DEFINITIONS[fieldId].label}</span>
+              <span style={{ color: correct ? 'var(--color-correct)' : 'var(--color-incorrect)' }}>
                 {formatAnswer(track, fieldId)} {correct ? '✓' : '✗'}
               </span>
             </li>
@@ -179,10 +186,11 @@ function RevealScreen({
       <button
         type="button"
         onClick={onContinue}
-        className="rounded-lg bg-cyan-600 px-4 py-3 font-semibold text-white hover:bg-cyan-500"
+        className="rounded-xl px-4 py-4 text-lg font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:scale-95"
+        style={{ background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-display)' }}
         data-testid="continue-button"
       >
-        {isLastTrack ? 'See Results' : 'Next Track'}
+        {isLastTrack ? 'See Results' : 'Next Track →'}
       </button>
       {nextTrack && (
         <div className="hidden" aria-hidden="true">
@@ -429,8 +437,11 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   }
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-4 p-4 text-white">
-      <h1 className="text-center text-xl font-bold">
+    <div className="mx-auto flex max-w-md flex-col gap-4 p-4" style={{ color: 'var(--color-fg)' }}>
+      <h1
+        className="text-center text-2xl uppercase tracking-widest"
+        style={{ fontFamily: 'var(--font-display)', color: 'var(--color-fg-muted)' }}
+      >
         Track {currentTrackIndex + 1} of {trackCount}
       </h1>
       <ClipPlayer
