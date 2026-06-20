@@ -83,12 +83,8 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
 export async function handleGoogleCallback(request: Request, env: Env): Promise<Response> {
   try {
     return await _handleGoogleCallbackInner(request, env);
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return new Response(null, {
-      status: 302,
-      headers: { Location: `/?auth=error&reason=exception&detail=${encodeURIComponent(msg.slice(0, 150))}` },
-    });
+  } catch {
+    return new Response(null, { status: 302, headers: { Location: '/?auth=error' } });
   }
 }
 
@@ -119,8 +115,7 @@ async function _handleGoogleCallbackInner(request: Request, env: Env): Promise<R
     }),
   });
   if (!tokenRes.ok) {
-    const body = await tokenRes.text();
-    return new Response(null, { status: 302, headers: { Location: `/?auth=error&reason=token_${tokenRes.status}&detail=${encodeURIComponent(body.slice(0, 120))}` } });
+    return new Response(null, { status: 302, headers: { Location: '/?auth=error&reason=token_exchange' } });
   }
   const tokens = (await tokenRes.json()) as { access_token: string };
 
