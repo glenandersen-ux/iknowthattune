@@ -5,6 +5,7 @@ import { gameSearchSchema, type GameSearch } from './searchSchemas';
 import { useGameStore } from '../store/gameStore';
 import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
+import { useAuthStore } from '../store/authStore';
 import { ClipPlayer } from '../components/game/ClipPlayer';
 import { ClipExtendBar } from '../components/game/ClipExtendBar';
 import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
@@ -247,6 +248,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   const playerName = usePlayerStore((state) => state.display_name);
   const updateAfterGame = usePlayerStore((state) => state.updateAfterGame);
   const assistMode = usePlayerStore((state) => state.assist_mode);
+  const authUser = useAuthStore((state) => state.user);
 
   const trackStartRef = useRef<number | null>(null);
   const updatedAfterGameRef = useRef(false);
@@ -389,8 +391,17 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
       }).catch(() => {});
     }
 
+    // Submit to global leaderboard when user is signed in.
+    if (authUser) {
+      void fetch('/api/leaderboard/global', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: Math.round(session.totals.total_score) }),
+      }).catch(() => {});
+    }
+
     void navigate({ to: '/result' });
-  }, [phase, session, updateAfterGame, navigate, challenge, playerId, search.r]);
+  }, [phase, session, updateAfterGame, navigate, challenge, playerId, search.r, authUser]);
 
   if (!challenge) {
     return <LoadingScreen />;

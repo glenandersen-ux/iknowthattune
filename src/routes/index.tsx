@@ -16,6 +16,7 @@ import {
   pickFreshTracks,
 } from '../engine/SoloSprint';
 import { encodeSeed } from '../engine/UrlCodec';
+import { LeaderboardSection } from '../components/LeaderboardSection';
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
@@ -456,6 +457,8 @@ export function HomeScreen(): JSX.Element {
           </button>
         </div>
       </section>
+
+      <LeaderboardSection />
     </div>
   );
 }

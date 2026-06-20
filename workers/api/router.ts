@@ -5,6 +5,7 @@ import { handleUgcRequest } from './ugc';
 import { handleSpotifyRequest } from './spotify';
 import { handleDeezerRequest } from './deezer';
 import { handleAuthRequest } from './auth';
+import { handleGlobalLeaderboardRequest } from './globalLeaderboard';
 
 export { LeaderboardDO } from '../durable-objects/Leaderboard';
 
@@ -24,6 +25,7 @@ export default {
     if (segments[1] === 'spotify') return handleSpotifyRequest(request, env);
     if (segments[1] === 'deezer') return handleDeezerRequest(request, env);
     if (segments[1] === 'auth') return handleAuthRequest(request, env);
+    if (segments[1] === 'leaderboard') return handleGlobalLeaderboardRequest(request, env);
 
     return new Response('Not found', { status: 404 });
   },
