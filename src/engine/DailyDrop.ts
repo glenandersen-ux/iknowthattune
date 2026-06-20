@@ -12,11 +12,15 @@ export function todayIso(): string {
  */
 export function getDailyTrackId(tracks: Track[], date: string): string | null {
   if (tracks.length === 0) return null;
+  // Prefer tracks confirmed to have Deezer audio so the fallback drop
+  // is actually playable. Falls back to the full catalog if none are confirmed.
+  const pool = tracks.filter((t) => t.metadata.deezer_track_id);
+  const source = pool.length > 0 ? pool : tracks;
   let hash = 0;
   for (let i = 0; i < date.length; i += 1) {
     hash = (hash * 31 + date.charCodeAt(i)) >>> 0;
   }
-  return tracks[hash % tracks.length].track_id;
+  return source[hash % source.length].track_id;
 }
 
 /**

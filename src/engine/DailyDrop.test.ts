@@ -2,9 +2,10 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { difficultyLabel, fetchDailyTrackOverride, getDailyTrackId, todayIso } from './DailyDrop';
 import type { Track } from '../types/track';
 
-const track = (id: string): Track =>
+const track = (id: string, deezerTrackId?: number): Track =>
   ({
     track_id: id,
+    metadata: { decade: 2000, language: 'en', tags: [], difficulty_score: 1.5, deezer_track_id: deezerTrackId },
   }) as unknown as Track;
 
 describe('getDailyTrackId', () => {

@@ -110,6 +110,10 @@ export interface TrackMetadata {
   difficulty_score: number;
   /** Curator commentary for contested/historical answer disputes (DeepDive §A.7). */
   curator_note?: string;
+  /** Deezer track ID, set by the enrichment script after confirming audio availability. */
+  deezer_track_id?: number;
+  /** Set to true by the enrichment script when no Deezer preview was found. */
+  deezer_not_found?: true;
 }
 
 /** The canonical track object (Blueprint §4). */
