@@ -167,7 +167,7 @@ async function _handleGoogleCallbackInner(request: Request, env: Env): Promise<R
   const exchangeCode = crypto.randomUUID();
   const sessionToken = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
   await env.AUTH_KV.put(`session:${sessionToken}`, userId, { expirationTtl: SESSION_TTL_SECONDS });
-  await env.AUTH_KV.put(`exchange:${exchangeCode}`, sessionToken, { expirationTtl: 30 });
+  await env.AUTH_KV.put(`exchange:${exchangeCode}`, sessionToken, { expirationTtl: 60 });
 
   return new Response(null, {
     status: 302,
