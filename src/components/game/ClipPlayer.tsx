@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioEngine } from '../../engine/AudioEngine';
 import { MultiplierBackground } from './MultiplierBackground';
 import { MAX_SPEED_MULTIPLIER } from '../../engine/ScoringEngine';
+import { fetchSpotifyPreview, type SpotifyPreview } from '../../engine/SpotifyPreview';
 import { fetchItunesPreview, type ItunesPreview } from '../../engine/ItunesPreview';
+import { SpotifyBadge } from './SpotifyBadge';
 import type { ClipDuration, ClipUrlMap } from '../../types/track';
 
 export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended' | 'error';
@@ -24,17 +26,26 @@ export interface ClipPlayerProps {
   /** Reserved for a future tap-to-extend gesture; `<ClipExtendBar>` drives extensions for now. */
   onExtendRequest: () => void;
   /**
-   * Song title / primary artist used to look up an iTunes Search API preview
-   * if the catalog clip fails to load. Omit to disable the fallback.
+   * Song title / primary artist used to look up Spotify (primary) and iTunes
+   * (secondary) previews when the catalog clip fails to load.
    */
   fallbackSongTitle?: string;
   fallbackArtistName?: string;
+}
+
+function previewUrlMap(url: string): ClipUrlMap {
+  return { '1s': url, '3s': url, '5s': url, '10s': url, '30s': url };
 }
 
 /**
  * Wraps `AudioEngine` and renders the shrinking-multiplier background plus
  * an iOS-friendly "Start" unlock button (Web Audio contexts must be resumed
  * from a user gesture before the first `play()` call).
+ *
+ * Audio source priority:
+ *   1. Spotify 30-second preview (via /api/spotify/preview Worker endpoint)
+ *   2. Catalog clip URLs (from seed-tracks.json)
+ *   3. iTunes Search API preview (last resort)
  */
 export function ClipPlayer({
   clipUrls,
@@ -49,14 +60,12 @@ export function ClipPlayer({
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
-  const [fallback, setFallback] = useState<ItunesPreview | null>(null);
+  const [spotifyPreview, setSpotifyPreview] = useState<SpotifyPreview | null>(null);
+  const [itunesPreview, setItunesPreview] = useState<ItunesPreview | null>(null);
   const previousDuration = useRef(currentDuration);
-  // Guards against `playClip`'s pending `engine.play()` promise also firing
-  // `onPlaybackEnd` once `handleStop` has already transitioned the player.
   const stoppedRef = useRef(false);
-  // The fallback preview is a single clip reused for every duration, so its
-  // start offset is always 0 regardless of the catalog track's hook offset.
-  const usingFallbackRef = useRef(false);
+  // Previews use a single 30s clip for all durations; offset is always 0.
+  const usingPreviewRef = useRef(false);
 
   const getEngine = useCallback((): AudioEngine => {
     if (!engineRef.current) {
@@ -66,53 +75,87 @@ export function ClipPlayer({
   }, []);
 
   useEffect(() => {
+    if (!fallbackSongTitle || !fallbackArtistName) return;
     let cancelled = false;
-    Promise.resolve()
-      .then(() => {
-        if (!cancelled) setStatus('loading');
-      })
-      .then(() => getEngine().preloadTrack(clipUrls))
-      .then(() => {
-        if (!cancelled) setStatus('idle');
-      })
-      .catch(async () => {
-        if (cancelled) return;
-        // Catalog clip failed to load (e.g. an expired preview URL). Try the
-        // iTunes Search API as a "BYOC" fallback before giving up.
-        if (fallbackSongTitle && fallbackArtistName) {
-          const preview = await fetchItunesPreview(fallbackSongTitle, fallbackArtistName);
-          if (!cancelled && preview) {
-            const fallbackUrls: ClipUrlMap = {
-              '1s': preview.previewUrl,
-              '3s': preview.previewUrl,
-              '5s': preview.previewUrl,
-              '10s': preview.previewUrl,
-              '30s': preview.previewUrl,
-            };
-            try {
-              await getEngine().preloadTrack(fallbackUrls);
-              if (!cancelled) {
-                usingFallbackRef.current = true;
-                setFallback(preview);
-                setStatus('idle');
-                return;
-              }
-            } catch {
-              // Fall through to the error state below.
-            }
+
+    async function loadAudio(): Promise<void> {
+      if (cancelled) return;
+      setStatus('loading');
+
+      // 1 — Spotify (primary source)
+      const spotify = await fetchSpotifyPreview(fallbackSongTitle!, fallbackArtistName!);
+      if (!cancelled && spotify) {
+        try {
+          await getEngine().preloadTrack(previewUrlMap(spotify.previewUrl));
+          if (!cancelled) {
+            usingPreviewRef.current = true;
+            setSpotifyPreview(spotify);
+            setStatus('idle');
+            return;
           }
+        } catch {
+          // Spotify URL bounced — fall through to catalog
         }
+      }
+      if (cancelled) return;
+
+      // 2 — Catalog clip URLs
+      try {
+        await getEngine().preloadTrack(clipUrls);
+        if (!cancelled) {
+          usingPreviewRef.current = false;
+          setStatus('idle');
+          return;
+        }
+      } catch {
+        // Catalog URLs broken — fall through to iTunes
+      }
+      if (cancelled) return;
+
+      // 3 — iTunes Search API (last resort)
+      const itunes = await fetchItunesPreview(fallbackSongTitle!, fallbackArtistName!);
+      if (!cancelled && itunes) {
+        try {
+          await getEngine().preloadTrack(previewUrlMap(itunes.previewUrl));
+          if (!cancelled) {
+            usingPreviewRef.current = true;
+            setItunesPreview(itunes);
+            setStatus('idle');
+            return;
+          }
+        } catch {
+          // All sources exhausted
+        }
+      }
+      if (cancelled) return;
+
+      setStatus('error');
+      setUnlocked(true);
+      onPlaybackStart();
+      onPlaybackEnd();
+    }
+
+    void loadAudio();
+    return (): void => { cancelled = true; };
+  }, [clipUrls, getEngine, fallbackSongTitle, fallbackArtistName, onPlaybackStart, onPlaybackEnd]);
+
+  // For tracks with no fallback metadata (e.g. the hidden preload div), use
+  // catalog URLs directly.
+  useEffect(() => {
+    if (fallbackSongTitle && fallbackArtistName) return;
+    let cancelled = false;
+    setStatus('loading');
+    void getEngine()
+      .preloadTrack(clipUrls)
+      .then(() => { if (!cancelled) setStatus('idle'); })
+      .catch(() => {
         if (cancelled) return;
-        // Surface an error state and advance the game phase so the player
-        // isn't stuck on "Loading..." forever — they can still guess or give up.
         setStatus('error');
         setUnlocked(true);
         onPlaybackStart();
         onPlaybackEnd();
       });
-    return (): void => {
-      cancelled = true;
-    };
+    return (): void => { cancelled = true; };
   }, [clipUrls, getEngine, fallbackSongTitle, fallbackArtistName, onPlaybackStart, onPlaybackEnd]);
 
   const playClip = useCallback(
@@ -122,7 +165,7 @@ export function ClipPlayer({
       setStatus('playing');
       onPlaybackStart();
       try {
-        await engine.play(duration, usingFallbackRef.current ? 0 : clipStartOffsetMs / 1000);
+        await engine.play(duration, usingPreviewRef.current ? 0 : clipStartOffsetMs / 1000);
       } catch {
         if (!stoppedRef.current) setStatus('error');
         return;
@@ -158,8 +201,13 @@ export function ClipPlayer({
   }, [currentDuration, unlocked, playClip]);
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-slate-900 p-4" data-testid="clip-player">
+    <div
+      className="relative overflow-hidden rounded-xl p-4"
+      style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}
+      data-testid="clip-player"
+    >
       <MultiplierBackground multiplier={multiplier} isActive={status === 'playing'} />
+
       {status === 'error' && (
         <div
           className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/60 px-4 text-center text-sm font-semibold text-amber-300"
@@ -168,34 +216,53 @@ export function ClipPlayer({
           ⚠️ Audio unavailable for this track — guess or give up to continue.
         </div>
       )}
+
       {!unlocked && status !== 'error' && (
         <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40">
           <button
             type="button"
             onClick={(): void => void handleTapToStart()}
             disabled={status === 'loading'}
-            className="rounded-full bg-white px-8 py-2 text-lg font-semibold text-slate-900 shadow-lg disabled:cursor-wait disabled:opacity-50"
+            className="rounded-full px-8 py-2 text-lg font-bold uppercase tracking-widest shadow-lg disabled:cursor-wait disabled:opacity-50"
+            style={{
+              background: status === 'loading' ? 'var(--color-stage-card)' : 'var(--color-spotlight)',
+              color: status === 'loading' ? 'var(--color-fg-muted)' : 'var(--color-stage)',
+              fontFamily: 'var(--font-display)',
+            }}
             data-testid="tap-to-start"
           >
             {status === 'loading' ? 'Loading…' : 'Start'}
           </button>
         </div>
       )}
+
       {status === 'playing' && (
         <div className="absolute inset-x-0 bottom-2 flex justify-center">
           <button
             type="button"
             onClick={handleStop}
-            className="rounded-full bg-white px-6 py-1.5 text-sm font-semibold text-slate-900 shadow-lg hover:bg-slate-100"
+            className="rounded-full px-6 py-1.5 text-sm font-semibold shadow-lg"
+            style={{ background: 'var(--color-stage)', color: 'var(--color-fg)', border: '1px solid var(--color-stage-border)' }}
             data-testid="stop-button"
           >
             Stop
           </button>
         </div>
       )}
-      {fallback && (
+
+      {/* Spotify badge — required by Spotify Developer Policy when using preview clips */}
+      {spotifyPreview && (
+        <SpotifyBadge
+          trackUrl={spotifyPreview.trackUrl}
+          trackName={spotifyPreview.trackName}
+          artistName={spotifyPreview.artistName}
+        />
+      )}
+
+      {/* iTunes badge — shown only when Spotify wasn't available */}
+      {!spotifyPreview && itunesPreview && (
         <a
-          href={fallback.trackViewUrl}
+          href={itunesPreview.trackViewUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="absolute right-2 top-2 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white hover:bg-black/80"

@@ -2,6 +2,7 @@ import type { Env } from '../env';
 import { handleChallengeRequest } from './challenge';
 import { handleDailyRequest } from './daily';
 import { handleUgcRequest } from './ugc';
+import { handleSpotifyRequest } from './spotify';
 
 export { LeaderboardDO } from '../durable-objects/Leaderboard';
 
@@ -18,6 +19,7 @@ export default {
     if (segments[1] === 'daily') return handleDailyRequest(request, env);
     if (segments[1] === 'ugc') return handleUgcRequest(request, env);
     if (segments[1] === 'challenge') return handleChallengeRequest(request, env);
+    if (segments[1] === 'spotify') return handleSpotifyRequest(request, env);
 
     return new Response('Not found', { status: 404 });
   },

@@ -45,6 +45,8 @@ function makeEnv(): { env: Env; kv: Map<string, string>; leaderboardFetch: Retur
       idFromName: vi.fn((name: string) => name),
       get: vi.fn(() => ({ fetch: leaderboardFetch })),
     } as unknown as Env['LEADERBOARD'],
+    SPOTIFY_CLIENT_ID: '',
+    SPOTIFY_CLIENT_SECRET: '',
   };
 
   return { env, kv, leaderboardFetch };

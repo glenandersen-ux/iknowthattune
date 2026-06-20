@@ -9,6 +9,8 @@ function makeEnv(store: Record<string, string>): Env {
     } as unknown as Env['CHALLENGES_KV'],
     R2: {} as unknown as Env['R2'],
     LEADERBOARD: {} as unknown as Env['LEADERBOARD'],
+    SPOTIFY_CLIENT_ID: '',
+    SPOTIFY_CLIENT_SECRET: '',
   };
 }
 
