@@ -152,7 +152,24 @@ export function HomeScreen(): JSX.Element {
 
   const handleStartSoloSprint = (): void => {
     const filtered = filterTracksForSoloSprint(tracks, { genres: selectedGenres, decades: selectedDecades, artist });
-    const pool = filtered.length > 0 ? filtered : tracks;
+
+    // When genre/decade filters are active but return fewer tracks than the
+    // requested sprint length, supplement with tracks that have no genre data
+    // (auto-generated tracks awaiting enrichment) rather than ignoring the
+    // filter entirely. Tracks with a conflicting genre are still excluded.
+    let pool = filtered;
+    if (filtered.length < trackCount && (selectedGenres.length > 0 || selectedDecades.length > 0)) {
+      const neutral = tracks.filter((t) => {
+        const genres = t.answers.genre.value;
+        const hasNoGenre = !Array.isArray(genres) || genres.length === 0;
+        if (!hasNoGenre) return false;
+        if (selectedDecades.length > 0 && !selectedDecades.includes(t.metadata.decade)) return false;
+        return true;
+      });
+      pool = [...filtered, ...neutral];
+    }
+    if (pool.length === 0) pool = tracks;
+
     const selected = pickFreshTracks(pool, recentlyPlayedIds, trackCount);
     if (selected.length === 0) return;
     void navigate({ to: '/game', search: { mode: 'solo', seed: encodeSeed(buildSoloSprintSeed(selected)) } });

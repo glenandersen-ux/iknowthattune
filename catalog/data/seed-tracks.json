@@ -811678,7 +811678,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 99,
         "tolerance": 5
       },
       "key_signature": {
@@ -811716,7 +811716,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 66175072
     }
   },
   {
@@ -811769,7 +811770,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 115,
         "tolerance": 5
       },
       "key_signature": {
@@ -811807,7 +811808,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 84885579
     }
   },
   {
@@ -811898,7 +811900,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2833834852
     }
   },
   {
@@ -811951,7 +811954,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 123,
         "tolerance": 5
       },
       "key_signature": {
@@ -811989,7 +811992,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 131738708
     }
   },
   {
@@ -812042,7 +812046,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 155,
         "tolerance": 5
       },
       "key_signature": {
@@ -812080,7 +812084,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2525878
     }
   },
   {
@@ -812171,7 +812176,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -812262,7 +812268,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 925019
     }
   },
   {
@@ -812315,7 +812322,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 97,
         "tolerance": 5
       },
       "key_signature": {
@@ -812353,7 +812360,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 94957748
     }
   },
   {
@@ -812444,7 +812452,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3396450201
     }
   },
   {
@@ -812497,7 +812506,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 155,
         "tolerance": 5
       },
       "key_signature": {
@@ -812535,7 +812544,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 398569572
     }
   },
   {
@@ -812585,7 +812595,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "chloe mk"
       },
       "bpm": {
         "value": null,
@@ -812626,7 +812636,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1046282602
     }
   },
   {
@@ -812717,7 +812728,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -812770,7 +812782,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 141,
         "tolerance": 5
       },
       "key_signature": {
@@ -812808,7 +812820,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 84987575
     }
   },
   {
@@ -812861,7 +812874,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 109,
         "tolerance": 5
       },
       "key_signature": {
@@ -812899,7 +812912,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 15407610
     }
   },
   {
@@ -812990,7 +813004,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -813043,7 +813058,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 163,
         "tolerance": 5
       },
       "key_signature": {
@@ -813081,7 +813096,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 8124508
     }
   },
   {
@@ -813134,7 +813150,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 128,
         "tolerance": 5
       },
       "key_signature": {
@@ -813172,7 +813188,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 60387371
     }
   },
   {
@@ -813263,7 +813280,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1787604857
     }
   },
   {
@@ -813354,7 +813372,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2891631862
     }
   },
   {
@@ -813407,7 +813426,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 138,
         "tolerance": 5
       },
       "key_signature": {
@@ -813445,7 +813464,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 71955236
     }
   },
   {
@@ -813536,7 +813556,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -813586,7 +813607,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "King Unique"
       },
       "bpm": {
         "value": null,
@@ -813627,7 +813648,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2149851767
     }
   },
   {
@@ -813718,7 +813740,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1118086822
     }
   },
   {
@@ -813771,7 +813794,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 113,
         "tolerance": 5
       },
       "key_signature": {
@@ -813809,7 +813832,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4162676
     }
   },
   {
@@ -813862,7 +813886,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 155,
         "tolerance": 5
       },
       "key_signature": {
@@ -813900,7 +813924,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 529406371
     }
   },
   {
@@ -813991,7 +814016,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1852000287
     }
   },
   {
@@ -814044,7 +814070,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 106,
         "tolerance": 5
       },
       "key_signature": {
@@ -814082,7 +814108,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 545541972
     }
   },
   {
@@ -814135,7 +814162,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 152,
         "tolerance": 5
       },
       "key_signature": {
@@ -814173,7 +814200,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 70196425
     }
   },
   {
@@ -814264,7 +814292,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -814355,7 +814384,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -814446,7 +814476,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -814499,7 +814530,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 130,
         "tolerance": 5
       },
       "key_signature": {
@@ -814537,7 +814568,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3102130
     }
   },
   {
@@ -814590,7 +814622,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 170,
         "tolerance": 5
       },
       "key_signature": {
@@ -814628,7 +814660,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 5674806
     }
   },
   {
@@ -814719,7 +814752,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4023235461
     }
   },
   {
@@ -814810,7 +814844,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -814863,7 +814898,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 176,
         "tolerance": 5
       },
       "key_signature": {
@@ -814901,7 +814936,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 398570652
     }
   },
   {
@@ -814954,7 +814990,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 112,
         "tolerance": 5
       },
       "key_signature": {
@@ -814992,7 +815028,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 540202152
     }
   },
   {
@@ -815045,7 +815082,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 160,
         "tolerance": 5
       },
       "key_signature": {
@@ -815083,7 +815120,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2523774
     }
   },
   {
@@ -815136,7 +815174,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 168,
         "tolerance": 5
       },
       "key_signature": {
@@ -815174,7 +815212,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 517538292
     }
   },
   {
@@ -815265,7 +815304,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -815318,7 +815358,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 126,
         "tolerance": 5
       },
       "key_signature": {
@@ -815356,7 +815396,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 763662062
     }
   },
   {
@@ -815447,7 +815488,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1574802
     }
   },
   {
@@ -815538,7 +815580,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1026847042
     }
   },
   {
@@ -815629,7 +815672,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 64056056
     }
   },
   {
@@ -815720,7 +815764,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2615553742
     }
   },
   {
@@ -815811,7 +815856,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1069776912
     }
   },
   {
@@ -815902,7 +815948,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3336280161
     }
   },
   {
@@ -815955,7 +816002,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 169,
         "tolerance": 5
       },
       "key_signature": {
@@ -815993,7 +816040,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 424565872
     }
   },
   {
@@ -816046,7 +816094,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 142,
         "tolerance": 5
       },
       "key_signature": {
@@ -816084,7 +816132,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 134533236
     }
   },
   {
@@ -816175,7 +816224,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -816228,7 +816278,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
@@ -816266,7 +816316,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 963016
     }
   },
   {
@@ -816357,7 +816408,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -816448,7 +816500,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1239411612
     }
   },
   {
@@ -816501,7 +816554,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 124,
         "tolerance": 5
       },
       "key_signature": {
@@ -816539,7 +816592,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3134155
     }
   },
   {
@@ -816630,7 +816684,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 12036552
     }
   },
   {
@@ -816683,7 +816738,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
@@ -816721,7 +816776,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 134612961
     }
   },
   {
@@ -816774,7 +816830,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 145,
         "tolerance": 5
       },
       "key_signature": {
@@ -816812,7 +816868,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 538439732
     }
   },
   {
@@ -816865,7 +816922,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 145,
         "tolerance": 5
       },
       "key_signature": {
@@ -816903,7 +816960,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1138316
     }
   },
   {
@@ -816994,7 +817052,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2836687562
     }
   },
   {
@@ -817085,7 +817144,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1630287022
     }
   },
   {
@@ -817176,7 +817236,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1763134567
     }
   },
   {
@@ -817229,7 +817290,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 111,
         "tolerance": 5
       },
       "key_signature": {
@@ -817267,7 +817328,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2304946
     }
   },
   {
@@ -817358,7 +817420,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3092593041
     }
   },
   {
@@ -817411,7 +817474,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 181,
         "tolerance": 5
       },
       "key_signature": {
@@ -817449,7 +817512,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 14615222
     }
   },
   {
@@ -817540,7 +817604,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -817593,7 +817658,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 116,
         "tolerance": 5
       },
       "key_signature": {
@@ -817631,7 +817696,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 38441711
     }
   },
   {
@@ -817684,7 +817750,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 84,
         "tolerance": 5
       },
       "key_signature": {
@@ -817722,7 +817788,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4162680
     }
   },
   {
@@ -817775,7 +817842,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 128,
         "tolerance": 5
       },
       "key_signature": {
@@ -817813,7 +817880,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 60904702
     }
   },
   {
@@ -817866,7 +817934,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 143,
         "tolerance": 5
       },
       "key_signature": {
@@ -817904,7 +817972,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 88003859
     }
   },
   {
@@ -817957,7 +818026,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 109,
         "tolerance": 5
       },
       "key_signature": {
@@ -817995,7 +818064,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 121926240
     }
   },
   {
@@ -818086,7 +818156,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 67924680
     }
   },
   {
@@ -818136,7 +818207,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Alexandria"
       },
       "bpm": {
         "value": null,
@@ -818177,7 +818248,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3535714381
     }
   },
   {
@@ -818230,7 +818302,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 109,
         "tolerance": 5
       },
       "key_signature": {
@@ -818268,7 +818340,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 10392089
     }
   },
   {
@@ -818359,7 +818432,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2442691005
     }
   },
   {
@@ -818450,7 +818524,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 442191162
     }
   },
   {
@@ -818541,7 +818616,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -818594,7 +818670,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 146,
         "tolerance": 5
       },
       "key_signature": {
@@ -818632,7 +818708,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 6612490
     }
   },
   {
@@ -818682,10 +818759,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Terravita"
       },
       "bpm": {
-        "value": null,
+        "value": 140,
         "tolerance": 5
       },
       "key_signature": {
@@ -818723,7 +818800,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2458832625
     }
   },
   {
@@ -818776,7 +818854,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 123,
         "tolerance": 5
       },
       "key_signature": {
@@ -818814,7 +818892,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 137097336
     }
   },
   {
@@ -818864,10 +818943,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "RAYE"
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
@@ -818905,7 +818984,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 675600272
     }
   },
   {
@@ -818958,7 +819038,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 172,
         "tolerance": 5
       },
       "key_signature": {
@@ -818996,7 +819076,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 491447002
     }
   },
   {
@@ -819087,7 +819168,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 14881316
     }
   },
   {
@@ -819178,7 +819260,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2826363392
     }
   },
   {
@@ -819231,7 +819314,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -819269,7 +819352,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 77386188
     }
   },
   {
@@ -819322,7 +819406,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 94,
         "tolerance": 5
       },
       "key_signature": {
@@ -819360,7 +819444,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 412539662
     }
   },
   {
@@ -819413,7 +819498,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 94,
         "tolerance": 5
       },
       "key_signature": {
@@ -819451,7 +819536,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 412539662
     }
   },
   {
@@ -819542,7 +819628,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2538059341
     }
   },
   {
@@ -819633,7 +819720,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -819686,7 +819774,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 119,
         "tolerance": 5
       },
       "key_signature": {
@@ -819724,7 +819812,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2173197
     }
   },
   {
@@ -819777,7 +819866,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -819815,7 +819904,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 542831852
     }
   },
   {
@@ -819906,7 +819996,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -819997,7 +820088,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4089824451
     }
   },
   {
@@ -820088,7 +820180,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1761510047
     }
   },
   {
@@ -820141,7 +820234,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 124,
         "tolerance": 5
       },
       "key_signature": {
@@ -820179,7 +820272,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 92720078
     }
   },
   {
@@ -820270,7 +820364,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3788329932
     }
   },
   {
@@ -820323,7 +820418,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 105,
         "tolerance": 5
       },
       "key_signature": {
@@ -820361,7 +820456,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 14299463
     }
   },
   {
@@ -820452,7 +820548,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3391419391
     }
   },
   {
@@ -820502,10 +820599,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Daniel Merriweather"
       },
       "bpm": {
-        "value": null,
+        "value": 118,
         "tolerance": 5
       },
       "key_signature": {
@@ -820543,7 +820640,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 10307789
     }
   },
   {
@@ -820634,7 +820732,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3787287622
     }
   },
   {
@@ -820687,7 +820786,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 113,
         "tolerance": 5
       },
       "key_signature": {
@@ -820725,7 +820824,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 542831952
     }
   },
   {
@@ -820778,7 +820878,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 127,
         "tolerance": 5
       },
       "key_signature": {
@@ -820816,7 +820916,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 99554806
     }
   },
   {
@@ -820869,7 +820970,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
@@ -820907,7 +821008,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3614144
     }
   },
   {
@@ -820960,7 +821062,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 160,
         "tolerance": 5
       },
       "key_signature": {
@@ -820998,7 +821100,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 14614872
     }
   },
   {
@@ -821048,7 +821151,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Sgt Slick"
       },
       "bpm": {
         "value": null,
@@ -821089,7 +821192,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1775522557
     }
   },
   {
@@ -821142,7 +821246,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 91,
         "tolerance": 5
       },
       "key_signature": {
@@ -821180,7 +821284,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1015321
     }
   },
   {
@@ -821230,7 +821335,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Street Justice"
       },
       "bpm": {
         "value": null,
@@ -821271,7 +821376,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1853591707
     }
   },
   {
@@ -821324,7 +821430,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 138,
         "tolerance": 5
       },
       "key_signature": {
@@ -821362,7 +821468,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 138544279
     }
   },
   {
@@ -821453,7 +821560,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -821503,10 +821611,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Alex Newell"
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -821544,7 +821652,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 100248208
     }
   },
   {
@@ -821597,7 +821706,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 115,
         "tolerance": 5
       },
       "key_signature": {
@@ -821635,7 +821744,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 757244952
     }
   },
   {
@@ -821688,7 +821798,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 140,
         "tolerance": 5
       },
       "key_signature": {
@@ -821726,7 +821836,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2205130
     }
   },
   {
@@ -821817,7 +821928,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4711052
     }
   },
   {
@@ -821867,7 +821979,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Chew Fu"
       },
       "bpm": {
         "value": null,
@@ -821908,7 +822020,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 6106538
     }
   },
   {
@@ -821961,7 +822074,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 124,
         "tolerance": 5
       },
       "key_signature": {
@@ -821999,7 +822112,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 134612941
     }
   },
   {
@@ -822090,7 +822204,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -822143,7 +822258,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 90,
         "tolerance": 5
       },
       "key_signature": {
@@ -822181,7 +822296,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 30833031
     }
   },
   {
@@ -822234,7 +822350,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 114,
         "tolerance": 5
       },
       "key_signature": {
@@ -822272,7 +822388,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3257505
     }
   },
   {
@@ -822325,7 +822442,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 127,
         "tolerance": 5
       },
       "key_signature": {
@@ -822363,7 +822480,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 94957728
     }
   },
   {
@@ -822454,7 +822572,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -822545,7 +822664,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -822598,7 +822718,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 99,
         "tolerance": 5
       },
       "key_signature": {
@@ -822636,7 +822756,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 13785964
     }
   },
   {
@@ -822689,7 +822810,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 84,
         "tolerance": 5
       },
       "key_signature": {
@@ -822727,7 +822848,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2793760
     }
   },
   {
@@ -822780,7 +822902,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 162,
         "tolerance": 5
       },
       "key_signature": {
@@ -822818,7 +822940,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2177195
     }
   },
   {
@@ -822871,7 +822994,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 148,
         "tolerance": 5
       },
       "key_signature": {
@@ -822909,7 +823032,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 85047166
     }
   },
   {
@@ -823000,7 +823124,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 5932527
     }
   },
   {
@@ -823091,7 +823216,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 140607979
     }
   },
   {
@@ -823182,7 +823308,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -823235,7 +823362,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 162,
         "tolerance": 5
       },
       "key_signature": {
@@ -823273,7 +823400,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 15449587
     }
   },
   {
@@ -823326,7 +823454,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 130,
         "tolerance": 5
       },
       "key_signature": {
@@ -823364,7 +823492,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 127176831
     }
   },
   {
@@ -823417,7 +823546,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 146,
         "tolerance": 5
       },
       "key_signature": {
@@ -823455,7 +823584,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 418231502
     }
   },
   {
@@ -823508,7 +823638,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 185,
         "tolerance": 5
       },
       "key_signature": {
@@ -823546,7 +823676,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3977908
     }
   },
   {
@@ -823599,7 +823730,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 100,
         "tolerance": 5
       },
       "key_signature": {
@@ -823637,7 +823768,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3976209
     }
   },
   {
@@ -823728,7 +823860,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -823781,7 +823914,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 115,
         "tolerance": 5
       },
       "key_signature": {
@@ -823819,7 +823952,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2265589
     }
   },
   {
@@ -823910,7 +824044,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3612048022
     }
   },
   {
@@ -824001,7 +824136,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2069550117
     }
   },
   {
@@ -824092,7 +824228,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -824183,7 +824320,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3978352791
     }
   },
   {
@@ -824236,7 +824374,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 148,
         "tolerance": 5
       },
       "key_signature": {
@@ -824274,7 +824412,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 14638662
     }
   },
   {
@@ -824327,7 +824466,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 94,
         "tolerance": 5
       },
       "key_signature": {
@@ -824365,7 +824504,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2466272
     }
   },
   {
@@ -824418,7 +824558,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 106,
         "tolerance": 5
       },
       "key_signature": {
@@ -824456,7 +824596,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4197812
     }
   },
   {
@@ -824547,7 +824688,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 93135056
     }
   },
   {
@@ -824597,10 +824739,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "David Guetta"
       },
       "bpm": {
-        "value": null,
+        "value": 130,
         "tolerance": 5
       },
       "key_signature": {
@@ -824638,7 +824780,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 10162588
     }
   },
   {
@@ -824691,7 +824834,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 108,
         "tolerance": 5
       },
       "key_signature": {
@@ -824729,7 +824872,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 104133476
     }
   },
   {
@@ -824820,7 +824964,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -824911,7 +825056,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -824964,7 +825110,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -825002,7 +825148,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 561836
     }
   },
   {
@@ -825093,7 +825240,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1234145902
     }
   },
   {
@@ -825146,7 +825294,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 158,
         "tolerance": 5
       },
       "key_signature": {
@@ -825184,7 +825332,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2112271
     }
   },
   {
@@ -825275,7 +825424,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4063029361
     }
   },
   {
@@ -825328,7 +825478,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 164,
         "tolerance": 5
       },
       "key_signature": {
@@ -825366,7 +825516,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1165311
     }
   },
   {
@@ -825419,7 +825570,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 120,
         "tolerance": 5
       },
       "key_signature": {
@@ -825457,7 +825608,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 96457310
     }
   },
   {
@@ -825510,7 +825662,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 98,
         "tolerance": 5
       },
       "key_signature": {
@@ -825548,7 +825700,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 545541892
     }
   },
   {
@@ -825601,7 +825754,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 116,
         "tolerance": 5
       },
       "key_signature": {
@@ -825639,7 +825792,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 74062562
     }
   },
   {
@@ -825689,7 +825843,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Nelly"
       },
       "bpm": {
         "value": null,
@@ -825730,7 +825884,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 925683
     }
   },
   {
@@ -825821,7 +825976,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2833834792
     }
   },
   {
@@ -825871,10 +826027,10 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Zara Larsson"
       },
       "bpm": {
-        "value": null,
+        "value": 123,
         "tolerance": 5
       },
       "key_signature": {
@@ -825912,7 +826068,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 144393668
     }
   },
   {
@@ -826003,7 +826160,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 665714202
     }
   },
   {
@@ -826094,7 +826252,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3024557301
     }
   },
   {
@@ -826185,7 +826344,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -826238,7 +826398,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 127,
         "tolerance": 5
       },
       "key_signature": {
@@ -826276,7 +826436,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 92720006
     }
   },
   {
@@ -826367,7 +826528,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3785291282
     }
   },
   {
@@ -826458,7 +826620,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -826549,7 +826712,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -826602,7 +826766,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 139,
         "tolerance": 5
       },
       "key_signature": {
@@ -826640,7 +826804,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 68094695
     }
   },
   {
@@ -826731,7 +826896,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -826822,7 +826988,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2981327401
     }
   },
   {
@@ -826875,7 +827042,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 99,
         "tolerance": 5
       },
       "key_signature": {
@@ -826913,7 +827080,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 15626755
     }
   },
   {
@@ -826966,7 +827134,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 99,
         "tolerance": 5
       },
       "key_signature": {
@@ -827004,7 +827172,8 @@
       "decade": 1980,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 77386189
     }
   },
   {
@@ -827095,7 +827264,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -827148,7 +827318,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 107,
         "tolerance": 5
       },
       "key_signature": {
@@ -827186,7 +827356,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2265593
     }
   },
   {
@@ -827239,7 +827410,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 164,
         "tolerance": 5
       },
       "key_signature": {
@@ -827277,7 +827448,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 12687455
     }
   },
   {
@@ -827368,7 +827540,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 639788982
     }
   },
   {
@@ -827421,7 +827594,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 112,
         "tolerance": 5
       },
       "key_signature": {
@@ -827459,7 +827632,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 745017
     }
   },
   {
@@ -827550,7 +827724,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 3791100602
     }
   },
   {
@@ -827641,7 +827816,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 927897
     }
   },
   {
@@ -827732,7 +827908,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -827785,7 +827962,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 163,
         "tolerance": 5
       },
       "key_signature": {
@@ -827823,7 +828000,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 80200082
     }
   },
   {
@@ -827876,7 +828054,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 119,
         "tolerance": 5
       },
       "key_signature": {
@@ -827914,7 +828092,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 80304786
     }
   },
   {
@@ -827967,7 +828146,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -828005,7 +828184,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 4315683
     }
   },
   {
@@ -828096,7 +828276,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1971267137
     }
   },
   {
@@ -828149,7 +828330,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 112,
         "tolerance": 5
       },
       "key_signature": {
@@ -828187,7 +828368,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 8164971
     }
   },
   {
@@ -828278,7 +828460,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2080029557
     }
   },
   {
@@ -828369,7 +828552,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -828460,7 +828644,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -828551,7 +828736,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 1852000327
     }
   },
   {
@@ -828601,7 +828787,7 @@
         "partial_credit": true
       },
       "featured_artist": {
-        "value": null
+        "value": "Lyon"
       },
       "bpm": {
         "value": null,
@@ -828642,7 +828828,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2938035161
     }
   },
   {
@@ -828695,7 +828882,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 125,
         "tolerance": 5
       },
       "key_signature": {
@@ -828733,7 +828920,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 731732422
     }
   },
   {
@@ -828786,7 +828974,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 115,
         "tolerance": 5
       },
       "key_signature": {
@@ -828824,7 +829012,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 13776524
     }
   },
   {
@@ -828915,7 +829104,8 @@
       "decade": 1970,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -828968,7 +829158,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 114,
         "tolerance": 5
       },
       "key_signature": {
@@ -829006,7 +829196,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 977951
     }
   },
   {
@@ -829097,7 +829288,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -829188,7 +829380,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -829241,7 +829434,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 100,
         "tolerance": 5
       },
       "key_signature": {
@@ -829279,7 +829472,8 @@
       "decade": 1990,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 78652589
     }
   },
   {
@@ -829332,7 +829526,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 108,
         "tolerance": 5
       },
       "key_signature": {
@@ -829370,7 +829564,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 74798633
     }
   },
   {
@@ -829461,7 +829656,8 @@
       "decade": 2000,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -829552,7 +829748,8 @@
       "decade": 2020,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 2623982352
     }
   },
   {
@@ -829605,7 +829802,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 170,
         "tolerance": 5
       },
       "key_signature": {
@@ -829643,7 +829840,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 13651702
     }
   },
   {
@@ -829734,7 +829932,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_not_found": true
     }
   },
   {
@@ -829787,7 +829986,7 @@
         "value": null
       },
       "bpm": {
-        "value": null,
+        "value": 128,
         "tolerance": 5
       },
       "key_signature": {
@@ -829825,7 +830024,8 @@
       "decade": 2010,
       "language": "en",
       "tags": [],
-      "difficulty_score": 1.5
+      "difficulty_score": 1.5,
+      "deezer_track_id": 93401696
     }
   },
   {
