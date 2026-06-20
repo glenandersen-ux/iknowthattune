@@ -216,38 +216,60 @@ export function ClipPlayer({
         </div>
       )}
 
-      {!unlocked && status !== 'error' && (
-        <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40">
-          <button
-            type="button"
-            onClick={(): void => void handleTapToStart()}
-            disabled={status === 'loading'}
-            className="rounded-full px-8 py-2 text-lg font-bold uppercase tracking-widest shadow-lg disabled:cursor-wait disabled:opacity-50"
-            style={{
-              background: status === 'loading' ? 'var(--color-stage-card)' : 'var(--color-spotlight)',
-              color: status === 'loading' ? 'var(--color-fg-muted)' : 'var(--color-stage)',
-              fontFamily: 'var(--font-display)',
-            }}
-            data-testid="tap-to-start"
-          >
-            {status === 'loading' ? 'Loading…' : 'Start'}
-          </button>
-        </div>
-      )}
-
-      {status === 'playing' && (
-        <div className="absolute inset-x-0 bottom-2 flex justify-center">
-          <button
-            type="button"
-            onClick={handleStop}
-            className="rounded-full px-6 py-1.5 text-sm font-semibold shadow-lg"
-            style={{ background: 'var(--color-stage)', color: 'var(--color-fg)', border: '1px solid var(--color-stage-border)' }}
-            data-testid="stop-button"
-          >
-            Stop
-          </button>
-        </div>
-      )}
+      {/* Centered play / stop button */}
+      <div className="flex flex-col items-center gap-2 py-5">
+        {status === 'playing' ? (
+          <>
+            <button
+              type="button"
+              onClick={handleStop}
+              data-testid="stop-button"
+              className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95"
+              style={{
+                width: 76, height: 76,
+                background: 'var(--color-stage)',
+                border: '2px solid var(--color-stage-border)',
+                color: 'var(--color-fg)',
+              }}
+            >
+              <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>⏹</span>
+            </button>
+            <p className="text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+              {currentDuration} playing
+            </p>
+          </>
+        ) : !unlocked && status !== 'error' ? (
+          <>
+            <button
+              type="button"
+              onClick={(): void => void handleTapToStart()}
+              disabled={status === 'loading'}
+              data-testid="tap-to-start"
+              className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-50"
+              style={{
+                width: 76, height: 76,
+                background: status === 'loading' ? 'var(--color-stage-border)' : 'var(--color-spotlight)',
+                color: status === 'loading' ? 'var(--color-fg-muted)' : 'var(--color-stage)',
+                fontFamily: 'var(--font-display)',
+              }}
+            >
+              {status === 'loading' ? (
+                <span className="text-xs">…</span>
+              ) : (
+                <>
+                  <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
+                  <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
+                    {currentDuration}
+                  </span>
+                </>
+              )}
+            </button>
+            <p className="text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+              {status === 'loading' ? 'Loading audio…' : 'Tap to play'}
+            </p>
+          </>
+        ) : null}
+      </div>
 
       {deezerPreview && (
         <DeezerBadge
