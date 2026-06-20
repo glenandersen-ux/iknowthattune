@@ -26,7 +26,7 @@ id = "335289cc2fe64069ad118f9fcc4f13d6"
 # then paste the returned id below.
 [[kv_namespaces]]
 binding = "AUTH_KV"
-id = ""
+id = "08d209668c9d4636b48cf4f9b824ff55"
 
 [[r2_buckets]]
 binding = "R2"
