@@ -39,6 +39,7 @@ function createDefaultProfile(): PlayerProfile {
     years_within_one: 0,
     field_stats: {},
     assist_mode: 'regular',
+    recently_played_track_ids: [],
   };
 }
 
@@ -110,6 +111,14 @@ export const usePlayerStore = create<PlayerStore>()(
           updatedProfile.badges = [...updatedProfile.badges, ...newBadges];
         }
 
+        // Keep a rolling window of the last 20 played track IDs (newest first)
+        // so Solo Sprint can prioritise tracks the player hasn't heard recently.
+        const playedIds = session.tracks.map((t) => t.track_id);
+        updatedProfile.recently_played_track_ids = [
+          ...playedIds,
+          ...state.recently_played_track_ids.filter((id) => !playedIds.includes(id)),
+        ].slice(0, 20);
+
         set(updatedProfile);
         return newBadges;
       },
@@ -126,7 +135,7 @@ export const usePlayerStore = create<PlayerStore>()(
     }),
     {
       name: 'iktt-player',
-      version: 4,
+      version: 5,
       migrate: (persistedState, version): PlayerStore => {
         let state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
         if (version < 1) {
@@ -145,6 +154,9 @@ export const usePlayerStore = create<PlayerStore>()(
         }
         if (version < 4) {
           state = { ...state, assist_mode: state.assist_mode ?? 'regular' };
+        }
+        if (version < 5) {
+          state = { ...state, recently_played_track_ids: [] };
         }
         return state as PlayerStore;
       },

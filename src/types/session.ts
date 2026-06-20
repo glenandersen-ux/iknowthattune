@@ -171,4 +171,9 @@ export interface PlayerProfile {
    * suggestions and requires the player to type every answer unaided.
    */
   assist_mode: 'regular' | 'expert';
+  /**
+   * Rolling list of the most recently played track IDs (newest first, capped at 20).
+   * Used by Solo Sprint to prefer tracks the player hasn't heard recently.
+   */
+  recently_played_track_ids: string[];
 }

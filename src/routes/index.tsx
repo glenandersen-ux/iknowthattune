@@ -13,7 +13,7 @@ import {
   listGenres,
   MAX_SOLO_TRACKS,
   MIN_SOLO_TRACKS,
-  pickRandomTracks,
+  pickFreshTracks,
 } from '../engine/SoloSprint';
 import { encodeSeed } from '../engine/UrlCodec';
 
@@ -108,6 +108,7 @@ export function HomeScreen(): JSX.Element {
   );
   const loadCatalog = useCatalogStore((state) => state.loadCatalog);
   const dailyStreak = usePlayerStore((state) => state.daily_drop_streak);
+  const recentlyPlayedIds = usePlayerStore((state) => state.recently_played_track_ids);
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedDecades, setSelectedDecades] = useState<number[]>([]);
@@ -148,7 +149,7 @@ export function HomeScreen(): JSX.Element {
   const handleStartSoloSprint = (): void => {
     const filtered = filterTracksForSoloSprint(tracks, { genres: selectedGenres, decades: selectedDecades, artist });
     const pool = filtered.length > 0 ? filtered : tracks;
-    const selected = pickRandomTracks(pool, trackCount);
+    const selected = pickFreshTracks(pool, recentlyPlayedIds, trackCount);
     if (selected.length === 0) return;
     void navigate({ to: '/game', search: { mode: 'solo', seed: encodeSeed(buildSoloSprintSeed(selected)) } });
   };

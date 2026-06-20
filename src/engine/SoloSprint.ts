@@ -64,6 +64,28 @@ export function pickRandomTracks(tracks: Track[], count: number, random: () => n
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
+/**
+ * Picks `count` tracks at random, strongly preferring tracks the player
+ * hasn't heard recently. Tracks NOT in `recentIds` are shuffled into the
+ * front of the pool; recently-played tracks are shuffled into the back and
+ * only drawn if there aren't enough fresh ones.
+ */
+export function pickFreshTracks(
+  tracks: Track[],
+  recentIds: string[],
+  count: number,
+  random: () => number = Math.random,
+): Track[] {
+  const recentSet = new Set(recentIds);
+  const fresh = tracks.filter((t) => !recentSet.has(t.track_id));
+  const recent = tracks.filter((t) => recentSet.has(t.track_id));
+
+  const shuffledFresh = pickRandomTracks(fresh, fresh.length, random);
+  const shuffledRecent = pickRandomTracks(recent, recent.length, random);
+  const ordered = [...shuffledFresh, ...shuffledRecent];
+  return ordered.slice(0, Math.min(count, ordered.length));
+}
+
 /** Builds the comma-separated `seed` URL param from a list of tracks. */
 export function buildSoloSprintSeed(tracks: Track[]): string {
   return tracks.map((track) => track.track_id).join(',');

@@ -87,6 +87,7 @@ function makeProfile(overrides: Partial<PlayerProfile> = {}): PlayerProfile {
     years_within_one: 0,
     field_stats: {},
     assist_mode: 'regular',
+    recently_played_track_ids: [],
     ...overrides,
   };
 }

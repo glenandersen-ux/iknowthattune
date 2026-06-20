@@ -4,6 +4,7 @@ import {
   filterTracksForSoloSprint,
   listDecades,
   listGenres,
+  pickFreshTracks,
   pickRandomTracks,
 } from './SoloSprint';
 import type { Track } from '../types/track';
@@ -87,6 +88,31 @@ describe('pickRandomTracks', () => {
   it('uses the provided random function deterministically', () => {
     const result = pickRandomTracks(tracks, 3, () => 0);
     expect(result.map((t) => t.track_id)).toEqual(['tk2', 'tk3', 'tk1']);
+  });
+});
+
+describe('pickFreshTracks', () => {
+  it('returns only fresh tracks when the pool has enough', () => {
+    const result = pickFreshTracks(tracks, ['tk1'], 2, () => 0);
+    // tk2 and tk3 are fresh; tk1 is recent and should not appear
+    expect(result.map((t) => t.track_id)).not.toContain('tk1');
+    expect(result).toHaveLength(2);
+  });
+
+  it('falls back to recent tracks when the pool is too small without them', () => {
+    const result = pickFreshTracks(tracks, ['tk1', 'tk2'], 3, () => 0);
+    // Only tk3 is fresh; we need 3 total so recent tracks must fill the gap
+    expect(result).toHaveLength(3);
+    expect(result.map((t) => t.track_id)).toContain('tk3');
+  });
+
+  it('gives fresh tracks priority over recently-played ones', () => {
+    const result = pickFreshTracks(tracks, ['tk1'], 2, () => 0);
+    const ids = result.map((t) => t.track_id);
+    // fresh tracks (tk2, tk3) must come before the recent one (tk1)
+    if (ids.includes('tk1')) {
+      expect(ids.indexOf('tk1')).toBeGreaterThan(ids.indexOf('tk2'));
+    }
   });
 });
 
