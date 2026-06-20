@@ -28,12 +28,23 @@ const SONGWRITER_FLAG = process.argv.includes('--songwriters');
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function mbGet(path) {
-  const res = await fetch(`https://musicbrainz.org/ws/2${path}&fmt=json`, {
-    headers: { 'User-Agent': UA, Accept: 'application/json' },
-  });
-  if (!res.ok) return null;
-  return res.json();
+async function mbGet(path, retries = 3) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const res = await fetch(`https://musicbrainz.org/ws/2${path}&fmt=json`, {
+        headers: { 'User-Agent': UA, Accept: 'application/json' },
+      });
+      if (res.status === 503 || res.status === 429) {
+        await sleep(5000); // rate limited — back off longer
+        continue;
+      }
+      if (!res.ok) return null;
+      return await res.json();
+    } catch {
+      if (attempt < retries - 1) await sleep(3000);
+    }
+  }
+  return null;
 }
 
 // ── Phase 1: genre via artist lookup ──────────────────────────────────────────
@@ -95,30 +106,28 @@ async function main() {
   );
 
   console.log(`Phase 1: looking up genres for ${artistsNeedingGenres.size} artists…`);
-  const artistGenreCache = new Map();
   let artistsDone = 0;
   let genresAdded = 0;
 
   for (const artist of artistsNeedingGenres) {
     const genres = await fetchArtistGenres(artist);
-    artistGenreCache.set(artist, genres);
-    artistsDone++;
     await sleep(DELAY_MS);
-    if (artistsDone % 50 === 0) {
-      console.log(`  [${artistsDone}/${artistsNeedingGenres.size}] genres cached`);
-      save(tracks);
-    }
-  }
 
-  // Apply cached genres to tracks.
-  for (const track of tracks) {
-    const g = track.answers.genre.value;
-    if (Array.isArray(g) && g.length > 0) continue; // already has genre
-    const artist = track.answers.primary_artist.value;
-    const genres = artistGenreCache.get(artist) ?? [];
     if (genres.length > 0) {
-      track.answers.genre.value = genres;
-      genresAdded++;
+      // Apply immediately so progress is saved even if the script crashes.
+      for (const track of tracks) {
+        if (track.answers.primary_artist.value !== artist) continue;
+        const g = track.answers.genre.value;
+        if (Array.isArray(g) && g.length > 0) continue;
+        track.answers.genre.value = genres;
+        genresAdded++;
+      }
+    }
+
+    artistsDone++;
+    if (artistsDone % 50 === 0) {
+      console.log(`  [${artistsDone}/${artistsNeedingGenres.size}] +${genresAdded} genre entries`);
+      save(tracks);
     }
   }
   save(tracks);
