@@ -157,6 +157,8 @@ export interface PlayerProfile {
   daily_drop_streak: number;
   /** ISO 8601 date (YYYY-MM-DD) the Daily Drop streak was last incremented, or null if never played. */
   daily_drop_streak_date: string | null;
+  /** Score earned in the most recent completed Daily Drop. */
+  daily_drop_last_score: number | null;
   /** Track IDs where every `band_members` entry has ever been guessed correctly (Band Nerd badge). */
   bands_correctly_named: string[];
   /** Lifetime count of correctly-guessed `sample_source` fields (Sample Detective badge). */

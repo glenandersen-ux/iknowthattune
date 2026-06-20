@@ -109,6 +109,8 @@ export function HomeScreen(): JSX.Element {
   );
   const loadCatalog = useCatalogStore((state) => state.loadCatalog);
   const dailyStreak = usePlayerStore((state) => state.daily_drop_streak);
+  const dailyDropDate = usePlayerStore((state) => state.daily_drop_streak_date);
+  const dailyDropLastScore = usePlayerStore((state) => state.daily_drop_last_score);
   const recentlyPlayedIds = usePlayerStore((state) => state.recently_played_track_ids);
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -122,6 +124,7 @@ export function HomeScreen(): JSX.Element {
   }, [loadCatalog]);
 
   const date = todayIso();
+  const playedTodaysDrop = dailyDropDate === date;
 
   useEffect(() => {
     void fetchDailyTrackOverride(date).then(setOverrideTrackId);
@@ -229,38 +232,57 @@ export function HomeScreen(): JSX.Element {
                 <span>{difficultyLabel(track.metadata.difficulty_score)}</span>
               </div>
 
-              <button
-                type="button"
-                onClick={handlePlay}
-                aria-label="Play Today's Drop"
-                className="group relative w-full overflow-hidden rounded-2xl px-8 py-5 text-xl font-bold uppercase tracking-widest transition-transform active:scale-95"
-                style={{
-                  background: 'var(--color-spotlight)',
-                  color: 'var(--color-stage)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-sm"
-                    style={{ background: 'var(--color-stage)', color: 'var(--color-spotlight)' }}
+              {playedTodaysDrop ? (
+                <div
+                  className="w-full rounded-2xl px-8 py-5 text-center"
+                  style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)' }}
+                >
+                  <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+                    Today&apos;s score
+                  </p>
+                  <p
+                    className="text-4xl font-bold"
+                    style={{ fontFamily: 'var(--font-display)', color: 'var(--color-spotlight)' }}
                   >
-                    ▶
+                    {dailyDropLastScore?.toLocaleString() ?? '—'}
+                  </p>
+                  <p className="mt-1 text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+                    Come back tomorrow for a new drop 🔥
+                  </p>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handlePlay}
+                  aria-label="Play Today's Drop"
+                  className="group relative w-full overflow-hidden rounded-2xl px-8 py-5 text-xl font-bold uppercase tracking-widest transition-transform active:scale-95"
+                  style={{
+                    background: 'var(--color-spotlight)',
+                    color: 'var(--color-stage)',
+                    fontFamily: 'var(--font-display)',
+                  }}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    <span
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-sm"
+                      style={{ background: 'var(--color-stage)', color: 'var(--color-spotlight)' }}
+                    >
+                      ▶
+                    </span>
+                    Play Today&apos;s Drop
+                    <span
+                      className="rounded-md px-2 py-0.5 text-sm"
+                      style={{ background: 'rgba(0,0,0,0.15)' }}
+                    >
+                      1s
+                    </span>
                   </span>
-                  Play Today's Drop
                   <span
-                    className="rounded-md px-2 py-0.5 text-sm"
-                    style={{ background: 'rgba(0,0,0,0.15)' }}
-                  >
-                    1s
-                  </span>
-                </span>
-                {/* shimmer on hover */}
-                <span
-                  className="absolute inset-0 -translate-x-full skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-[120%]"
-                  style={{ background: 'rgba(255,255,255,0.2)', width: '60%' }}
-                />
-              </button>
+                    className="absolute inset-0 -translate-x-full skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-[120%]"
+                    style={{ background: 'rgba(255,255,255,0.2)', width: '60%' }}
+                  />
+                </button>
+              )}
             </div>
           ) : (
             <div

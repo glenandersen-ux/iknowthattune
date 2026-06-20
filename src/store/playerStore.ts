@@ -34,6 +34,7 @@ function createDefaultProfile(): PlayerProfile {
     challenges_beaten: [],
     daily_drop_streak: 0,
     daily_drop_streak_date: null,
+    daily_drop_last_score: null,
     bands_correctly_named: [],
     sample_sources_correct: 0,
     years_within_one: 0,
@@ -98,6 +99,7 @@ export const usePlayerStore = create<PlayerStore>()(
             gamesPlayed,
           daily_drop_streak: dailyDropStreak,
           daily_drop_streak_date: session.mode === 'daily' ? todayIso() : state.daily_drop_streak_date,
+          daily_drop_last_score: session.mode === 'daily' ? Math.round(session.totals.total_score) : state.daily_drop_last_score,
           bands_correctly_named: bandsCorrectlyNamed,
           sample_sources_correct: sampleSourcesCorrect,
           years_within_one: yearsWithinOne,
@@ -135,7 +137,7 @@ export const usePlayerStore = create<PlayerStore>()(
     }),
     {
       name: 'iktt-player',
-      version: 5,
+      version: 6,
       migrate: (persistedState, version): PlayerStore => {
         let state = persistedState as Partial<PlayerStore> & Record<string, unknown>;
         if (version < 1) {
@@ -157,6 +159,9 @@ export const usePlayerStore = create<PlayerStore>()(
         }
         if (version < 5) {
           state = { ...state, recently_played_track_ids: [] };
+        }
+        if (version < 6) {
+          state = { ...state, daily_drop_last_score: null };
         }
         return state as PlayerStore;
       },

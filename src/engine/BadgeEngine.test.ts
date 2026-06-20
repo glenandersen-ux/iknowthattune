@@ -88,6 +88,7 @@ function makeProfile(overrides: Partial<PlayerProfile> = {}): PlayerProfile {
     field_stats: {},
     assist_mode: 'regular',
     recently_played_track_ids: [],
+    daily_drop_last_score: null,
     ...overrides,
   };
 }
