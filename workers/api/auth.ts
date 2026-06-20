@@ -88,8 +88,10 @@ export async function handleGoogleCallback(request: Request, env: Env): Promise<
   // across regions) and cookies (stripped by the Pages→Worker service binding)
   // are unreliable here. For a music trivia game the attack risk is minimal;
   // we'll add HMAC-signed state later. Only check that Google provided a code.
+  const googleError = url.searchParams.get('error');
   if (!code) {
-    return new Response(null, { status: 302, headers: { Location: '/?auth=error' } });
+    const reason = googleError ?? 'no_code';
+    return new Response(null, { status: 302, headers: { Location: `/?auth=error&reason=${reason}` } });
   }
 
   // Exchange code for tokens
@@ -105,7 +107,8 @@ export async function handleGoogleCallback(request: Request, env: Env): Promise<
     }),
   });
   if (!tokenRes.ok) {
-    return new Response(null, { status: 302, headers: { Location: '/?auth=error' } });
+    const body = await tokenRes.text();
+    return new Response(null, { status: 302, headers: { Location: `/?auth=error&reason=token_${tokenRes.status}&detail=${encodeURIComponent(body.slice(0, 120))}` } });
   }
   const tokens = (await tokenRes.json()) as { access_token: string };
 
