@@ -9,10 +9,14 @@ export interface AuthUser {
 
 export interface AuthStore {
   user: AuthUser | null;
-  /** True while the initial `/api/auth/me` check is in flight. */
+  /** True while the initial session check is in flight. */
   loading: boolean;
-  /** Fetches the current session from the server. Call once on app mount. */
-  checkSession: () => Promise<void>;
+  /**
+   * Checks the current session. If `authExchange` is provided (the short-lived
+   * code placed in the URL by the OAuth callback), it is exchanged for a real
+   * session cookie before falling back to the normal /api/auth/me check.
+   */
+  checkSession: (authExchange?: string) => Promise<void>;
   logout: () => Promise<void>;
   /** Pushes the local playerStore snapshot to the server for cross-device sync. */
   syncStats: (stats: Record<string, unknown>) => Promise<void>;
@@ -22,28 +26,27 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   user: null,
   loading: true,
 
-  checkSession: async () => {
+  checkSession: async (authExchange?: string) => {
     set({ loading: true });
     try {
-      // If the OAuth callback left an exchange code in the URL, swap it for a
-      // real session cookie before checking the session. The code is consumed
-      // server-side so it can't be replayed.
-      const params = new URLSearchParams(window.location.search);
-      const exchangeCode = params.get('auth_exchange');
-      if (exchangeCode) {
-        // Remove the code from the URL so it doesn't sit in browser history.
-        params.delete('auth_exchange');
-        const newUrl = params.toString() ? `/?${params.toString()}` : '/';
-        window.history.replaceState({}, '', newUrl);
-
+      if (authExchange) {
+        // Swap the short-lived exchange code for a real session cookie.
+        // The cookie is set in this normal JSON response (not a redirect),
+        // which is the only path where Set-Cookie works through the
+        // Cloudflare service binding.
         const exchangeRes = await fetch('/api/auth/exchange', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: exchangeCode }),
+          body: JSON.stringify({ code: authExchange }),
         });
         if (exchangeRes.ok) {
           const user = (await exchangeRes.json()) as AuthUser;
           set({ user, loading: false });
+          // Clean the exchange code from the URL so it doesn't sit in history.
+          const params = new URLSearchParams(window.location.search);
+          params.delete('auth_exchange');
+          const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+          window.history.replaceState({}, '', newUrl);
           return;
         }
       }

@@ -1,5 +1,5 @@
 import { useEffect, type JSX } from 'react';
-import { createRootRoute, Link, Outlet, useRouterState } from '@tanstack/react-router';
+import { createRootRoute, Link, Outlet, useRouterState, useSearch } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { useAuthStore } from '../store/authStore';
 import { usePlayerStore } from '../store/playerStore';
@@ -20,10 +20,14 @@ export function RootComponent(): JSX.Element {
   const authLoading = useAuthStore((state) => state.loading);
   const playerStats = usePlayerStore();
 
-  // Check if the user has a session on every app load.
+  // Read the OAuth exchange code before TanStack Router strips unknown params.
+  // strict:false lets useSearch work from the root without a route match.
+  const routeSearch = useSearch({ strict: false }) as { auth_exchange?: string };
+  const authExchange = routeSearch.auth_exchange;
+
   useEffect(() => {
-    void checkSession();
-  }, [checkSession]);
+    void checkSession(authExchange);
+  }, [checkSession, authExchange]);
 
   // When the user logs in, push their local stats to the server.
   useEffect(() => {

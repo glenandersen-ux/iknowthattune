@@ -33,6 +33,8 @@ export const gameSearchSchema = z.object({
   view: z.enum(['leaderboard']).optional(),
   /** Base64-encoded full challenge object for ≤2-track URL-embedded challenges. */
   mini: z.string().optional(),
+  /** Short-lived exchange code dropped by the Google OAuth callback. */
+  auth_exchange: z.string().optional(),
 });
 
 export type GameSearch = z.infer<typeof gameSearchSchema>;

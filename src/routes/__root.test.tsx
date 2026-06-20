@@ -9,6 +9,7 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
     ...actual,
     useRouterState: (opts: { select: (state: { location: { pathname: string } }) => string }) =>
       useRouterStateMock(opts),
+    useSearch: () => ({}),
     Link: ({ to, children, ...props }: { to: string; children: React.ReactNode }) => (
       <a href={to} {...props}>
         {children}
