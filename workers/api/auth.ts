@@ -141,16 +141,20 @@ export async function handleGoogleCallback(request: Request, env: Env): Promise<
     }
   }
 
-  // Issue session
-  const token = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
-  await env.AUTH_KV.put(`session:${token}`, userId, { expirationTtl: SESSION_TTL_SECONDS });
+  // Issue a short-lived exchange code (30s TTL) rather than setting the cookie
+  // directly on the redirect response. Cloudflare's service binding between
+  // Pages and Worker silently drops Set-Cookie headers on redirect responses,
+  // so the cookie has to be set in a normal JSON response instead. The frontend
+  // reads the exchange code from the URL and calls /api/auth/exchange to swap
+  // it for a real session cookie.
+  const exchangeCode = crypto.randomUUID();
+  const sessionToken = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
+  await env.AUTH_KV.put(`session:${sessionToken}`, userId, { expirationTtl: SESSION_TTL_SECONDS });
+  await env.AUTH_KV.put(`exchange:${exchangeCode}`, sessionToken, { expirationTtl: 30 });
 
   return new Response(null, {
     status: 302,
-    headers: {
-      Location: '/?auth=success',
-      'Set-Cookie': sessionCookie(token),
-    },
+    headers: { Location: `/?auth_exchange=${exchangeCode}` },
   });
 }
 
@@ -190,6 +194,33 @@ export async function handleAuthSync(request: Request, env: Env): Promise<Respon
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers: CORS });
 }
 
+/**
+ * POST /api/auth/exchange — swaps a short-lived exchange code for a real
+ * session cookie. Called by the frontend immediately after the OAuth callback
+ * redirect, in a normal JSON request where Set-Cookie works correctly.
+ */
+export async function handleAuthExchange(request: Request, env: Env): Promise<Response> {
+  const { code } = (await request.json()) as { code?: string };
+  if (!code) return new Response(JSON.stringify({ error: 'code required' }), { status: 400, headers: CORS });
+
+  const sessionToken = await env.AUTH_KV.get(`exchange:${code}`);
+  if (!sessionToken) return new Response(JSON.stringify({ error: 'invalid or expired code' }), { status: 401, headers: CORS });
+
+  // Consume the exchange code so it can't be replayed.
+  await env.AUTH_KV.delete(`exchange:${code}`);
+
+  const user = await getSessionUser(sessionToken, env);
+  if (!user) return new Response(JSON.stringify({ error: 'session not found' }), { status: 401, headers: CORS });
+
+  return new Response(
+    JSON.stringify({ user_id: user.user_id, display_name: user.display_name, email: user.email, avatar_url: user.avatar_url }),
+    {
+      status: 200,
+      headers: { ...CORS, 'Set-Cookie': sessionCookie(sessionToken) },
+    },
+  );
+}
+
 export async function handleAuthRequest(request: Request, env: Env): Promise<Response> {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
 
@@ -200,6 +231,7 @@ export async function handleAuthRequest(request: Request, env: Env): Promise<Res
   if (segments[2] === 'google' && segments[3] === 'start') return handleGoogleStart(request, env);
   if (segments[2] === 'google' && segments[3] === 'callback') return handleGoogleCallback(request, env);
   if (segments[2] === 'me') return handleAuthMe(request, env);
+  if (segments[2] === 'exchange' && request.method === 'POST') return handleAuthExchange(request, env);
   if (segments[2] === 'logout' && request.method === 'POST') return handleAuthLogout(request, env);
   if (segments[2] === 'sync' && request.method === 'POST') return handleAuthSync(request, env);
 

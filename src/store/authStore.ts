@@ -25,6 +25,29 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   checkSession: async () => {
     set({ loading: true });
     try {
+      // If the OAuth callback left an exchange code in the URL, swap it for a
+      // real session cookie before checking the session. The code is consumed
+      // server-side so it can't be replayed.
+      const params = new URLSearchParams(window.location.search);
+      const exchangeCode = params.get('auth_exchange');
+      if (exchangeCode) {
+        // Remove the code from the URL so it doesn't sit in browser history.
+        params.delete('auth_exchange');
+        const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+        window.history.replaceState({}, '', newUrl);
+
+        const exchangeRes = await fetch('/api/auth/exchange', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: exchangeCode }),
+        });
+        if (exchangeRes.ok) {
+          const user = (await exchangeRes.json()) as AuthUser;
+          set({ user, loading: false });
+          return;
+        }
+      }
+
       const response = await fetch('/api/auth/me');
       const user = (await response.json()) as AuthUser | null;
       set({ user, loading: false });
