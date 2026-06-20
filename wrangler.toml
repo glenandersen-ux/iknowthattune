@@ -7,7 +7,7 @@ account_id = "3d3a4327a036de9902a7760a03e23ec4"
 [vars]
 SPOTIFY_CLIENT_ID = "225bd221c62f48a4ad92d22daf00fa42"
 # Google OAuth client ID — paste from https://console.cloud.google.com (OAuth 2.0 Credentials)
-GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_ID = "119505165336-l7aloajm69rnmcnrr20lm6nfjs85ieid.apps.googleusercontent.com"
 # Secrets (never commit — add via terminal):
 #   wrangler secret put SPOTIFY_CLIENT_SECRET
 #   wrangler secret put GOOGLE_CLIENT_SECRET
