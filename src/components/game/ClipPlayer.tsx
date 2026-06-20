@@ -42,6 +42,11 @@ function previewUrlMap(url: string): ClipUrlMap {
   return { '1s': url, '3s': url, '5s': url, '10s': url, '30s': url };
 }
 
+function formatDuration(duration: ClipDuration): string {
+  const secs = parseInt(duration, 10);
+  return secs === 1 ? '1 sec' : `${secs} secs`;
+}
+
 /**
  * Wraps `AudioEngine` and renders the shrinking-multiplier background plus
  * an iOS-friendly "Start" unlock button (Web Audio contexts must be resumed
@@ -66,6 +71,9 @@ export function ClipPlayer({
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
+  // Tracks whether the ▶ play button is visible. True on first load and again
+  // each time the clip extends so the user taps deliberately for each clip.
+  const [showPlayButton, setShowPlayButton] = useState(true);
   const [deezerPreview, setDeezerPreview] = useState<DeezerPreview | null>(null);
   const [itunesPreview, setItunesPreview] = useState<ItunesPreview | null>(null);
   const previousDuration = useRef(currentDuration);
@@ -193,17 +201,23 @@ export function ClipPlayer({
   const handleTapToStart = useCallback(async (): Promise<void> => {
     if (status === 'loading' || status === 'error') return;
     const engine = getEngine();
-    await engine.unlock();
-    setUnlocked(true);
+    if (!unlocked) {
+      await engine.unlock();
+      setUnlocked(true);
+    }
+    setShowPlayButton(false);
     await playClip(currentDuration);
-  }, [status, getEngine, playClip, currentDuration]);
+  }, [status, unlocked, getEngine, playClip, currentDuration]);
 
+  // When the clip duration changes (extension), show the play button again
+  // with the new duration rather than auto-playing. The player taps deliberately
+  // for each clip so they know what length they're committing to.
   useEffect(() => {
     if (unlocked && previousDuration.current !== currentDuration) {
       previousDuration.current = currentDuration;
-      void playClip(currentDuration);
+      setShowPlayButton(true);
     }
-  }, [currentDuration, unlocked, playClip]);
+  }, [currentDuration, unlocked]);
 
   // Stop audio immediately when the caller signals (e.g. guess submitted).
   useEffect(() => {
@@ -232,7 +246,7 @@ export function ClipPlayer({
         </div>
       )}
 
-      {/* Centered play / stop button */}
+      {/* Centered play / stop button — stays in the same position at all times */}
       <div className="flex flex-col items-center gap-2 py-5">
         {status === 'playing' ? (
           <>
@@ -251,10 +265,10 @@ export function ClipPlayer({
               <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>⏹</span>
             </button>
             <p className="text-xs" style={{ color: 'var(--color-fg-muted)' }}>
-              {currentDuration} playing
+              {formatDuration(currentDuration)} playing
             </p>
           </>
-        ) : !unlocked && status !== 'error' ? (
+        ) : showPlayButton && status !== 'error' ? (
           <>
             <button
               type="button"
@@ -275,7 +289,7 @@ export function ClipPlayer({
                 <>
                   <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
                   <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
-                    {currentDuration}
+                    {formatDuration(currentDuration)}
                   </span>
                 </>
               )}
