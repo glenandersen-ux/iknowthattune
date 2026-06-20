@@ -7,7 +7,7 @@ account_id = "3d3a4327a036de9902a7760a03e23ec4"
 # Spotify integration.
 # 1. Paste your Client ID from https://developer.spotify.com/dashboard here:
 [vars]
-SPOTIFY_CLIENT_ID = ""
+SPOTIFY_CLIENT_ID = "225bd221c62f48a4ad92d22daf00fa42"
 # 2. Add your Client Secret as an encrypted secret (never commit it):
 #    wrangler secret put SPOTIFY_CLIENT_SECRET
 
