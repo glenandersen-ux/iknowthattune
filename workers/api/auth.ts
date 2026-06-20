@@ -81,6 +81,18 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
 
 /** GET /api/auth/google/callback — Google redirects here after consent. */
 export async function handleGoogleCallback(request: Request, env: Env): Promise<Response> {
+  try {
+    return await _handleGoogleCallbackInner(request, env);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return new Response(null, {
+      status: 302,
+      headers: { Location: `/?auth=error&reason=exception&detail=${encodeURIComponent(msg.slice(0, 150))}` },
+    });
+  }
+}
+
+async function _handleGoogleCallbackInner(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
 
