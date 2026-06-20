@@ -4,12 +4,13 @@ compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
 account_id = "3d3a4327a036de9902a7760a03e23ec4"
 
-# Spotify integration.
-# 1. Paste your Client ID from https://developer.spotify.com/dashboard here:
 [vars]
 SPOTIFY_CLIENT_ID = "225bd221c62f48a4ad92d22daf00fa42"
-# 2. Add your Client Secret as an encrypted secret (never commit it):
-#    wrangler secret put SPOTIFY_CLIENT_SECRET
+# Google OAuth client ID — paste from https://console.cloud.google.com (OAuth 2.0 Credentials)
+GOOGLE_CLIENT_ID = ""
+# Secrets (never commit — add via terminal):
+#   wrangler secret put SPOTIFY_CLIENT_SECRET
+#   wrangler secret put GOOGLE_CLIENT_SECRET
 
 [[rules]]
 type = "Data"
@@ -19,6 +20,13 @@ fallthrough = true
 [[kv_namespaces]]
 binding = "CHALLENGES_KV"
 id = "335289cc2fe64069ad118f9fcc4f13d6"
+
+# Auth KV namespace — create it once with:
+#   npx wrangler kv namespace create AUTH_KV
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "AUTH_KV"
+id = ""
 
 [[r2_buckets]]
 binding = "R2"
@@ -33,10 +41,4 @@ tag = "v1"
 new_sqlite_classes = ["LeaderboardDO"]
 
 # Rate limiting (TechStack §D.13) is configured in the Cloudflare Dashboard
-# under Security -> Rate Limiting, not via wrangler.toml. Apply these rules
-# once the project is deployed:
-#   POST /api/challenge                 -> 5 requests / IP / hour
-#   POST /api/challenge/:id/result      -> 3 requests / IP+challenge / day
-#   GET  /api/challenge/:id/leaderboard -> 60 requests / IP / minute
-#   Catalog search (client-side, no Worker route to rate-limit directly)
-#                                        -> 120 requests / IP / minute
+# under Security -> Rate Limiting, not via wrangler.toml.

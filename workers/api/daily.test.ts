@@ -11,6 +11,9 @@ function makeEnv(store: Record<string, string>): Env {
     LEADERBOARD: {} as unknown as Env['LEADERBOARD'],
     SPOTIFY_CLIENT_ID: '',
     SPOTIFY_CLIENT_SECRET: '',
+    GOOGLE_CLIENT_ID: '',
+    GOOGLE_CLIENT_SECRET: '',
+    AUTH_KV: {} as KVNamespace,
   };
 }
 

@@ -46,6 +46,9 @@ function makeEnv(options: { challenge?: Challenge; objectExists?: boolean } = {}
     LEADERBOARD: {} as unknown as Env['LEADERBOARD'],
     SPOTIFY_CLIENT_ID: '',
     SPOTIFY_CLIENT_SECRET: '',
+    GOOGLE_CLIENT_ID: '',
+    GOOGLE_CLIENT_SECRET: '',
+    AUTH_KV: {} as KVNamespace,
   };
 
   return { env, kv, createPresignedUrl };

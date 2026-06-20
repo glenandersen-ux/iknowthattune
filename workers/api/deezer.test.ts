@@ -11,6 +11,9 @@ const mockEnv = {
   LEADERBOARD: {} as DurableObjectNamespace,
   SPOTIFY_CLIENT_ID: '',
   SPOTIFY_CLIENT_SECRET: '',
+  GOOGLE_CLIENT_ID: '',
+  GOOGLE_CLIENT_SECRET: '',
+  AUTH_KV: {} as KVNamespace,
 } satisfies Env;
 
 function makeRequest(params: Record<string, string>): Request {

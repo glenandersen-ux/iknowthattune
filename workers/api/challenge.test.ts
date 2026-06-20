@@ -47,6 +47,9 @@ function makeEnv(): { env: Env; kv: Map<string, string>; leaderboardFetch: Retur
     } as unknown as Env['LEADERBOARD'],
     SPOTIFY_CLIENT_ID: '',
     SPOTIFY_CLIENT_SECRET: '',
+    GOOGLE_CLIENT_ID: '',
+    GOOGLE_CLIENT_SECRET: '',
+    AUTH_KV: {} as KVNamespace,
   };
 
   return { env, kv, leaderboardFetch };

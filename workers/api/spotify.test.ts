@@ -7,10 +7,13 @@ vi.stubGlobal('fetch', mockFetch);
 
 const mockEnv: Env = {
   CHALLENGES_KV: {} as KVNamespace,
+  AUTH_KV: {} as KVNamespace,
   R2: {} as R2Bucket,
   LEADERBOARD: {} as DurableObjectNamespace,
   SPOTIFY_CLIENT_ID: 'test-client-id',
   SPOTIFY_CLIENT_SECRET: 'test-client-secret',
+  GOOGLE_CLIENT_ID: '',
+  GOOGLE_CLIENT_SECRET: '',
 };
 
 function makeRequest(params: Record<string, string>): Request {
