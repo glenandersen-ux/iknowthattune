@@ -272,7 +272,7 @@ export function HomeScreen(): JSX.Element {
       </section>
 
       {/* ── VALUE PROPS ──────────────────────────────────────────────── */}
-      <section className="mx-auto grid max-w-lg grid-cols-3 gap-3 px-4 pb-12">
+      <section className="mx-auto grid w-full max-w-lg grid-cols-3 gap-3 px-4 pb-12">
         {[
           { icon: '⚡', stat: '1s', label: 'to recognize a song' },
           { icon: '📅', stat: 'Daily', label: 'new drop every day' },
@@ -298,128 +298,162 @@ export function HomeScreen(): JSX.Element {
       </section>
 
       {/* ── SOLO SPRINT ──────────────────────────────────────────────── */}
-      <section
-        className="mx-auto max-w-lg rounded-2xl px-6 py-8 mx-4 mb-12"
-        style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', margin: '0 1rem 3rem' }}
-      >
-        <h2
-          className="mb-6 text-center text-3xl uppercase tracking-wide"
-          style={{ fontFamily: 'var(--font-display)', color: '#fff' }}
-        >
-          Solo Sprint
-        </h2>
-
-        {genres.length > 0 && (
-          <div className="mb-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
-              Genre
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {genres.map((genre) => (
-                <button
-                  key={genre}
-                  type="button"
-                  onClick={() => toggleGenre(genre)}
-                  aria-pressed={selectedGenres.includes(genre)}
-                  className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors"
-                  style={
-                    selectedGenres.includes(genre)
-                      ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)' }
-                      : { background: 'var(--color-stage)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }
-                  }
-                >
-                  {genre}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {decades.length > 0 && (
-          <div className="mb-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
-              Decade
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {decades.map((decade) => (
-                <button
-                  key={decade}
-                  type="button"
-                  onClick={() => toggleDecade(decade)}
-                  aria-pressed={selectedDecades.includes(decade)}
-                  className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors"
-                  style={
-                    selectedDecades.includes(decade)
-                      ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)' }
-                      : { background: 'var(--color-stage)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }
-                  }
-                >
-                  {decade}s
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="mb-4">
-          <label
-            htmlFor="solo-artist"
-            className="mb-2 block text-xs font-semibold uppercase tracking-widest"
-            style={{ color: 'var(--color-fg-muted)' }}
+      <section className="mx-auto w-full max-w-lg px-4 pb-16">
+        {/* divider matching the hero eyebrow style */}
+        <div className="mb-8 flex items-center gap-4">
+          <div className="h-px flex-1" style={{ background: 'var(--color-stage-border)' }} />
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.3em]"
+            style={{ color: 'var(--color-violet)', fontFamily: 'var(--font-body)' }}
           >
-            Artist
-          </label>
-          <input
-            id="solo-artist"
-            type="text"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            placeholder="Any artist"
-            className="w-full rounded-lg px-4 py-2.5 text-sm outline-none"
-            style={{
-              background: 'var(--color-stage)',
-              border: '1px solid var(--color-stage-border)',
-              color: 'var(--color-fg)',
-            }}
-          />
+            Solo Sprint
+          </p>
+          <div className="h-px flex-1" style={{ background: 'var(--color-stage-border)' }} />
         </div>
 
-        <div className="mb-6">
-          <div className="mb-2 flex items-center justify-between">
-            <label
-              htmlFor="solo-track-count"
-              className="text-xs font-semibold uppercase tracking-widest"
-              style={{ color: 'var(--color-fg-muted)' }}
-            >
-              Tracks
-            </label>
-            <span className="text-sm font-bold" style={{ color: 'var(--color-spotlight)', fontFamily: 'var(--font-display)' }}>
-              {trackCount}
-            </span>
-          </div>
-          <input
-            id="solo-track-count"
-            type="range"
-            min={MIN_SOLO_TRACKS}
-            max={MAX_SOLO_TRACKS}
-            value={trackCount}
-            onChange={(e) => setTrackCount(Number(e.target.value))}
-            className="w-full accent-[#D4FF00]"
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={handleStartSoloSprint}
-          className="w-full rounded-xl py-4 text-lg font-bold uppercase tracking-widest transition-opacity hover:opacity-90 active:scale-95"
+        <h2
+          className="mb-8 text-center leading-none"
           style={{
-            background: 'linear-gradient(135deg, var(--color-violet), var(--color-violet-dim))',
-            color: '#fff',
             fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 10vw, 4.5rem)',
+            color: '#ffffff',
+            textTransform: 'uppercase',
           }}
         >
-          Start Solo Sprint
-        </button>
+          Pick your<br />
+          <span style={{ color: 'var(--color-spotlight)' }}>playlist.</span>
+        </h2>
+
+        <div className="flex flex-col gap-6">
+          {genres.length > 0 && (
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+                Genre
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {genres.map((genre) => (
+                  <button
+                    key={genre}
+                    type="button"
+                    onClick={() => toggleGenre(genre)}
+                    aria-pressed={selectedGenres.includes(genre)}
+                    className="rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors"
+                    style={
+                      selectedGenres.includes(genre)
+                        ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-body)' }
+                        : { background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)', fontFamily: 'var(--font-body)' }
+                    }
+                  >
+                    {genre}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {decades.length > 0 && (
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--color-fg-muted)' }}>
+                Decade
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {decades.map((decade) => (
+                  <button
+                    key={decade}
+                    type="button"
+                    onClick={() => toggleDecade(decade)}
+                    aria-pressed={selectedDecades.includes(decade)}
+                    className="rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors"
+                    style={
+                      selectedDecades.includes(decade)
+                        ? { background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-body)' }
+                        : { background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)', fontFamily: 'var(--font-body)' }
+                    }
+                  >
+                    {decade}s
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label
+              htmlFor="solo-artist"
+              className="mb-3 block text-xs font-semibold uppercase tracking-widest"
+              style={{ color: 'var(--color-fg-muted)' }}
+            >
+              Artist
+            </label>
+            <input
+              id="solo-artist"
+              type="text"
+              value={artist}
+              onChange={(e) => setArtist(e.target.value)}
+              placeholder="Any artist"
+              className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-colors"
+              style={{
+                background: 'var(--color-stage-card)',
+                border: '1px solid var(--color-stage-border)',
+                color: 'var(--color-fg)',
+                fontFamily: 'var(--font-body)',
+              }}
+            />
+          </div>
+
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <label
+                htmlFor="solo-track-count"
+                className="text-xs font-semibold uppercase tracking-widest"
+                style={{ color: 'var(--color-fg-muted)' }}
+              >
+                Tracks
+              </label>
+              <span
+                className="text-2xl font-bold leading-none"
+                style={{ color: 'var(--color-spotlight)', fontFamily: 'var(--font-display)' }}
+              >
+                {trackCount}
+              </span>
+            </div>
+            <input
+              id="solo-track-count"
+              type="range"
+              min={MIN_SOLO_TRACKS}
+              max={MAX_SOLO_TRACKS}
+              value={trackCount}
+              onChange={(e) => setTrackCount(Number(e.target.value))}
+              className="w-full accent-[#D4FF00]"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleStartSoloSprint}
+            aria-label="Start Solo Sprint"
+            className="group relative w-full overflow-hidden rounded-2xl px-8 py-5 text-xl font-bold uppercase tracking-widest transition-transform active:scale-95"
+            style={{
+              background: 'var(--color-spotlight)',
+              color: 'var(--color-stage)',
+              fontFamily: 'var(--font-display)',
+            }}
+          >
+            <span className="relative z-10 flex items-center justify-center gap-3">
+              <span
+                className="flex h-8 w-8 items-center justify-center rounded-full text-sm"
+                style={{ background: 'var(--color-stage)', color: 'var(--color-spotlight)' }}
+              >
+                ▶
+              </span>
+              Start Solo Sprint
+            </span>
+            <span
+              className="absolute inset-0 -translate-x-full skew-x-[-20deg] transition-transform duration-500 group-hover:translate-x-[120%]"
+              style={{ background: 'rgba(255,255,255,0.2)', width: '60%' }}
+            />
+          </button>
+        </div>
       </section>
     </div>
   );
