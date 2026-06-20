@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioEngine } from '../../engine/AudioEngine';
 import { MultiplierBackground } from './MultiplierBackground';
 import { MAX_SPEED_MULTIPLIER } from '../../engine/ScoringEngine';
-import { fetchSpotifyPreview, type SpotifyPreview } from '../../engine/SpotifyPreview';
+import { fetchDeezerPreview, type DeezerPreview } from '../../engine/DeezerPreview';
 import { fetchItunesPreview, type ItunesPreview } from '../../engine/ItunesPreview';
-import { SpotifyBadge } from './SpotifyBadge';
+import { DeezerBadge } from './DeezerBadge';
 import type { ClipDuration, ClipUrlMap } from '../../types/track';
 
 export type ClipPlayerStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'ended' | 'error';
@@ -26,7 +26,7 @@ export interface ClipPlayerProps {
   /** Reserved for a future tap-to-extend gesture; `<ClipExtendBar>` drives extensions for now. */
   onExtendRequest: () => void;
   /**
-   * Song title / primary artist used to look up Spotify (primary) and iTunes
+   * Song title / primary artist used to look up Deezer (primary) and iTunes
    * (secondary) previews when the catalog clip fails to load.
    */
   fallbackSongTitle?: string;
@@ -43,7 +43,7 @@ function previewUrlMap(url: string): ClipUrlMap {
  * from a user gesture before the first `play()` call).
  *
  * Audio source priority:
- *   1. Spotify 30-second preview (via /api/spotify/preview Worker endpoint)
+ *   1. Deezer 30-second preview (primary, free, no credentials required)
  *   2. Catalog clip URLs (from seed-tracks.json)
  *   3. iTunes Search API preview (last resort)
  */
@@ -60,11 +60,10 @@ export function ClipPlayer({
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
-  const [spotifyPreview, setSpotifyPreview] = useState<SpotifyPreview | null>(null);
+  const [deezerPreview, setDeezerPreview] = useState<DeezerPreview | null>(null);
   const [itunesPreview, setItunesPreview] = useState<ItunesPreview | null>(null);
   const previousDuration = useRef(currentDuration);
   const stoppedRef = useRef(false);
-  // Previews use a single 30s clip for all durations; offset is always 0.
   const usingPreviewRef = useRef(false);
 
   const getEngine = useCallback((): AudioEngine => {
@@ -74,6 +73,7 @@ export function ClipPlayer({
     return engineRef.current;
   }, []);
 
+  // With fallback metadata: try Deezer → catalog → iTunes in order.
   useEffect(() => {
     if (!fallbackSongTitle || !fallbackArtistName) return;
     let cancelled = false;
@@ -82,19 +82,19 @@ export function ClipPlayer({
       if (cancelled) return;
       setStatus('loading');
 
-      // 1 — Spotify (primary source)
-      const spotify = await fetchSpotifyPreview(fallbackSongTitle!, fallbackArtistName!);
-      if (!cancelled && spotify) {
+      // 1 — Deezer (primary)
+      const deezer = await fetchDeezerPreview(fallbackSongTitle!, fallbackArtistName!);
+      if (!cancelled && deezer) {
         try {
-          await getEngine().preloadTrack(previewUrlMap(spotify.previewUrl));
+          await getEngine().preloadTrack(previewUrlMap(deezer.previewUrl));
           if (!cancelled) {
             usingPreviewRef.current = true;
-            setSpotifyPreview(spotify);
+            setDeezerPreview(deezer);
             setStatus('idle');
             return;
           }
         } catch {
-          // Spotify URL bounced — fall through to catalog
+          // Deezer URL unreachable — fall through to catalog
         }
       }
       if (cancelled) return;
@@ -139,8 +139,7 @@ export function ClipPlayer({
     return (): void => { cancelled = true; };
   }, [clipUrls, getEngine, fallbackSongTitle, fallbackArtistName, onPlaybackStart, onPlaybackEnd]);
 
-  // For tracks with no fallback metadata (e.g. the hidden preload div), use
-  // catalog URLs directly.
+  // Without fallback metadata (e.g. the hidden preload div): use catalog URLs directly.
   useEffect(() => {
     if (fallbackSongTitle && fallbackArtistName) return;
     let cancelled = false;
@@ -250,17 +249,15 @@ export function ClipPlayer({
         </div>
       )}
 
-      {/* Spotify badge — required by Spotify Developer Policy when using preview clips */}
-      {spotifyPreview && (
-        <SpotifyBadge
-          trackUrl={spotifyPreview.trackUrl}
-          trackName={spotifyPreview.trackName}
-          artistName={spotifyPreview.artistName}
+      {deezerPreview && (
+        <DeezerBadge
+          trackUrl={deezerPreview.trackUrl}
+          trackName={deezerPreview.trackName}
+          artistName={deezerPreview.artistName}
         />
       )}
 
-      {/* iTunes badge — shown only when Spotify wasn't available */}
-      {!spotifyPreview && itunesPreview && (
+      {!deezerPreview && itunesPreview && (
         <a
           href={itunesPreview.trackViewUrl}
           target="_blank"

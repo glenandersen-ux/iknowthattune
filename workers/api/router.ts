@@ -3,6 +3,7 @@ import { handleChallengeRequest } from './challenge';
 import { handleDailyRequest } from './daily';
 import { handleUgcRequest } from './ugc';
 import { handleSpotifyRequest } from './spotify';
+import { handleDeezerRequest } from './deezer';
 
 export { LeaderboardDO } from '../durable-objects/Leaderboard';
 
@@ -20,6 +21,7 @@ export default {
     if (segments[1] === 'ugc') return handleUgcRequest(request, env);
     if (segments[1] === 'challenge') return handleChallengeRequest(request, env);
     if (segments[1] === 'spotify') return handleSpotifyRequest(request, env);
+    if (segments[1] === 'deezer') return handleDeezerRequest(request, env);
 
     return new Response('Not found', { status: 404 });
   },

@@ -14,9 +14,9 @@ vi.mock('../../engine/AudioEngine', () => ({
   }),
 }));
 
-const fetchSpotifyPreview = vi.fn();
-vi.mock('../../engine/SpotifyPreview', () => ({
-  fetchSpotifyPreview: (...args: unknown[]) => fetchSpotifyPreview(...args),
+const fetchDeezerPreview = vi.fn();
+vi.mock('../../engine/DeezerPreview', () => ({
+  fetchDeezerPreview: (...args: unknown[]) => fetchDeezerPreview(...args),
 }));
 
 const fetchItunesPreview = vi.fn();
@@ -25,9 +25,9 @@ vi.mock('../../engine/ItunesPreview', () => ({
 }));
 
 const clipUrls = { '1s': 'a', '3s': 'b', '5s': 'c', '10s': 'd', '30s': 'e' };
-const spotifyPreviewData = {
-  previewUrl: 'https://p.scdn.co/mp3-preview/abc123',
-  trackUrl: 'https://open.spotify.com/track/123',
+const deezerPreviewData = {
+  previewUrl: 'https://cdns-preview.dzcdn.net/stream/abc.mp3',
+  trackUrl: 'https://www.deezer.com/track/123',
   trackName: 'Some Song',
   artistName: 'Some Artist',
 };
@@ -43,7 +43,7 @@ describe('ClipPlayer', () => {
     unlock.mockClear();
     play.mockClear();
     stop.mockClear();
-    fetchSpotifyPreview.mockReset();
+    fetchDeezerPreview.mockReset();
     fetchItunesPreview.mockReset();
   });
 
@@ -102,8 +102,8 @@ describe('ClipPlayer', () => {
 
   // ── Spotify primary source ────────────────────────────────────────────────
 
-  it('uses Spotify as the primary audio source and shows the Spotify badge', async () => {
-    fetchSpotifyPreview.mockResolvedValueOnce(spotifyPreviewData);
+  it('uses Deezer as the primary audio source and shows the Deezer badge', async () => {
+    fetchDeezerPreview.mockResolvedValueOnce(deezerPreviewData);
     render(
       <ClipPlayer
         clipUrls={clipUrls}
@@ -115,19 +115,19 @@ describe('ClipPlayer', () => {
         fallbackArtistName="Some Artist"
       />,
     );
-    expect(fetchSpotifyPreview).toHaveBeenCalledWith('Some Song', 'Some Artist');
-    await waitFor(() => expect(screen.getByTestId('spotify-badge')).toBeInTheDocument());
-    expect(screen.getByTestId('spotify-badge')).toHaveAttribute('href', 'https://open.spotify.com/track/123');
+    expect(fetchDeezerPreview).toHaveBeenCalledWith('Some Song', 'Some Artist');
+    await waitFor(() => expect(screen.getByTestId('deezer-badge')).toBeInTheDocument());
+    expect(screen.getByTestId('deezer-badge')).toHaveAttribute('href', 'https://www.deezer.com/track/123');
     expect(preloadTrack).toHaveBeenCalledWith(
-      expect.objectContaining({ '1s': 'https://p.scdn.co/mp3-preview/abc123' }),
+      expect.objectContaining({ '1s': 'https://cdns-preview.dzcdn.net/stream/abc.mp3' }),
     );
     expect(screen.queryByTestId('itunes-fallback-badge')).not.toBeInTheDocument();
   });
 
   // ── iTunes fallback when Spotify unavailable ──────────────────────────────
 
-  it('falls back to catalog URLs when Spotify has no preview, then iTunes if catalog also fails', async () => {
-    fetchSpotifyPreview.mockResolvedValueOnce(null);                          // Spotify: no preview
+  it('falls back to catalog URLs when Deezer has no preview, then iTunes if catalog also fails', async () => {
+    fetchDeezerPreview.mockResolvedValueOnce(null);                           // Deezer: no preview
     preloadTrack.mockRejectedValueOnce(new Error('catalog failed'));           // catalog: fails
     preloadTrack.mockResolvedValueOnce(undefined);                            // iTunes URL: succeeds
     fetchItunesPreview.mockResolvedValueOnce(itunesPreviewData);
@@ -146,12 +146,12 @@ describe('ClipPlayer', () => {
 
     await waitFor(() => expect(fetchItunesPreview).toHaveBeenCalledWith('Some Song', 'Some Artist'));
     await waitFor(() => expect(screen.getByTestId('itunes-fallback-badge')).toBeInTheDocument());
-    expect(screen.queryByTestId('spotify-badge')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('deezer-badge')).not.toBeInTheDocument();
     expect(screen.queryByTestId('clip-error')).not.toBeInTheDocument();
   });
 
-  it('shows the error overlay when Spotify, catalog, and iTunes all fail', async () => {
-    fetchSpotifyPreview.mockResolvedValueOnce(null);
+  it('shows the error overlay when Deezer, catalog, and iTunes all fail', async () => {
+    fetchDeezerPreview.mockResolvedValueOnce(null);
     preloadTrack.mockRejectedValueOnce(new Error('catalog failed'));
     fetchItunesPreview.mockResolvedValueOnce(null);
     const onPlaybackStart = vi.fn();
@@ -168,7 +168,7 @@ describe('ClipPlayer', () => {
       />,
     );
     await waitFor(() => expect(screen.getByTestId('clip-error')).toBeInTheDocument());
-    expect(screen.queryByTestId('spotify-badge')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('deezer-badge')).not.toBeInTheDocument();
     expect(screen.queryByTestId('itunes-fallback-badge')).not.toBeInTheDocument();
     expect(onPlaybackStart).toHaveBeenCalledOnce();
     expect(onPlaybackEnd).toHaveBeenCalledOnce();
