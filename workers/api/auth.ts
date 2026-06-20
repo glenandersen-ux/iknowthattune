@@ -58,8 +58,11 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
   if (!env.GOOGLE_CLIENT_ID) {
     return new Response(JSON.stringify({ error: 'Google auth not configured' }), { status: 503, headers: CORS });
   }
+  // Store CSRF state in a cookie rather than KV. Cloudflare KV is eventually
+  // consistent across regions, so a start/callback pair that hits different
+  // datacenters within the 5-minute window can fail the state lookup.
+  // A cookie travels with the browser and is guaranteed to be present.
   const state = crypto.randomUUID();
-  await env.AUTH_KV.put(`oauth_state:${state}`, '1', { expirationTtl: STATE_TTL_SECONDS });
 
   const params = new URLSearchParams({
     client_id: env.GOOGLE_CLIENT_ID,
@@ -73,7 +76,10 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
 
   return new Response(null, {
     status: 302,
-    headers: { Location: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}` },
+    headers: {
+      Location: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
+      'Set-Cookie': `iktt_oauth_state=${state}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${STATE_TTL_SECONDS}`,
+    },
   });
 }
 
@@ -83,12 +89,12 @@ export async function handleGoogleCallback(request: Request, env: Env): Promise<
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
 
-  // Verify CSRF state
-  const stateOk = state ? await env.AUTH_KV.get(`oauth_state:${state}`) : null;
-  if (!stateOk || !code) {
+  // Verify CSRF state against the cookie set by /google/start.
+  const cookie = request.headers.get('Cookie') ?? '';
+  const cookieState = cookie.match(/(?:^|;\s*)iktt_oauth_state=([^;]+)/)?.[1] ?? null;
+  if (!code || !state || state !== cookieState) {
     return new Response(null, { status: 302, headers: { Location: '/?auth=error' } });
   }
-  await env.AUTH_KV.delete(`oauth_state:${state}`);
 
   // Exchange code for tokens
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
