@@ -43,24 +43,8 @@ export async function handleDeezerRequest(_request: Request, _env: Env): Promise
   }
 
   try {
-    const q = encodeURIComponent(`artist:"${artist}" track:"${title}"`);
-    const response = await fetch(`https://api.deezer.com/search?q=${q}&limit=1`, {
-      headers: { Accept: 'application/json' },
-    });
-    if (!response.ok) {
-      return new Response(JSON.stringify(null), { status: 200, headers: CORS_HEADERS });
-    }
-    const data = (await response.json()) as DeezerSearchResponse;
-    const track = data.data?.[0];
-    if (!track?.preview) {
-      return new Response(JSON.stringify(null), { status: 200, headers: CORS_HEADERS });
-    }
-    const result: DeezerPreviewResult = {
-      previewUrl: track.preview,
-      trackUrl: track.link,
-      trackName: track.title,
-      artistName: track.artist.name,
-    };
+    const result = await searchTrack(title, artist);
+    if (!result) return new Response(JSON.stringify(null), { status: 200, headers: CORS_HEADERS });
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { ...CORS_HEADERS, 'Cache-Control': 'public, max-age=3600' },
@@ -68,4 +52,26 @@ export async function handleDeezerRequest(_request: Request, _env: Env): Promise
   } catch {
     return new Response(JSON.stringify(null), { status: 200, headers: CORS_HEADERS });
   }
+}
+
+async function deezerSearch(title: string, artist: string): Promise<DeezerPreviewResult | null> {
+  const q = encodeURIComponent(`artist:"${artist}" track:"${title}"`);
+  const response = await fetch(`https://api.deezer.com/search?q=${q}&limit=1`, {
+    headers: { Accept: 'application/json' },
+  });
+  if (!response.ok) return null;
+  const data = (await response.json()) as DeezerSearchResponse;
+  const track = data.data?.[0];
+  if (!track?.preview) return null;
+  return { previewUrl: track.preview, trackUrl: track.link, trackName: track.title, artistName: track.artist.name };
+}
+
+async function searchTrack(title: string, artist: string): Promise<DeezerPreviewResult | null> {
+  const result = await deezerSearch(title, artist);
+  if (result) return result;
+  // Remix/remaster suffixes like "(KBm2k Reconstruction)" or "[Deluxe]" often
+  // don't exist in Deezer under the full name. Strip them and retry.
+  const baseTitle = title.replace(/\s*[\[(][^\])]*[\])]/g, '').trim();
+  if (baseTitle && baseTitle !== title) return deezerSearch(baseTitle, artist);
+  return null;
 }
