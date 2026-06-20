@@ -17,8 +17,8 @@ const OUT_PATHS   = [
   path.join(__dirname, '..', '..', 'public', 'catalog', 'data', 'seed-tracks.json'),
 ];
 
-const MAX_PER_ARTIST = 8;   // variety cap per artist
-const TOTAL_CAP      = 500; // total auto-generated tracks to add
+const MAX_PER_ARTIST = 10;   // variety cap per artist
+const TOTAL_CAP      = 2000; // total auto-generated tracks to add
 
 const JUNK = /\b(live|demo|remix|karaoke|instrumental|acoustic|remaster|session|edit|mix|deluxe|bonus|rehearsal|medley|snippet|interlude|skit|reprise|cover|tribute)\b/i;
 
@@ -92,13 +92,18 @@ function makeTrack(entry, trackId) {
 function main() {
   const meta       = JSON.parse(readFileSync(META_PATH, 'utf-8'));
   const pool       = JSON.parse(readFileSync(POOL_PATH, 'utf-8'));
-  const existing   = JSON.parse(readFileSync(OUT_PATHS[0], 'utf-8'));
+  const allExisting = JSON.parse(readFileSync(OUT_PATHS[0], 'utf-8'));
+
+  // Keep hand-curated tracks (those without the auto_ prefix) and rebuild
+  // the auto-generated set from scratch so we can expand the cap cleanly.
+  const handCurated = allExisting.filter(t => !t.track_id.startsWith('auto_'));
 
   const artistSet      = new Set(pool.artists.map(a => a.toLowerCase()));
   const existingTitles = new Set(
-    existing.map(t => t.answers.song_title.value?.toLowerCase()).filter(Boolean),
+    handCurated.map(t => t.answers.song_title.value?.toLowerCase()).filter(Boolean),
   );
-  const usedIds = new Set(existing.map(t => t.track_id));
+  const usedIds = new Set(handCurated.map(t => t.track_id));
+  const existing = handCurated;
 
   // Filter metadata to candidates
   const candidates = meta.filter(e =>
