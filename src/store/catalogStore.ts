@@ -161,7 +161,15 @@ export const useCatalogStore = create<CatalogStore>()((set, get) => ({
     const { tracks } = get();
     if (tracks.length === 0) return;
     try {
-      const unplayable = await findUnplayableTrackIds(tracks);
+      // Auto-generated tracks use a placeholder clip URL and rely on Deezer for
+      // audio — skip the HEAD-request check for them (9K HEAD requests at load
+      // time would self-DoS and mark everything unplayable). Only check the
+      // hand-curated tracks that have real catalog clip URLs.
+      const PLACEHOLDER = 'https://iknowthattune.com/no-catalog-clip';
+      const toCheck = tracks.filter(
+        (t) => !Object.values(t.clip_urls).every((url) => url === PLACEHOLDER),
+      );
+      const unplayable = await findUnplayableTrackIds(toCheck);
       set({ unplayableTrackIds: new Set(unplayable) });
     } catch {
       // Reachability check failed outright (e.g. offline); leave tracks as-is.
