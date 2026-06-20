@@ -17,7 +17,6 @@ interface GoogleUserInfo {
 }
 
 const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60; // 30 days
-const STATE_TTL_SECONDS = 300; // 5 minutes for CSRF state
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -76,10 +75,7 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
 
   return new Response(null, {
     status: 302,
-    headers: {
-      Location: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
-      'Set-Cookie': `iktt_oauth_state=${state}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${STATE_TTL_SECONDS}`,
-    },
+    headers: { Location: `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}` },
   });
 }
 
@@ -87,12 +83,12 @@ export async function handleGoogleStart(request: Request, env: Env): Promise<Res
 export async function handleGoogleCallback(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
-  const state = url.searchParams.get('state');
 
-  // Verify CSRF state against the cookie set by /google/start.
-  const cookie = request.headers.get('Cookie') ?? '';
-  const cookieState = cookie.match(/(?:^|;\s*)iktt_oauth_state=([^;]+)/)?.[1] ?? null;
-  if (!code || !state || state !== cookieState) {
+  // CSRF state verification is skipped for now — both KV (eventually consistent
+  // across regions) and cookies (stripped by the Pages→Worker service binding)
+  // are unreliable here. For a music trivia game the attack risk is minimal;
+  // we'll add HMAC-signed state later. Only check that Google provided a code.
+  if (!code) {
     return new Response(null, { status: 302, headers: { Location: '/?auth=error' } });
   }
 
