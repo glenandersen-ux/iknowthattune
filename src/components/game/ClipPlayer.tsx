@@ -31,6 +31,11 @@ export interface ClipPlayerProps {
    */
   fallbackSongTitle?: string;
   fallbackArtistName?: string;
+  /**
+   * When true, immediately stops any playing clip. Used to cut audio when the
+   * player submits a guess or gives up before the clip naturally ends.
+   */
+  forceStop?: boolean;
 }
 
 function previewUrlMap(url: string): ClipUrlMap {
@@ -56,6 +61,7 @@ export function ClipPlayer({
   onPlaybackEnd,
   fallbackSongTitle,
   fallbackArtistName,
+  forceStop = false,
 }: ClipPlayerProps): React.ReactElement {
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
@@ -198,6 +204,16 @@ export function ClipPlayer({
       void playClip(currentDuration);
     }
   }, [currentDuration, unlocked, playClip]);
+
+  // Stop audio immediately when the caller signals (e.g. guess submitted).
+  useEffect(() => {
+    if (forceStop && status === 'playing') {
+      stoppedRef.current = true;
+      engineRef.current?.stop();
+      setStatus('ended');
+      onPlaybackEnd();
+    }
+  }, [forceStop, status, onPlaybackEnd]);
 
   return (
     <div
