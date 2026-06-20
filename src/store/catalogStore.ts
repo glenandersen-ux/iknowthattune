@@ -174,13 +174,13 @@ export const useCatalogStore = create<CatalogStore>()(
     }),
     {
       name: 'iktt-catalog',
-      version: 2,
+      version: 3,
       partialize: (state) => ({ tracks: state.tracks }),
-      // v2: catalog expanded from 5 to 19 tracks. Discard any persisted v1
-      // catalog so clients refetch the new track list instead of being
-      // stuck on the stale 5-track set forever.
+      // v3: catalog expanded from 19 to 519 tracks with auto-generated entries.
+      // v2: catalog expanded from 5 to 19 tracks. Discard any stale cached
+      // catalog so clients refetch the full new track list.
       migrate: (_persistedState, version) => {
-        if (version < 2) {
+        if (version < 3) {
           return { tracks: [] };
         }
         return _persistedState as { tracks: Track[] };

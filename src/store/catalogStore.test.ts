@@ -151,6 +151,7 @@ describe('catalogStore', () => {
     const persisted = { tracks: [makeTrack({ track_id: 'stale-track' })] };
 
     expect(migrate?.(persisted, 1)).toEqual({ tracks: [] });
-    expect(migrate?.(persisted, 2)).toEqual(persisted);
+    expect(migrate?.(persisted, 2)).toEqual({ tracks: [] });
+    expect(migrate?.(persisted, 3)).toEqual(persisted);
   });
 });
