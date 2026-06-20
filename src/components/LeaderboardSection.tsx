@@ -1,5 +1,12 @@
 import { useEffect, useState, type JSX } from 'react';
-import type { LeaderboardEntry } from '../../workers/api/globalLeaderboard';
+
+interface LeaderboardEntry {
+  user_id: string;
+  display_name: string;
+  avatar_url: string | null;
+  score: number;
+  timestamp: string;
+}
 
 function Medal({ rank }: { rank: number }): JSX.Element {
   if (rank === 1) return <span title="1st">🥇</span>;
