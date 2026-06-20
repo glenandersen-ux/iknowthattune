@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import Fuse from 'fuse.js';
 import { FUSE_OPTIONS, hydrateFuseIndex, type SerializedFuseIndex } from '../engine/CatalogSearchIndex';
 import { findUnplayableTrackIds } from '../engine/ClipAvailability';
@@ -110,8 +109,6 @@ function matchesFilters(track: Track, filters: FilterSet): boolean {
 function buildFieldTries(tracks: Track[], suggestionPool: SuggestionPool = EMPTY_SUGGESTION_POOL): Partial<Record<FieldId, string[]>> {
   const songTitles = new Set<string>(suggestionPool.song_titles);
   const artists = new Set<string>(suggestionPool.artists);
-  // "Single" is always offered as an album suggestion, since tracks released
-  // as standalone singles (rather than on an album) use it as their answer.
   const albums = new Set<string>(['Single', ...suggestionPool.albums]);
   for (const track of tracks) {
     if (track.answers.song_title.value) songTitles.add(track.answers.song_title.value);
@@ -125,78 +122,49 @@ function buildFieldTries(tracks: Track[], suggestionPool: SuggestionPool = EMPTY
   };
 }
 
-export const useCatalogStore = create<CatalogStore>()(
-  persist(
-    (set, get) => ({
-      tracks: [],
-      fuseIndex: null,
-      fieldTries: {},
-      isLoading: false,
-      unplayableTrackIds: new Set(),
+// The catalog is not persisted to localStorage — at 10K+ tracks the JSON
+// exceeds localStorage's 5–10MB quota. The browser's HTTP cache handles
+// repeat visits efficiently without any JS-layer caching.
+export const useCatalogStore = create<CatalogStore>()((set, get) => ({
+  tracks: [],
+  fuseIndex: null,
+  fieldTries: {},
+  isLoading: false,
+  unplayableTrackIds: new Set(),
 
-      loadCatalog: async () => {
-        if (get().tracks.length > 0 || get().isLoading) return;
-        set({ isLoading: true });
-        try {
-          const [response, suggestionPool] = await Promise.all([fetch(CATALOG_URL), fetchSuggestionPool()]);
-          const tracks = (await response.json()) as Track[];
-          // Render with the catalog immediately; the Fuse index builds off the
-          // main thread and is patched in once ready (Phase 4 §4.3).
-          set({ tracks, fieldTries: buildFieldTries(tracks, suggestionPool), isLoading: false });
-          const fuseIndex = await buildFuseIndex(tracks);
-          set({ fuseIndex });
-          void get().verifyPlayability();
-        } catch {
-          set({ isLoading: false });
-        }
-      },
+  loadCatalog: async () => {
+    if (get().tracks.length > 0 || get().isLoading) return;
+    set({ isLoading: true });
+    try {
+      const [response, suggestionPool] = await Promise.all([fetch(CATALOG_URL), fetchSuggestionPool()]);
+      const tracks = (await response.json()) as Track[];
+      set({ tracks, fieldTries: buildFieldTries(tracks, suggestionPool), isLoading: false });
+      const fuseIndex = await buildFuseIndex(tracks);
+      set({ fuseIndex });
+      void get().verifyPlayability();
+    } catch {
+      set({ isLoading: false });
+    }
+  },
 
-      search: (query, filters) => {
-        const { tracks, fuseIndex } = get();
-        const base = query.trim()
-          ? (fuseIndex?.search(query).map((result) => result.item) ?? [])
-          : tracks;
-        return base.filter((track) => matchesFilters(track, filters));
-      },
+  search: (query, filters) => {
+    const { tracks, fuseIndex } = get();
+    const base = query.trim()
+      ? (fuseIndex?.search(query).map((result) => result.item) ?? [])
+      : tracks;
+    return base.filter((track) => matchesFilters(track, filters));
+  },
 
-      getTrack: (id) => get().tracks.find((track) => track.track_id === id),
+  getTrack: (id) => get().tracks.find((track) => track.track_id === id),
 
-      verifyPlayability: async () => {
-        const { tracks } = get();
-        if (tracks.length === 0) return;
-        try {
-          const unplayable = await findUnplayableTrackIds(tracks);
-          set({ unplayableTrackIds: new Set(unplayable) });
-        } catch {
-          // Reachability check failed outright (e.g. offline); leave tracks as-is.
-        }
-      },
-    }),
-    {
-      name: 'iktt-catalog',
-      version: 3,
-      partialize: (state) => ({ tracks: state.tracks }),
-      // v3: catalog expanded from 19 to 519 tracks with auto-generated entries.
-      // v2: catalog expanded from 5 to 19 tracks. Discard any stale cached
-      // catalog so clients refetch the full new track list.
-      migrate: (_persistedState, version) => {
-        if (version < 3) {
-          return { tracks: [] };
-        }
-        return _persistedState as { tracks: Track[] };
-      },
-      onRehydrateStorage: () => (state) => {
-        if (state && state.tracks.length > 0) {
-          state.fieldTries = buildFieldTries(state.tracks);
-          void buildFuseIndex(state.tracks).then((fuseIndex) => {
-            useCatalogStore.setState({ fuseIndex });
-          });
-          void fetchSuggestionPool().then((suggestionPool) => {
-            useCatalogStore.setState((current) => ({ fieldTries: buildFieldTries(current.tracks, suggestionPool) }));
-          });
-          void useCatalogStore.getState().verifyPlayability();
-        }
-      },
-    },
-  ),
-);
+  verifyPlayability: async () => {
+    const { tracks } = get();
+    if (tracks.length === 0) return;
+    try {
+      const unplayable = await findUnplayableTrackIds(tracks);
+      set({ unplayableTrackIds: new Set(unplayable) });
+    } catch {
+      // Reachability check failed outright (e.g. offline); leave tracks as-is.
+    }
+  },
+}));

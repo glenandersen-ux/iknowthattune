@@ -17,8 +17,8 @@ const OUT_PATHS   = [
   path.join(__dirname, '..', '..', 'public', 'catalog', 'data', 'seed-tracks.json'),
 ];
 
-const MAX_PER_ARTIST = 10;   // variety cap per artist
-const TOTAL_CAP      = 2000; // total auto-generated tracks to add
+const MAX_PER_ARTIST = 15;    // variety cap per artist
+const TOTAL_CAP      = 9981; // total auto-generated tracks (target: 10K with 19 hand-curated)
 
 const JUNK = /\b(live|demo|remix|karaoke|instrumental|acoustic|remaster|session|edit|mix|deluxe|bonus|rehearsal|medley|snippet|interlude|skit|reprise|cover|tribute)\b/i;
 

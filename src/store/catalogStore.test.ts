@@ -146,12 +146,9 @@ describe('catalogStore', () => {
     expect(useCatalogStore.getState().getTrack('missing')).toBeUndefined();
   });
 
-  it('migrate discards a persisted v1 catalog so it refetches', () => {
-    const { migrate } = useCatalogStore.persist.getOptions();
-    const persisted = { tracks: [makeTrack({ track_id: 'stale-track' })] };
-
-    expect(migrate?.(persisted, 1)).toEqual({ tracks: [] });
-    expect(migrate?.(persisted, 2)).toEqual({ tracks: [] });
-    expect(migrate?.(persisted, 3)).toEqual(persisted);
+  it('starts with an empty track list (catalog is fetched over HTTP, not persisted)', () => {
+    // The catalog store no longer uses localStorage — HTTP cache handles
+    // repeat visits and avoids the 5-10MB localStorage quota at 10K+ tracks.
+    expect(useCatalogStore.getState().tracks).toHaveLength(0);
   });
 });
