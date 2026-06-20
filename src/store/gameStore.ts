@@ -136,6 +136,8 @@ export interface GameStore {
   /** Recomputed every 100ms by the game screen via `ScoringEngine.computeSpeedMultiplier`. */
   speedMultiplier: number;
   clipExtensions: number;
+  /** Accumulated hint penalty (letter + answer hints) applied at submit time. */
+  hintPenalty: number;
 
   /** Session accumulator (Blueprint §11). */
   session: PlayerSession;
@@ -154,6 +156,8 @@ export interface GameStore {
   submitGuess: (fields: FieldGuess[]) => void;
   /** Extends the current clip to the next duration tier, applying its penalty. */
   extendClip: () => void;
+  /** Accumulates a point penalty from hint usage (added to clip_penalty_applied at submit). */
+  applyHintPenalty: (pts: number) => void;
   /** Skips the current track, scoring it as zero. */
   skipTrack: () => void;
   /** Moves to the next track, or completes the game if none remain. */
@@ -172,6 +176,7 @@ const initialRuntimeState = {
   timeElapsedMs: 0,
   speedMultiplier: 2.0,
   clipExtensions: 0,
+  hintPenalty: 0,
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -260,7 +265,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       elapsedSeconds,
       challenge.scoring.first_guess_bonus,
     );
-    const clipPenalty = computeClipExtensionPenalty(clipExtensions, 1, challenge.scoring.clip_penalties);
+    const clipPenalty = computeClipExtensionPenalty(clipExtensions, 1, challenge.scoring.clip_penalties) + get().hintPenalty;
     const streakBonus = computeStreakBonus(currentStreakLength(session.tracks));
     const rawScore = (fieldScores.reduce((sum, score) => sum + score, 0) + firstGuessBonus) * (1 + streakBonus);
 
@@ -297,6 +302,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       session: { ...session, tracks, totals: recomputeTotals(tracks) },
     });
   },
+
+  applyHintPenalty: (pts) => set({ hintPenalty: get().hintPenalty + pts }),
 
   extendClip: () => {
     const { activeClipDuration, currentTrackIndex } = get();
@@ -358,6 +365,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       timeElapsedMs: 0,
       speedMultiplier: 2.0,
       clipExtensions: 0,
+      hintPenalty: 0,
     });
   },
 
