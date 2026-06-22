@@ -152,46 +152,41 @@ export function GuessPanel({
         const hint = getHint(fieldId);
         const isAnswerRevealed = hint.stage === 'answer_shown';
 
+        // Build the hint control rendered inline with the field label.
+        const hintControl =
+          isLocked || isAnswerRevealed || hint.stage === 'letter_confirm' || hint.stage === 'answer_confirm'
+            ? null
+            : hint.stage === 'none'
+              ? (
+                  <button
+                    type="button"
+                    onClick={() => setHint(fieldId, { stage: 'letter_confirm' })}
+                    className="rounded-full px-2 py-0.5 text-xs font-semibold transition-opacity hover:opacity-80"
+                    style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }}
+                  >
+                    Tip
+                  </button>
+                )
+              : hint.stage === 'letter_shown'
+                ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs" style={{ color: 'var(--color-spotlight)' }}>
+                        First: <strong>{hint.firstLetter}</strong>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setHint(fieldId, { ...hint, stage: 'answer_confirm' })}
+                        className="rounded-full px-2 py-0.5 text-xs font-semibold transition-opacity hover:opacity-80"
+                        style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-incorrect)', color: 'var(--color-incorrect)' }}
+                      >
+                        Answer
+                      </button>
+                    </div>
+                  )
+                : null;
+
         return (
           <div key={fieldId} className="flex flex-col gap-1.5">
-            {/* Field label + hint button row */}
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-semibold" style={{ color: 'var(--color-fg)' }}>
-                {def.label}
-                {hint.stage === 'letter_shown' && (
-                  <span className="ml-2 text-xs font-normal" style={{ color: 'var(--color-spotlight)' }}>
-                    First letter: <strong>{hint.firstLetter}</strong>
-                  </span>
-                )}
-              </label>
-
-              {/* Hint controls — hidden once locked or revealed */}
-              {!isLocked && !isAnswerRevealed && hint.stage !== 'letter_confirm' && hint.stage !== 'answer_confirm' && (
-                <div className="flex gap-1.5">
-                  {hint.stage === 'none' && (
-                    <button
-                      type="button"
-                      onClick={() => setHint(fieldId, { stage: 'letter_confirm' })}
-                      className="rounded-full px-2.5 py-0.5 text-xs font-bold transition-opacity hover:opacity-80"
-                      style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-stage-border)', color: 'var(--color-fg-muted)' }}
-                      title="Get first letter hint"
-                    >
-                      ?
-                    </button>
-                  )}
-                  {hint.stage === 'letter_shown' && (
-                    <button
-                      type="button"
-                      onClick={() => setHint(fieldId, { ...hint, stage: 'answer_confirm' })}
-                      className="rounded-full px-2.5 py-0.5 text-xs font-semibold transition-opacity hover:opacity-80"
-                      style={{ background: 'var(--color-stage-card)', border: '1px solid var(--color-incorrect)', color: 'var(--color-incorrect)' }}
-                    >
-                      Get Answer
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
 
             {/* Inline confirmation for letter hint */}
             {hint.stage === 'letter_confirm' && (
@@ -234,7 +229,7 @@ export function GuessPanel({
               </div>
             )}
 
-            {/* Normal field input */}
+            {/* Field input — label lives inside FieldInput, hint control passed inline */}
             {!isAnswerRevealed && (
               <FieldInput
                 fieldId={fieldId}
@@ -246,6 +241,7 @@ export function GuessPanel({
                 tolerance={toleranceFor(track, fieldId)}
                 catalogData={fieldTries[fieldId]}
                 assistMode={assistMode}
+                labelExtra={hintControl}
               />
             )}
           </div>

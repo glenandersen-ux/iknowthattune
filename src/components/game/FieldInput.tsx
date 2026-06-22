@@ -23,6 +23,8 @@ export interface FieldInputProps {
    * `'expert'` suppresses all suggestions so the player must type unaided.
    */
   assistMode?: 'regular' | 'expert';
+  /** Extra content rendered inline with the label (e.g. a hint button). */
+  labelExtra?: React.ReactNode;
 }
 
 const MAX_SUGGESTIONS = 8;
@@ -40,6 +42,7 @@ export function FieldInput({
   catalogData,
   choices,
   assistMode = 'regular',
+  labelExtra,
 }: FieldInputProps): React.ReactElement {
   if (locked) {
     return (
@@ -65,6 +68,7 @@ export function FieldInput({
           value={typeof value === 'string' ? value : ''}
           onChange={onChange}
           catalogData={assistMode === 'expert' ? undefined : catalogData}
+          labelExtra={labelExtra}
         />
       );
     case 'year':
@@ -75,6 +79,7 @@ export function FieldInput({
           value={value}
           onChange={onChange}
           tolerance={tolerance}
+          labelExtra={labelExtra}
         />
       );
     case 'choice':
@@ -85,6 +90,7 @@ export function FieldInput({
           value={Array.isArray(value) ? value : []}
           onChange={onChange}
           choices={choices ?? DEFAULT_CHOICE_OPTIONS[fieldId] ?? []}
+          labelExtra={labelExtra}
         />
       );
     case 'multi':
@@ -94,6 +100,7 @@ export function FieldInput({
           label={label}
           value={Array.isArray(value) ? value : []}
           onChange={onChange}
+          labelExtra={labelExtra}
         />
       );
   }
@@ -105,9 +112,10 @@ interface TextFieldInputProps {
   value: string;
   onChange: (value: string) => void;
   catalogData?: string[];
+  labelExtra?: React.ReactNode;
 }
 
-function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFieldInputProps): React.ReactElement {
+function TextFieldInput({ fieldId, label, value, onChange, catalogData, labelExtra }: TextFieldInputProps): React.ReactElement {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   // Set when a suggestion is picked, so the resulting value change doesn't
   // immediately reopen the suggestion list with that same value.
@@ -135,9 +143,9 @@ function TextFieldInput({ fieldId, label, value, onChange, catalogData }: TextFi
 
   return (
     <div className="relative" data-testid={`field-${fieldId}`}>
-      <label className="block text-sm font-medium text-slate-300 mb-1" htmlFor={`field-${fieldId}-input`}>
-        {label}
-      </label>
+      <div className="mb-1 flex items-center justify-between">
+        <label className="text-sm font-medium text-slate-300" htmlFor={`field-${fieldId}-input`}>{label}</label>{labelExtra}
+      </div>
       <input
         id={`field-${fieldId}-input`}
         type="text"
@@ -178,19 +186,23 @@ interface YearFieldInputProps {
   value: FieldGuessValue;
   onChange: (value: FieldGuessValue) => void;
   tolerance?: number;
+  labelExtra?: React.ReactNode;
 }
 
-function YearFieldInput({ fieldId, label, value, onChange, tolerance }: YearFieldInputProps): React.ReactElement {
+function YearFieldInput({ fieldId, label, value, onChange, tolerance, labelExtra }: YearFieldInputProps): React.ReactElement {
   const displayValue = typeof value === 'string' || typeof value === 'number' ? value : '';
   return (
     <div data-testid={`field-${fieldId}`}>
-      <label className="block text-sm font-medium text-slate-300 mb-1" htmlFor={`field-${fieldId}-input`}>
-        {label}
-        {tolerance !== undefined && tolerance > 0 && (
-          <span className="ml-1 text-xs text-slate-400">(±{tolerance})</span>
-        )}
-        {fieldId === 'chart_peak' && <span className="ml-1 text-xs text-slate-400">(Billboard Hot 100)</span>}
-      </label>
+      <div className="mb-1 flex items-center justify-between">
+        <label className="text-sm font-medium text-slate-300" htmlFor={`field-${fieldId}-input`}>
+          {label}
+          {tolerance !== undefined && tolerance > 0 && (
+            <span className="ml-1 text-xs text-slate-400">(±{tolerance})</span>
+          )}
+          {fieldId === 'chart_peak' && <span className="ml-1 text-xs text-slate-400">(Billboard Hot 100)</span>}
+        </label>
+        {labelExtra}
+      </div>
       <input
         id={`field-${fieldId}-input`}
         type="number"
@@ -209,9 +221,10 @@ interface ChoiceFieldInputProps {
   value: string[];
   onChange: (value: string[]) => void;
   choices: string[];
+  labelExtra?: React.ReactNode;
 }
 
-function ChoiceFieldInput({ fieldId, label, value, onChange, choices }: ChoiceFieldInputProps): React.ReactElement {
+function ChoiceFieldInput({ fieldId, label, value, onChange, choices, labelExtra }: ChoiceFieldInputProps): React.ReactElement {
   const toggle = (choice: string): void => {
     if (value.includes(choice)) {
       onChange(value.filter((v) => v !== choice));
@@ -222,7 +235,7 @@ function ChoiceFieldInput({ fieldId, label, value, onChange, choices }: ChoiceFi
 
   return (
     <div data-testid={`field-${fieldId}`}>
-      <span className="block text-sm font-medium text-slate-300 mb-1">{label}</span>
+      <div className="mb-1 flex items-center justify-between"><span className="text-sm font-medium text-slate-300">{label}</span>{labelExtra}</div>
       <div className="grid grid-cols-3 gap-2">
         {choices.map((choice) => (
           <button
@@ -249,9 +262,10 @@ interface MultiFieldInputProps {
   label: string;
   value: string[];
   onChange: (value: string[]) => void;
+  labelExtra?: React.ReactNode;
 }
 
-function MultiFieldInput({ fieldId, label, value, onChange }: MultiFieldInputProps): React.ReactElement {
+function MultiFieldInput({ fieldId, label, value, onChange, labelExtra }: MultiFieldInputProps): React.ReactElement {
   const [draft, setDraft] = useState('');
 
   const addEntry = (): void => {
@@ -267,9 +281,9 @@ function MultiFieldInput({ fieldId, label, value, onChange }: MultiFieldInputPro
 
   return (
     <div data-testid={`field-${fieldId}`}>
-      <label className="block text-sm font-medium text-slate-300 mb-1" htmlFor={`field-${fieldId}-input`}>
-        {label}
-      </label>
+      <div className="mb-1 flex items-center justify-between">
+        <label className="text-sm font-medium text-slate-300" htmlFor={`field-${fieldId}-input`}>{label}</label>{labelExtra}
+      </div>
       <div className="flex flex-wrap gap-2 mb-2">
         {value.map((entry) => (
           <span
