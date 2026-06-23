@@ -192,6 +192,9 @@ export function ClipPlayer({
       if (stoppedRef.current) return;
       setStatus('ended');
       onPlaybackEnd();
+      // Re-show the play button after each clip ends so the player can tap
+      // to play the next duration (combined extend+play button).
+      setShowPlayButton(true);
     },
     [getEngine, onPlaybackStart, onPlaybackEnd, clipStartOffsetMs],
   );
@@ -285,9 +288,10 @@ export function ClipPlayer({
               {formatDuration(currentDuration)} playing
             </p>
           </>
-        ) : showPlayButton && status !== 'error' ? (
-          // After a clip ends with a next duration available: combine extend+play.
-          // Otherwise show the standard initial play button.
+        ) : showPlayButton && status !== 'error' && !(status === 'ended' && !nextClipInfo) ? (
+          // After a clip ends: show the combined extend+play button if there's
+          // a next duration available. If at max duration, show nothing.
+          // Before the first play: show the standard "▶ 1 sec" button.
           status === 'ended' && nextClipInfo ? (
             <>
               <button

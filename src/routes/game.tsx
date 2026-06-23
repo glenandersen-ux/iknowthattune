@@ -448,6 +448,16 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     );
   }
 
+  const CLIP_ORDER: ClipDuration[] = ['1s', '3s', '5s', '10s', '30s'];
+  const nextExtendDuration = CLIP_ORDER[CLIP_ORDER.indexOf(activeClipDuration) + 1];
+  const nextExtendCost = nextExtendDuration
+    ? CUMULATIVE_CLIP_PENALTIES[Math.min(clipExtensions, CUMULATIVE_CLIP_PENALTIES.length - 1)] -
+      (clipExtensions > 0 ? CUMULATIVE_CLIP_PENALTIES[clipExtensions - 1] : 0)
+    : 0;
+  const nextClipInfo = nextExtendDuration
+    ? { duration: nextExtendDuration, cost: nextExtendCost, onExtend: extendClip }
+    : undefined;
+
   return (
     <div className="mx-auto flex max-w-md flex-col gap-4 p-4" style={{ color: 'var(--color-fg)' }}>
       <h1
@@ -468,14 +478,7 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         fallbackSongTitle={track.answers.song_title.value ?? undefined}
         fallbackArtistName={track.answers.primary_artist.value ?? undefined}
         forceStop={phase === 'guessing'}
-        nextClipInfo={(() => {
-          const DURATIONS: ClipDuration[] = ['1s', '3s', '5s', '10s', '30s'];
-          const nextDuration = DURATIONS[DURATIONS.indexOf(activeClipDuration) + 1];
-          if (!nextDuration) return undefined;
-          const prev = clipExtensions > 0 ? CUMULATIVE_CLIP_PENALTIES[clipExtensions - 1] : 0;
-          const cost = CUMULATIVE_CLIP_PENALTIES[Math.min(clipExtensions, CUMULATIVE_CLIP_PENALTIES.length - 1)] - prev;
-          return { duration: nextDuration, cost, onExtend: extendClip };
-        })()}
+        nextClipInfo={nextClipInfo}
       />
       <SpeedMultiplierBadge multiplier={speedMultiplier} />
       <GuessPanel
