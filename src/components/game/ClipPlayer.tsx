@@ -90,6 +90,9 @@ export function ClipPlayer({
   const showExtendPlay  = status === 'ended' && !!nextClipInfo;   // no forceStop check
   const showStop        = status === 'playing';
 
+  // Stop audio when ClipPlayer unmounts (e.g. submit/give-up moves to RevealScreen).
+  useEffect(() => () => { engineRef.current?.stop(); }, []);
+
   const getEngine = useCallback((): AudioEngine => {
     if (!engineRef.current) {
       engineRef.current = new AudioEngine();

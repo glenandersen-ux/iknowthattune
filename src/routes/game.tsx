@@ -242,7 +242,6 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   const extendClip = useGameStore((state) => state.extendClip);
   const skipTrack = useGameStore((state) => state.skipTrack);
   const advanceTrack = useGameStore((state) => state.advanceTrack);
-  const applyHintPenalty = useGameStore((state) => state.applyHintPenalty);
 
   const playerId = usePlayerStore((state) => state.player_id);
   const playerName = usePlayerStore((state) => state.display_name);
@@ -491,7 +490,6 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         assistMode={assistMode}
         onSubmit={(_results, guesses): void => submitGuess(guesses)}
         onGiveUp={skipTrack}
-        onHintPenalty={applyHintPenalty}
       />
     </div>
   );

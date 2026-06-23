@@ -12,8 +12,6 @@ export interface GuessPanelProps {
   assistMode?: 'regular' | 'expert';
   onSubmit: (results: Partial<Record<FieldId, FieldMatchResult>>, guesses: FieldGuess[]) => void;
   onGiveUp: () => void;
-  /** Called each time a hint penalty is incurred so the game store can record it. */
-  onHintPenalty?: (pts: number) => void;
 }
 
 type HintStage = 'none' | 'letter_confirm' | 'letter_shown' | 'answer_confirm' | 'answer_shown';
@@ -62,12 +60,10 @@ function getFullAnswer(track: Track, fieldId: FieldId): string {
 /** Inline Yes/No confirmation strip shown below a field. */
 function HintConfirm({
   message,
-  cost,
   onYes,
   onNo,
 }: {
   message: string;
-  cost: number;
   onYes: () => void;
   onNo: () => void;
 }): React.ReactElement {
@@ -108,7 +104,7 @@ export function GuessPanel({
   assistMode = 'regular',
   onSubmit,
   onGiveUp,
-  onHintPenalty,
+
 }: GuessPanelProps): React.ReactElement {
   const [values, setValues] = useState<Partial<Record<FieldId, FieldGuessValue>>>({});
   const [locked, setLocked] = useState<Partial<Record<FieldId, FieldMatchResult>>>({});
@@ -193,7 +189,6 @@ export function GuessPanel({
             {hint.stage === 'letter_confirm' && (
               <HintConfirm
                 message="Show first letter? (field scores at 50%, no speed bonus)"
-                cost={0}
                 onYes={() => {
                   const letter = getFirstLetter(track, fieldId);
                   setHint(fieldId, { stage: 'letter_shown', firstLetter: letter });
@@ -206,7 +201,6 @@ export function GuessPanel({
             {hint.stage === 'answer_confirm' && (
               <HintConfirm
                 message="Reveal the answer? (scores 0 pts for this field)"
-                cost={0}
                 onYes={() => {
                   const answer = getFullAnswer(track, fieldId);
                   setHint(fieldId, { stage: 'answer_shown', fullAnswer: answer });
