@@ -485,7 +485,6 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         forceStop={phase === 'guessing'}
         nextClipInfo={nextClipInfo}
       />
-      <SpeedMultiplierBadge multiplier={speedMultiplier} />
       <GuessPanel
         track={track}
         activeFields={activeFields}
