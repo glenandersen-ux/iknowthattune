@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { createRoute, useNavigate } from '@tanstack/react-router';
 import { Route as rootRoute } from './__root';
 import { gameSearchSchema, type GameSearch } from './searchSchemas';
@@ -404,6 +404,16 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
     void navigate({ to: '/result' });
   }, [phase, session, updateAfterGame, navigate, challenge, playerId, search.r, authUser]);
 
+  // Must be declared before any early returns (Rules of Hooks).
+  const handlePlaybackStart = useCallback((): void => {
+    if (phase === 'idle') {
+      trackStartRef.current = performance.now();
+      startTrack();
+    } else {
+      resumePlaying();
+    }
+  }, [phase, startTrack, resumePlaying]);
+
   if (!challenge) {
     return <LoadingScreen />;
   }
@@ -418,15 +428,6 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   const trackCount = challenge.tracks.length;
   const nextTrackId = challenge.tracks[currentTrackIndex + 1];
   const nextTrack = nextTrackId ? getTrack(nextTrackId) : undefined;
-
-  const handlePlaybackStart = (): void => {
-    if (phase === 'idle') {
-      trackStartRef.current = performance.now();
-      startTrack();
-    } else {
-      resumePlaying();
-    }
-  };
 
   if (phase === 'reveal') {
     const lastTrack = session.tracks[session.tracks.length - 1];
