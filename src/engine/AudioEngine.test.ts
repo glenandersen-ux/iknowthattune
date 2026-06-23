@@ -28,6 +28,7 @@ class MockMediaStreamAudioDestinationNode {
 class MockAudioContext {
   destination = {};
   currentTime = 0;
+  state: AudioContextState = 'running';
   createBufferSource = vi.fn(() => new MockAudioBufferSourceNode());
   createAnalyser = vi.fn(() => new MockAnalyserNode());
   createGain = vi.fn(() => new MockGainNode());

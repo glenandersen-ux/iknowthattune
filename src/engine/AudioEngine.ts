@@ -98,6 +98,13 @@ export class AudioEngine {
     const buffer = this.clipCache.get(duration);
     if (!buffer) throw new Error(`Clip ${duration} not preloaded`);
 
+    // iOS and some desktop browsers suspend the AudioContext after a few
+    // seconds of silence (e.g. between the 1s and 3s clips). Resuming here
+    // ensures subsequent clips play immediately without a stall.
+    if (this.ctx.state === 'suspended') {
+      await this.ctx.resume();
+    }
+
     const source = this.ctx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.analyser);
