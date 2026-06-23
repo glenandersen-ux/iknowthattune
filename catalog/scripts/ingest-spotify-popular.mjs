@@ -80,14 +80,19 @@ function scoreTrack(item, position) {
 }
 
 async function fetchPlaylistTracks(playlistId, token) {
+  // No fields filter — accept the full response and handle both "track" and
+  // "item" field names since the Feb 2026 rename rolled out inconsistently.
   const res = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlistId}/items?limit=50&fields=items(track(id,name,artists,album,explicit,duration_ms))`,
+    `https://api.spotify.com/v1/playlists/${playlistId}/items?limit=50`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
-  if (!res.ok) return [];
+  if (!res.ok) {
+    console.log(`  Spotify error ${res.status}: ${await res.text()}`);
+    return [];
+  }
   const data = await res.json();
-  // Feb 2026 API: items array uses "track" field (the "item" rename didn't fully roll out)
-  const rawItems = data.items ?? [];
+  const rawItems = data.items ?? data.tracks?.items ?? [];
+  if (rawItems.length === 0) console.log(`  Warning: 0 items returned from playlist`);
   return rawItems
     .map((entry, i) => {
       const t = entry.track ?? entry.item;
