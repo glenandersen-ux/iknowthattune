@@ -41,7 +41,7 @@ const buildTrack = (id: string, genre: string[], difficulty: number): Track =>
       covered_by: { value: [], partial_credit: true },
       soundtrack: { value: null },
     },
-    metadata: { decade: 2000, language: 'en', tags: [], difficulty_score: difficulty },
+    metadata: { decade: 2000, language: 'en', tags: [], difficulty_score: difficulty, genre_group: genre[0] },
   }) as Track;
 
 describe('HomeScreen', () => {

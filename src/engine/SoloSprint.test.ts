@@ -36,7 +36,7 @@ function buildTrack(id: string, genre: string[], decade: number, artist: string)
       covered_by: { value: [], partial_credit: true },
       soundtrack: { value: null },
     },
-    metadata: { decade, language: 'en', tags: [], difficulty_score: 1 },
+    metadata: { decade, language: 'en', tags: [], difficulty_score: 1, genre_group: genre[0] },
   };
 }
 
@@ -59,9 +59,10 @@ describe('listDecades', () => {
 });
 
 describe('filterTracksForSoloSprint', () => {
-  it('filters by genre', () => {
+  it('filters by genre group', () => {
+    // Each track has one genre_group (the first genre tag). tk3 is 'Rock', not 'Pop'.
     const result = filterTracksForSoloSprint(tracks, { genres: ['Pop'], decades: [], artist: '' });
-    expect(result.map((t) => t.track_id)).toEqual(['tk2', 'tk3']);
+    expect(result.map((t) => t.track_id)).toEqual(['tk2']);
   });
 
   it('filters by decade', () => {

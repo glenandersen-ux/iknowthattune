@@ -114,6 +114,8 @@ export interface TrackMetadata {
   deezer_track_id?: number;
   /** Set to true by the enrichment script when no Deezer preview was found. */
   deezer_not_found?: true;
+  /** High-level genre group assigned by assign-genre-groups.mjs (one of the 9 home-screen filters). */
+  genre_group?: string;
 }
 
 /** The canonical track object (Blueprint §4). */

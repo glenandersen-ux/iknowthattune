@@ -160,9 +160,10 @@ export function HomeScreen(): JSX.Element {
     let pool = filtered;
     if (filtered.length < trackCount && (selectedGenres.length > 0 || selectedDecades.length > 0)) {
       const neutral = tracks.filter((t) => {
-        const genres = t.answers.genre.value;
-        const hasNoGenre = !Array.isArray(genres) || genres.length === 0;
-        if (!hasNoGenre) return false;
+        // Supplement with tracks that have no genre_group assigned yet (pending
+        // enrichment) rather than pulling in tracks with a conflicting group.
+        const hasNoGroup = !t.metadata.genre_group;
+        if (!hasNoGroup) return false;
         if (selectedDecades.length > 0 && !selectedDecades.includes(t.metadata.decade)) return false;
         return true;
       });

@@ -17,15 +17,28 @@ export interface SoloSprintFilters {
   artist: string;
 }
 
-/** All distinct genres present in the catalog, sorted alphabetically. */
+/** The 9 high-level genre groups shown on the home screen. */
+export const HIGH_LEVEL_GENRES = [
+  'Pop',
+  'Rock',
+  'Hip-Hop / Rap',
+  'R&B / Soul',
+  'Electronic / Dance',
+  'Country',
+  'Latin',
+  'Classical',
+  'Jazz & Blues',
+] as const;
+
+export type HighLevelGenre = (typeof HIGH_LEVEL_GENRES)[number];
+
+/**
+ * Returns the fixed list of 9 high-level genre groups, filtered to those that
+ * have at least one track in the catalog so empty buttons never appear.
+ */
 export function listGenres(tracks: Track[]): string[] {
-  const genres = new Set<string>();
-  for (const track of tracks) {
-    const value = track.answers.genre.value;
-    const list = Array.isArray(value) ? value : value ? [value] : [];
-    for (const genre of list) genres.add(genre);
-  }
-  return [...genres].sort();
+  const present = new Set(tracks.map((t) => t.metadata.genre_group).filter(Boolean));
+  return HIGH_LEVEL_GENRES.filter((g) => present.has(g));
 }
 
 /** All distinct decades present in the catalog, sorted ascending. */
@@ -39,9 +52,10 @@ export function listDecades(tracks: Track[]): number[] {
 export function filterTracksForSoloSprint(tracks: Track[], filters: SoloSprintFilters): Track[] {
   return tracks.filter((track) => {
     if (filters.genres.length > 0) {
-      const value = track.answers.genre.value;
-      const trackGenres = Array.isArray(value) ? value : value ? [value] : [];
-      if (!filters.genres.some((genre) => trackGenres.includes(genre))) return false;
+      // Match against the high-level genre_group field so the 9 home-screen
+      // buttons always work regardless of how many fine-grained tags a track has.
+      const group = track.metadata.genre_group ?? '';
+      if (!filters.genres.includes(group)) return false;
     }
     if (filters.decades.length > 0 && !filters.decades.includes(track.metadata.decade)) {
       return false;
