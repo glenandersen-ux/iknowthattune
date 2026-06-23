@@ -82,16 +82,12 @@ export function ClipPlayer({
   const stoppedRef = useRef(false);
   const usingPreviewRef = useRef(false);
 
-  // Button visibility derived entirely from status — no separate boolean state
-  // that could get stuck. Rules:
-  //  • 'idle'/'loading': show initial play button (before first tap)
-  //  • 'playing': show stop button
-  //  • 'ended' + nextClipInfo + not forceStop: show combined extend+play button
-  //  • 'ended' + no nextClipInfo: show nothing (max duration reached)
-  //  • 'error': show nothing (error overlay handles it)
-  //  • forceStop (guess submitted): hide everything so GuessPanel takes focus
+  // Button visibility derived from status. forceStop only stops a *playing*
+  // clip (via the effect below) — it must NOT hide the extend button, because
+  // forceStop is true whenever phase==='guessing', which is also the state
+  // right after a clip ends naturally (before the player has tapped extend).
   const showInitialPlay = (status === 'idle' || status === 'loading') && !forceStop;
-  const showExtendPlay  = status === 'ended' && !!nextClipInfo && !forceStop;
+  const showExtendPlay  = status === 'ended' && !!nextClipInfo;   // no forceStop check
   const showStop        = status === 'playing';
 
   const getEngine = useCallback((): AudioEngine => {
