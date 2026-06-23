@@ -158,10 +158,11 @@ describe('gameStore', () => {
       expect(trackSession.fields_correct).toEqual(['song_title', 'primary_artist', 'release_year', 'album_name']);
       expect(trackSession.fields_incorrect).toEqual([]);
       expect(trackSession.first_guess_bonus_earned).toBe(true);
-      // (500*1.0 + 500*1.2 + 400*1.0 + 600*1.4) * 2.0 speed + 500 bonus = 4680 + 500
-      expect(trackSession.raw_score).toBeCloseTo(5180, 5);
+      // artist 900*2.0 + title 700*2.0 + year 400 flat + album 300 flat + 500 bonus
+      // = 1800 + 1400 + 400 + 300 + 500 = 4400
+      expect(trackSession.raw_score).toBeCloseTo(4400, 5);
       expect(trackSession.clip_penalty_applied).toBe(0);
-      expect(state.session.totals.total_score).toBeCloseTo(5180, 5);
+      expect(state.session.totals.total_score).toBeCloseTo(4400, 5);
       expect(state.session.totals.tracks_perfect).toBe(1);
     });
 
@@ -180,8 +181,8 @@ describe('gameStore', () => {
       expect(trackSession.fields_correct).toEqual(['primary_artist', 'release_year', 'album_name']);
       expect(trackSession.fields_incorrect).toEqual(['song_title']);
       expect(trackSession.first_guess_bonus_earned).toBe(false);
-      // song_title scores 0; remaining fields score (500*1.2 + 400*1.0 + 600*1.4) * 2.0
-      expect(trackSession.raw_score).toBeCloseTo(3680, 5);
+      // song_title scores 0; artist 900*2.0 + year 400 flat + album 300 flat = 2500
+      expect(trackSession.raw_score).toBeCloseTo(2500, 5);
     });
 
     it('applies the clip extension penalty and withholds the first guess bonus', () => {
@@ -201,8 +202,8 @@ describe('gameStore', () => {
       expect(trackSession.first_guess_bonus_earned).toBe(false);
       expect(trackSession.clip_penalty_applied).toBe(-100);
       expect(state.session.totals.total_clip_penalty).toBe(-100);
-      // 4680 raw - 100 penalty
-      expect(state.session.totals.total_score).toBeCloseTo(4580, 5);
+      // 3900 raw - 100 penalty = 3800
+      expect(state.session.totals.total_score).toBeCloseTo(3800, 5);
       expect(state.session.totals.tracks_perfect).toBe(0);
     });
 
@@ -272,8 +273,8 @@ describe('gameStore', () => {
 
       const trackThree = useGameStore.getState().session.tracks[2];
       expect(trackThree.streak_position).toBe(2);
-      // Same base score as track 1 (5180), with the +10% streak bonus for streak length 2.
-      expect(trackThree.raw_score).toBeCloseTo(5180 * 1.1, 5);
+      // Same base score as track 1 (4400), with the +10% streak bonus for streak length 2.
+      expect(trackThree.raw_score).toBeCloseTo(4400 * 1.1, 5);
     });
   });
 

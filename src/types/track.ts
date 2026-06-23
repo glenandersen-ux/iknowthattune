@@ -162,4 +162,10 @@ export interface FieldDefinition {
   difficultyWeight: number;
   inputType: FieldInputType;
   label: string;
+  /**
+   * When true, the field scores a flat amount regardless of how quickly the
+   * player answers — no speed multiplier applied. Used for knowledge-based
+   * fields like year and album where reaction time is irrelevant.
+   */
+  flatScore?: boolean;
 }

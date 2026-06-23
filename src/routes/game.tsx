@@ -8,7 +8,6 @@ import { usePlayerStore } from '../store/playerStore';
 import { useAuthStore } from '../store/authStore';
 import { ClipPlayer } from '../components/game/ClipPlayer';
 import { CUMULATIVE_CLIP_PENALTIES } from '../engine/ScoringEngine';
-import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
 import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuilder';
 import { trackEvent } from '../engine/Analytics';

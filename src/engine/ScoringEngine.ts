@@ -3,10 +3,12 @@ import type { FieldDefinition, FieldId, Track } from '../types/track';
 
 /** Static scoring properties for every guessable field (Blueprint §3, DeepDive §A.3). */
 export const FIELD_DEFINITIONS: Record<FieldId, FieldDefinition> = {
-  song_title: { fieldId: 'song_title', tier: 1, basePoints: 500, difficultyWeight: 1.0, inputType: 'text', label: 'Song Title' },
-  primary_artist: { fieldId: 'primary_artist', tier: 1, basePoints: 500, difficultyWeight: 1.2, inputType: 'text', label: 'Primary Artist' },
-  release_year: { fieldId: 'release_year', tier: 1, basePoints: 400, difficultyWeight: 1.0, inputType: 'year', label: 'Release Year' },
-  album_name: { fieldId: 'album_name', tier: 1, basePoints: 600, difficultyWeight: 1.4, inputType: 'text', label: 'Album Name' },
+  // Option 3 scoring: artist/title scale with speed (2× to 0.5×), while year
+  // and album are flat knowledge bonuses unaffected by reaction time.
+  song_title:    { fieldId: 'song_title',    tier: 1, basePoints: 700, difficultyWeight: 1.0, inputType: 'text', label: 'Song Title' },
+  primary_artist:{ fieldId: 'primary_artist',tier: 1, basePoints: 900, difficultyWeight: 1.0, inputType: 'text', label: 'Primary Artist' },
+  release_year:  { fieldId: 'release_year',  tier: 1, basePoints: 400, difficultyWeight: 1.0, inputType: 'year', label: 'Release Year', flatScore: true },
+  album_name:    { fieldId: 'album_name',    tier: 1, basePoints: 300, difficultyWeight: 1.0, inputType: 'text', label: 'Album Name',   flatScore: true },
   songwriter: { fieldId: 'songwriter', tier: 2, basePoints: 800, difficultyWeight: 1.6, inputType: 'multi', label: 'Songwriter(s)' },
   producer: { fieldId: 'producer', tier: 2, basePoints: 900, difficultyWeight: 1.8, inputType: 'text', label: 'Producer' },
   record_label: { fieldId: 'record_label', tier: 2, basePoints: 650, difficultyWeight: 1.5, inputType: 'text', label: 'Record Label' },
@@ -75,7 +77,8 @@ export function computeFieldScore(
 ): number {
   if (!correct || partialRatio <= 0) return 0;
   const def = FIELD_DEFINITIONS[fieldId];
-  const speedMultiplier = computeSpeedMultiplier(elapsedMs / 1000);
+  // Flat fields (year, album) are knowledge-based — speed gives no advantage.
+  const speedMultiplier = def.flatScore ? 1.0 : computeSpeedMultiplier(elapsedMs / 1000);
   return def.basePoints * def.difficultyWeight * speedMultiplier * partialRatio;
 }
 
