@@ -253,6 +253,8 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
 
   const trackStartRef = useRef<number | null>(null);
   const updatedAfterGameRef = useRef(false);
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
   // Tracks which `search` params the current `challenge` was built from, so a
   // new Solo Sprint / Daily Drop / micro-challenge link is loaded even though
   // `challenge` from a previous game is still sitting in the global store.
@@ -405,14 +407,16 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
   }, [phase, session, updateAfterGame, navigate, challenge, playerId, search.r, authUser]);
 
   // Must be declared before any early returns (Rules of Hooks).
+  // Uses phaseRef (not phase directly) so the reference stays stable across
+  // phase changes — prevents the ClipPlayer loading effect from re-running.
   const handlePlaybackStart = useCallback((): void => {
-    if (phase === 'idle') {
+    if (phaseRef.current === 'idle') {
       trackStartRef.current = performance.now();
       startTrack();
     } else {
       resumePlaying();
     }
-  }, [phase, startTrack, resumePlaying]);
+  }, [startTrack, resumePlaying]);
 
   if (!challenge) {
     return <LoadingScreen />;
