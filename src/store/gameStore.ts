@@ -236,12 +236,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const results: Partial<Record<FieldId, FieldResultStatus>> = {};
     const guesses: Partial<Record<FieldId, FieldGuess['value']>> = {};
 
-    for (const { fieldId, value } of fields) {
+    for (const { fieldId, value, hintUsed } of fields) {
       guesses[fieldId] = value;
       const inputType = FIELD_DEFINITIONS[fieldId].inputType;
       const match = evaluateFieldGuess(inputType, value, track.answers[fieldId]);
       const partialRatio = match.correct ? 1 : match.partial;
-      fieldScores.push(computeFieldScore(fieldId, partialRatio > 0, timeElapsedMs, clipExtensions, partialRatio));
+      fieldScores.push(computeFieldScore(fieldId, partialRatio > 0, timeElapsedMs, clipExtensions, partialRatio, hintUsed));
 
       if (match.correct) {
         fieldsCorrect.push(fieldId);
@@ -265,7 +265,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       elapsedSeconds,
       challenge.scoring.first_guess_bonus,
     );
-    const clipPenalty = computeClipExtensionPenalty(clipExtensions, 1, challenge.scoring.clip_penalties) + get().hintPenalty;
+    const clipPenalty = computeClipExtensionPenalty(clipExtensions, 1, challenge.scoring.clip_penalties);
     const streakBonus = computeStreakBonus(currentStreakLength(session.tracks));
     const rawScore = (fieldScores.reduce((sum, score) => sum + score, 0) + firstGuessBonus) * (1 + streakBonus);
 
@@ -303,7 +303,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  applyHintPenalty: (pts) => set({ hintPenalty: get().hintPenalty + pts }),
+  applyHintPenalty: () => { /* no-op: hints now reduce the per-field score directly */ },
 
   extendClip: () => {
     const { activeClipDuration, currentTrackIndex } = get();

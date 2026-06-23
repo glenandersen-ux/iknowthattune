@@ -24,8 +24,8 @@ interface FieldHintState {
   fullAnswer?: string;
 }
 
-const LETTER_HINT_COST = 50;
-const ANSWER_HINT_COST = 100;
+// Letter hint: field scores at 50%, no speed bonus (handled in computeFieldScore).
+// Answer hint: field scores 0 (locked as incorrect immediately).
 
 function defaultValueFor(fieldId: FieldId): FieldGuessValue {
   const inputType = FIELD_DEFINITIONS[fieldId].inputType;
@@ -77,8 +77,7 @@ function HintConfirm({
       style={{ background: 'var(--color-stage)', border: '1px solid var(--color-stage-border)' }}
     >
       <span style={{ color: 'var(--color-fg)' }}>
-        {message}{' '}
-        <span style={{ color: 'var(--color-incorrect)', fontFamily: 'var(--font-display)' }}>−{cost} pts</span>
+        {message}
       </span>
       <div className="flex gap-2">
         <button
@@ -131,7 +130,9 @@ export function GuessPanel({
     for (const fieldId of activeFields) {
       if (locked[fieldId]) continue;
       const value = values[fieldId] ?? defaultValueFor(fieldId);
-      guesses.push({ fieldId, value });
+      const hint = getHint(fieldId);
+      const hintUsed = hint.stage === 'letter_shown' ? 'letter' as const : undefined;
+      guesses.push({ fieldId, value, hintUsed });
       const def = FIELD_DEFINITIONS[fieldId];
       const result = evaluateFieldGuess(def.inputType, value, track.answers[fieldId]);
       results[fieldId] = result;
@@ -191,12 +192,11 @@ export function GuessPanel({
             {/* Inline confirmation for letter hint */}
             {hint.stage === 'letter_confirm' && (
               <HintConfirm
-                message="Show first letter?"
-                cost={LETTER_HINT_COST}
+                message="Show first letter? (field scores at 50%, no speed bonus)"
+                cost={0}
                 onYes={() => {
                   const letter = getFirstLetter(track, fieldId);
                   setHint(fieldId, { stage: 'letter_shown', firstLetter: letter });
-                  onHintPenalty?.(LETTER_HINT_COST);
                 }}
                 onNo={() => setHint(fieldId, { stage: 'none' })}
               />
@@ -205,14 +205,13 @@ export function GuessPanel({
             {/* Inline confirmation for answer */}
             {hint.stage === 'answer_confirm' && (
               <HintConfirm
-                message="Reveal the answer?"
-                cost={ANSWER_HINT_COST}
+                message="Reveal the answer? (scores 0 pts for this field)"
+                cost={0}
                 onYes={() => {
                   const answer = getFullAnswer(track, fieldId);
                   setHint(fieldId, { stage: 'answer_shown', fullAnswer: answer });
                   // Lock the field as incorrect (0 pts) so it's excluded from future scoring.
                   setLocked((prev) => ({ ...prev, [fieldId]: { correct: false, partial: 0 } }));
-                  onHintPenalty?.(ANSWER_HINT_COST);
                 }}
                 onNo={() => setHint(fieldId, { ...(hint.stage === 'answer_confirm' ? { ...hint, stage: 'letter_shown' } : { stage: 'none' }) })}
               />

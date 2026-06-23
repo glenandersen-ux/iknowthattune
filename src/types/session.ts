@@ -17,6 +17,8 @@ export type FieldGuessValue = string | number | string[];
 export interface FieldGuess {
   fieldId: FieldId;
   value: FieldGuessValue;
+  /** Set when the player used a hint on this field — score is halved, no speed bonus. */
+  hintUsed?: 'letter';
 }
 
 /** One submission event within a track's guess history. */

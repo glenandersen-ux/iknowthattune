@@ -74,12 +74,15 @@ export function computeFieldScore(
   elapsedMs: number,
   _clipsExtended: number,
   partialRatio: number,
+  hintUsed?: 'letter',
 ): number {
   if (!correct || partialRatio <= 0) return 0;
   const def = FIELD_DEFINITIONS[fieldId];
-  // Flat fields (year, album) are knowledge-based — speed gives no advantage.
-  const speedMultiplier = def.flatScore ? 1.0 : computeSpeedMultiplier(elapsedMs / 1000);
-  return def.basePoints * def.difficultyWeight * speedMultiplier * partialRatio;
+  // Flat fields (year, album) and hint-assisted fields use no speed multiplier.
+  const isFlat = def.flatScore || hintUsed === 'letter';
+  const speedMultiplier = isFlat ? 1.0 : computeSpeedMultiplier(elapsedMs / 1000);
+  const hintMultiplier  = hintUsed === 'letter' ? 0.5 : 1.0;
+  return def.basePoints * def.difficultyWeight * speedMultiplier * partialRatio * hintMultiplier;
 }
 
 /**
