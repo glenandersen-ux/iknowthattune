@@ -77,14 +77,22 @@ export function ClipPlayer({
   const engineRef = useRef<AudioEngine | null>(null);
   const [status, setStatus] = useState<ClipPlayerStatus>('loading');
   const [unlocked, setUnlocked] = useState(false);
-  // Tracks whether the ▶ play button is visible. True on first load and again
-  // each time the clip extends so the user taps deliberately for each clip.
-  const [showPlayButton, setShowPlayButton] = useState(true);
   const [deezerPreview, setDeezerPreview] = useState<DeezerPreview | null>(null);
   const [itunesPreview, setItunesPreview] = useState<ItunesPreview | null>(null);
-  const previousDuration = useRef(currentDuration);
   const stoppedRef = useRef(false);
   const usingPreviewRef = useRef(false);
+
+  // Button visibility derived entirely from status — no separate boolean state
+  // that could get stuck. Rules:
+  //  • 'idle'/'loading': show initial play button (before first tap)
+  //  • 'playing': show stop button
+  //  • 'ended' + nextClipInfo + not forceStop: show combined extend+play button
+  //  • 'ended' + no nextClipInfo: show nothing (max duration reached)
+  //  • 'error': show nothing (error overlay handles it)
+  //  • forceStop (guess submitted): hide everything so GuessPanel takes focus
+  const showInitialPlay = (status === 'idle' || status === 'loading') && !forceStop;
+  const showExtendPlay  = status === 'ended' && !!nextClipInfo && !forceStop;
+  const showStop        = status === 'playing';
 
   const getEngine = useCallback((): AudioEngine => {
     if (!engineRef.current) {
@@ -192,9 +200,6 @@ export function ClipPlayer({
       if (stoppedRef.current) return;
       setStatus('ended');
       onPlaybackEnd();
-      // Re-show the play button after each clip ends so the player can tap
-      // to play the next duration (combined extend+play button).
-      setShowPlayButton(true);
     },
     [getEngine, onPlaybackStart, onPlaybackEnd, clipStartOffsetMs],
   );
@@ -214,30 +219,15 @@ export function ClipPlayer({
       await engine.unlock();
       setUnlocked(true);
     }
-    setShowPlayButton(false);
     await playClip(currentDuration);
   }, [status, unlocked, getEngine, playClip, currentDuration]);
 
-  // Extend + play in one tap: extends the clip duration then immediately plays
-  // the new duration, bypassing the normal "show button then tap again" cycle.
+  // Extend + play in one tap.
   const handleExtendAndPlay = useCallback(async (): Promise<void> => {
     if (!nextClipInfo) return;
     nextClipInfo.onExtend();
-    // Skip the showPlayButton cycle by updating previousDuration immediately.
-    previousDuration.current = nextClipInfo.duration;
-    setShowPlayButton(false);
     await playClip(nextClipInfo.duration);
   }, [nextClipInfo, playClip]);
-
-  // When the clip duration changes (extension), show the play button again
-  // with the new duration rather than auto-playing. The player taps deliberately
-  // for each clip so they know what length they're committing to.
-  useEffect(() => {
-    if (unlocked && previousDuration.current !== currentDuration) {
-      previousDuration.current = currentDuration;
-      setShowPlayButton(true);
-    }
-  }, [currentDuration, unlocked]);
 
   // Stop audio immediately when the caller signals (e.g. guess submitted).
   useEffect(() => {
@@ -266,21 +256,16 @@ export function ClipPlayer({
         </div>
       )}
 
-      {/* Centered play / stop button — stays in the same position at all times */}
+      {/* Centered play / stop button */}
       <div className="flex flex-col items-center gap-2 py-5">
-        {status === 'playing' ? (
+        {showStop ? (
           <>
             <button
               type="button"
               onClick={handleStop}
               data-testid="stop-button"
               className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95"
-              style={{
-                width: 76, height: 76,
-                background: 'var(--color-stage)',
-                border: '2px solid var(--color-stage-border)',
-                color: 'var(--color-fg)',
-              }}
+              style={{ width: 76, height: 76, background: 'var(--color-stage)', border: '2px solid var(--color-stage-border)', color: 'var(--color-fg)' }}
             >
               <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>⏹</span>
             </button>
@@ -288,64 +273,49 @@ export function ClipPlayer({
               {formatDuration(currentDuration)} playing
             </p>
           </>
-        ) : showPlayButton && status !== 'error' && !(status === 'ended' && !nextClipInfo) ? (
-          // After a clip ends: show the combined extend+play button if there's
-          // a next duration available. If at max duration, show nothing.
-          // Before the first play: show the standard "▶ 1 sec" button.
-          status === 'ended' && nextClipInfo ? (
-            <>
-              <button
-                type="button"
-                onClick={(): void => void handleExtendAndPlay()}
-                data-testid="tap-to-start"
-                className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95"
-                style={{
-                  width: 76, height: 76,
-                  background: 'var(--color-spotlight)',
-                  color: 'var(--color-stage)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
-                <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
-                  {formatDuration(nextClipInfo.duration)}
-                </span>
-              </button>
-              <p className="text-xs font-semibold" style={{ color: 'var(--color-incorrect)' }}>
-                −{nextClipInfo.cost} pts
-              </p>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={(): void => void handleTapToStart()}
-                disabled={status === 'loading'}
-                data-testid="tap-to-start"
-                className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-50"
-                style={{
-                  width: 76, height: 76,
-                  background: status === 'loading' ? 'var(--color-stage-border)' : 'var(--color-spotlight)',
-                  color: status === 'loading' ? 'var(--color-fg-muted)' : 'var(--color-stage)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
-                {status === 'loading' ? (
-                  <span className="text-xs">…</span>
-                ) : (
-                  <>
-                    <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
-                    <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
-                      {formatDuration(currentDuration)}
-                    </span>
-                  </>
-                )}
-              </button>
-              <p className="text-xs" style={{ color: 'var(--color-fg-muted)' }}>
-                {status === 'loading' ? 'Loading audio…' : 'Tap to play'}
-              </p>
-            </>
-          )
+        ) : showExtendPlay ? (
+          <>
+            <button
+              type="button"
+              onClick={(): void => void handleExtendAndPlay()}
+              data-testid="tap-to-start"
+              className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95"
+              style={{ width: 76, height: 76, background: 'var(--color-spotlight)', color: 'var(--color-stage)', fontFamily: 'var(--font-display)' }}
+            >
+              <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
+              <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
+                {formatDuration(nextClipInfo!.duration)}
+              </span>
+            </button>
+            <p className="text-xs font-semibold" style={{ color: 'var(--color-incorrect)' }}>
+              −{nextClipInfo!.cost} pts
+            </p>
+          </>
+        ) : showInitialPlay ? (
+          <>
+            <button
+              type="button"
+              onClick={(): void => void handleTapToStart()}
+              disabled={status === 'loading'}
+              data-testid="tap-to-start"
+              className="flex flex-col items-center justify-center rounded-full transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-50"
+              style={{ width: 76, height: 76, background: status === 'loading' ? 'var(--color-stage-border)' : 'var(--color-spotlight)', color: status === 'loading' ? 'var(--color-fg-muted)' : 'var(--color-stage)', fontFamily: 'var(--font-display)' }}
+            >
+              {status === 'loading' ? (
+                <span className="text-xs">…</span>
+              ) : (
+                <>
+                  <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>▶</span>
+                  <span className="font-bold" style={{ fontSize: '0.8rem', letterSpacing: '0.05em' }}>
+                    {formatDuration(currentDuration)}
+                  </span>
+                </>
+              )}
+            </button>
+            <p className="text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+              {status === 'loading' ? 'Loading audio…' : 'Tap to play'}
+            </p>
+          </>
         ) : null}
       </div>
 
