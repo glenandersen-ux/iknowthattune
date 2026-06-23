@@ -7,7 +7,7 @@ import { useCatalogStore } from '../store/catalogStore';
 import { usePlayerStore } from '../store/playerStore';
 import { useAuthStore } from '../store/authStore';
 import { ClipPlayer } from '../components/game/ClipPlayer';
-import { ClipExtendBar } from '../components/game/ClipExtendBar';
+import { CUMULATIVE_CLIP_PENALTIES } from '../engine/ScoringEngine';
 import { SpeedMultiplierBadge } from '../components/game/SpeedMultiplierBadge';
 import { GuessPanel } from '../components/game/GuessPanel';
 import { buildSoloChallenge, buildMicroChallenge } from '../engine/ChallengeBuilder';
@@ -17,7 +17,7 @@ import { currentStreakLength } from '../store/gameStore';
 import { decodeResult, decodeSeed, encodeResult, encodeSeed } from '../engine/UrlCodec';
 import type { CompactResult, PlayerResult } from '../types/challenge';
 import type { SessionComparison, TrackSession } from '../types/session';
-import type { FieldId, Track } from '../types/track';
+import type { ClipDuration, FieldId, Track } from '../types/track';
 
 /** Challenge IDs used for client-only modes that have no server-side leaderboard. */
 const CLIENT_ONLY_CHALLENGE_IDS = new Set(['daily-drop', 'solo-sprint', 'preview', 'micro']);
@@ -468,11 +468,16 @@ export function GameScreen({ search }: GameScreenProps): JSX.Element {
         fallbackSongTitle={track.answers.song_title.value ?? undefined}
         fallbackArtistName={track.answers.primary_artist.value ?? undefined}
         forceStop={phase === 'guessing'}
+        nextClipInfo={(() => {
+          const DURATIONS: ClipDuration[] = ['1s', '3s', '5s', '10s', '30s'];
+          const nextDuration = DURATIONS[DURATIONS.indexOf(activeClipDuration) + 1];
+          if (!nextDuration) return undefined;
+          const prev = clipExtensions > 0 ? CUMULATIVE_CLIP_PENALTIES[clipExtensions - 1] : 0;
+          const cost = CUMULATIVE_CLIP_PENALTIES[Math.min(clipExtensions, CUMULATIVE_CLIP_PENALTIES.length - 1)] - prev;
+          return { duration: nextDuration, cost, onExtend: extendClip };
+        })()}
       />
-      <div className="flex items-center gap-3">
-        <SpeedMultiplierBadge multiplier={speedMultiplier} />
-        <ClipExtendBar currentDuration={activeClipDuration} clipExtensions={clipExtensions} onExtend={extendClip} />
-      </div>
+      <SpeedMultiplierBadge multiplier={speedMultiplier} />
       <GuessPanel
         track={track}
         activeFields={activeFields}
